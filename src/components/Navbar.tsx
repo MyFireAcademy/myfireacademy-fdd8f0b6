@@ -43,6 +43,9 @@ const Navbar = () => {
             <Link to="/#testimonials" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               Testimonials
             </Link>
+            <Link to="/quiz" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
+              Quiz
+            </Link>
             <Link to="/#pricing" className="btn-primary animate-pulse-soft">
               Buy Now
             </Link>
@@ -86,6 +89,13 @@ const Navbar = () => {
                 className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium"
               >
                 Testimonials
+              </Link>
+              <Link 
+                to="/quiz" 
+                onClick={() => setIsMenuOpen(false)}
+                className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium"
+              >
+                Quiz
               </Link>
               <Link 
                 to="/#pricing" 

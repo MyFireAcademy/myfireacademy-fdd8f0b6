@@ -35,6 +35,9 @@ const Hero = () => {
             <Link to="/#features" className="btn-secondary">
               Learn More
             </Link>
+            <Link to="/quiz" className="btn-secondary bg-navy-100 hover:bg-navy-200">
+              Try Quiz Demo
+            </Link>
           </div>
         </div>
         
