@@ -1,11 +1,12 @@
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +16,12 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleBuyNowClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate('/checkout');
+    setIsMenuOpen(false);
+  };
 
   return (
     <header 
@@ -49,9 +56,9 @@ const Navbar = () => {
             <Link to="/blog" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               Blog
             </Link>
-            <Link to="/#pricing" className="btn-primary animate-pulse-soft">
+            <button onClick={handleBuyNowClick} className="btn-primary animate-pulse-soft">
               Buy Now
-            </Link>
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -107,13 +114,12 @@ const Navbar = () => {
               >
                 Blog
               </Link>
-              <Link 
-                to="/#pricing" 
-                onClick={() => setIsMenuOpen(false)}
+              <button 
+                onClick={handleBuyNowClick}
                 className="btn-primary w-full text-center"
               >
                 Buy Now
-              </Link>
+              </button>
             </div>
           </div>
         )}

@@ -1,6 +1,5 @@
-
 import { Check, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { toast } from '@/hooks/use-toast';
 
@@ -10,19 +9,11 @@ const Pricing = () => {
     threshold: 0.1,
   });
   
+  const navigate = useNavigate();
+  
   const handlePurchase = (e: React.MouseEvent) => {
     e.preventDefault();
-    // In a real app, this would redirect to payment processing
-    // For this demo, we'll redirect to the quiz page
-    setTimeout(() => {
-      window.location.href = '/quiz';
-    }, 1000);
-    
-    toast({
-      title: "Purchase Successful!",
-      description: "Redirecting to your study material...",
-      duration: 3000,
-    });
+    navigate('/checkout');
   };
 
   return (
