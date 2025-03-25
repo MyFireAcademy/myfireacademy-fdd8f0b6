@@ -249,7 +249,7 @@ const Quiz = () => {
             
             {isDemo && (
               <p className="text-navy-700 mb-6">
-                This was just a sample of our comprehensive quiz. Get access to all 200 questions with the full package.
+                This was just a sample of our comprehensive 2025 Exam Prep. Get access to all 200 questions with the full package.
               </p>
             )}
             
