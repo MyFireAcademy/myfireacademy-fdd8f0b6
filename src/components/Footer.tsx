@@ -76,11 +76,6 @@ const Footer = () => {
                     Email Us
                   </a>
                 </li>
-                <li className="text-gray-400">
-                  <a href="tel:18005551234" className="hover:text-white transition-colors">
-                    1-800-555-1234
-                  </a>
-                </li>
                 <li>
                   <a href="#" className="text-gray-400 hover:text-white transition-colors">
                     FAQ
