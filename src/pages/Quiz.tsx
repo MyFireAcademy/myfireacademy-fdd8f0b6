@@ -303,7 +303,7 @@ const Quiz = () => {
             <div className="flex justify-between items-center">
               <h1 className="text-xl font-bold">
                 {isDemo ? "2025 EXAM PREP: " : ""}
-                NFPA 1001 {currentLevel === 'level1' ? 'Level I' : 'Level II'} Quiz
+                NFPA 1001 {currentLevel === 'level1' ? 'Level I' : 'Level II'} Exam Questions
               </h1>
               <div className="text-sm bg-white/20 px-3 py-1 rounded-full">
                 Question {currentQuestion + 1} of {questions.length}
