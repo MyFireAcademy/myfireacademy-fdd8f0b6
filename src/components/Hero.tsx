@@ -40,7 +40,7 @@ const Hero = () => {
               state={{ isDemo: true }}
               className="btn-secondary bg-navy-100 hover:bg-navy-200"
             >
-              Try The 2025 Exam Prep
+              Sample Exam Questions
             </Link>
           </div>
         </div>
