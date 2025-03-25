@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -11,7 +12,7 @@ export const blogPosts = [
     excerpt: "Prepare effectively with these proven strategies that will help you ace your firefighter certification exam.",
     date: "June 12, 2023",
     readTime: "5 min read",
-    image: "https://images.unsplash.com/photo-1518156677180-95a2893f3499?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80",
+    image: "/lovable-uploads/334fbf37-de19-4114-9cfe-7fee4a750f34.png",
     slug: "tips-for-passing-nfpa-exam",
     content: `
       <h2>Preparing for Success on Your NFPA 1001 Firefighter Exam</h2>
@@ -50,7 +51,7 @@ export const blogPosts = [
     excerpt: "Stay current with the latest updates to the NFPA standards and how they impact your certification process.",
     date: "May 28, 2023",
     readTime: "7 min read",
-    image: "https://images.unsplash.com/photo-1530411554903-7e745b9f1bce?ixlib=rb-4.0.3&auto=format&fit=crop&w=1469&q=80",
+    image: "/lovable-uploads/57d2e218-746e-408d-bf55-9647a0afe115.png",
     slug: "nfpa-standard-changes-2023",
     content: `
       <h2>Key Updates to the NFPA 1001 Standard for 2023</h2>
@@ -88,7 +89,7 @@ export const blogPosts = [
     excerpt: "Explore the progression of a firefighting career and the certifications needed at each level.",
     date: "May 15, 2023",
     readTime: "6 min read",
-    image: "https://images.unsplash.com/photo-1544815083-4700de163c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1471&q=80",
+    image: "/lovable-uploads/a0efaf7d-d401-408f-af5a-58b93a82ea56.png",
     slug: "firefighter-career-path",
     content: `
       <h2>Navigating Your Fire Service Career: From Probationary Firefighter to Chief</h2>
@@ -146,7 +147,7 @@ export const blogPosts = [
     excerpt: "Learn about the physical demands of firefighting and how to prepare your body for the job.",
     date: "April 22, 2023",
     readTime: "8 min read",
-    image: "/lovable-uploads/122c3d07-e611-4f03-a81e-691308c9d6a6.png",
+    image: "/lovable-uploads/c03c7cbe-1a66-4a20-a714-169a72586a4a.png",
     slug: "physical-fitness-requirements",
     content: `
       <h2>Meeting the Physical Demands of Firefighting: A Comprehensive Guide</h2>
@@ -230,7 +231,7 @@ export const blogPosts = [
     excerpt: "Discover effective study techniques tailored for those who learn best through visual information.",
     date: "April 10, 2023",
     readTime: "4 min read",
-    image: "https://images.unsplash.com/photo-1507835661088-ac1e84fe645f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+    image: "/lovable-uploads/e7e5065e-010a-4bc8-92f9-36b881ad1348.png",
     slug: "visual-learner-study-strategies",
     content: `
       <h2>Optimizing Learning for Visual Thinkers in Fire Service Training</h2>
@@ -332,7 +333,7 @@ export const blogPosts = [
     excerpt: "An important discussion on addressing mental health challenges faced by firefighters in their careers.",
     date: "March 28, 2023",
     readTime: "9 min read",
-    image: "https://images.unsplash.com/photo-1523920290228-4f321a939b4c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1574&q=80",
+    image: "/lovable-uploads/122c3d07-e611-4f03-a81e-691308c9d6a6.png",
     slug: "mental-health-fire-service",
     content: `
       <h2>Supporting Firefighter Mental Health: Challenges and Solutions</h2>
