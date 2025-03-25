@@ -54,12 +54,22 @@ const BlogPostContent = () => {
     );
   }
   
+  // Function to handle image change - this connects the dot navigation to the carousel
+  const handleCarouselChange = (index: number) => {
+    setActiveImage(index);
+    const carouselContainer = document.querySelector('.embla__container');
+    if (carouselContainer) {
+      const items = carouselContainer.querySelectorAll('.embla__slide');
+      items[index]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  };
+  
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Banner */}
+      {/* Hero Banner - Now uses the first uploaded image as the hero image */}
       <div 
         className="w-full h-[40vh] bg-cover bg-center relative"
-        style={{ backgroundImage: `url(${post.image})` }}
+        style={{ backgroundImage: `url(${firefighterImages[0]})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-navy-900/70 to-navy-900/40 flex items-center justify-center">
           <div className="container mx-auto px-6 text-center">
@@ -101,7 +111,10 @@ const BlogPostContent = () => {
           {/* Image Carousel */}
           <div className="my-8 bg-navy-50 p-4 rounded-lg">
             <h3 className="text-xl font-semibold text-navy-900 mb-4">Firefighter Training Gallery</h3>
-            <Carousel className="relative mx-auto w-full max-w-2xl">
+            <Carousel 
+              className="relative mx-auto w-full max-w-2xl"
+              onSlideChange={setActiveImage}
+            >
               <CarouselContent>
                 {firefighterImages.map((image, index) => (
                   <CarouselItem key={index}>
@@ -124,7 +137,7 @@ const BlogPostContent = () => {
                   key={index}
                   type="button"
                   className={`w-2.5 h-2.5 rounded-full ${activeImage === index ? 'bg-fire-600' : 'bg-navy-300'}`}
-                  onClick={() => setActiveImage(index)}
+                  onClick={() => handleCarouselChange(index)}
                 />
               ))}
             </div>
