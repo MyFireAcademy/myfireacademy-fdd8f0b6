@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -146,7 +147,7 @@ export const blogPosts = [
     excerpt: "Learn about the physical demands of firefighting and how to prepare your body for the job.",
     date: "April 22, 2023",
     readTime: "8 min read",
-    image: "/lovable-uploads/c03c7cbe-1a66-4a20-a714-169a72586a4a.png",
+    image: "/lovable-uploads/334fbf37-de19-4114-9cfe-7fee4a750f34.png",
     slug: "physical-fitness-requirements",
     content: `
       <h2>Meeting the Physical Demands of Firefighting: A Comprehensive Guide</h2>
