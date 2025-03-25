@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -10,6 +9,7 @@ type LocationState = {
   quizId?: string;
   level?: QuizLevel;
   isFull?: boolean;
+  isDemo?: boolean;
 };
 
 const Quiz = () => {
@@ -23,11 +23,17 @@ const Quiz = () => {
   const [score, setScore] = useState({ level1: 0, level2: 0 });
   const [quizComplete, setQuizComplete] = useState({ level1: false, level2: false });
   const [isFull, setIsFull] = useState(state.isFull || false);
+  const [isDemo, setIsDemo] = useState(state.isDemo || false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Get questions based on current level
-  const questions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
+  // Get questions based on current level and demo mode
+  const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
+  
+  // If in demo mode, only use first 5 questions of each level
+  const questions = isDemo 
+    ? allQuestions.slice(0, 5) 
+    : allQuestions;
   
   // Check if questions exist for the current level
   const hasQuestions = questions && questions.length > 0;
@@ -70,6 +76,16 @@ const Quiz = () => {
         });
         setCurrentLevel('level1');
       }
+    }
+    
+    // Check if we're in demo mode
+    if (state.isDemo) {
+      setIsDemo(true);
+      toast({
+        title: "Quiz Demo Mode",
+        description: "You're trying our demo quiz with 5 questions from each level.",
+        duration: 5000,
+      });
     }
   }, [state, toast]);
 
@@ -116,8 +132,8 @@ const Quiz = () => {
           title: "Level I Quiz Completed!",
           description: `Your score: ${score.level1}/${questions.length}`,
         });
-        // If not full quiz, move to level 2
-        if (!isFull) {
+        // If not full quiz or if it's a demo, move to level 2
+        if (!isFull || isDemo) {
           setCurrentLevel('level2');
         }
       } else {
@@ -144,19 +160,22 @@ const Quiz = () => {
 
   const handleFinishQuiz = () => {
     toast({
-      title: "Quiz Completed!",
-      description: "You've completed the quiz. Your final score is displayed.",
+      title: isDemo ? "Demo Quiz Completed!" : "Quiz Completed!",
+      description: isDemo 
+        ? "Thank you for trying our quiz demo. Purchase the full version for complete exam preparation." 
+        : "You've completed the quiz. Your final score is displayed.",
       duration: 5000,
     });
     
     // In a real app, we might save the score to the user's profile here
     
     setTimeout(() => {
-      navigate('/dashboard');
+      navigate(isDemo ? '/' : '/dashboard');
     }, 2000);
   };
 
   // Only show results for the current level if we came from dashboard (full quiz mode)
+  // In demo mode, show results after completing both levels
   const shouldShowFinalResults = isFull ? 
     (currentLevel === 'level1' && quizComplete.level1) || 
     (currentLevel === 'level2' && quizComplete.level2) : 
@@ -193,7 +212,9 @@ const Quiz = () => {
             <div className="flex justify-center mb-6">
               <CheckCircle className="text-green-500 w-20 h-20" />
             </div>
-            <h1 className="text-3xl font-bold text-navy-900 mb-4">Quiz Completed!</h1>
+            <h1 className="text-3xl font-bold text-navy-900 mb-4">
+              {isDemo ? "Quiz Demo Completed!" : "Quiz Completed!"}
+            </h1>
             
             <div className="bg-gray-50 p-6 rounded-lg mb-8">
               <h3 className="font-semibold mb-4 text-lg">Your Results:</h3>
@@ -215,23 +236,29 @@ const Quiz = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-white p-4 rounded-lg shadow-sm">
                     <p className="text-navy-800 font-medium">Level I</p>
-                    <p className="text-2xl font-bold text-fire-600">{score.level1}/{levelIQuizData.length}</p>
-                    <p className="text-sm text-navy-600">{(score.level1 / levelIQuizData.length * 100).toFixed(1)}%</p>
+                    <p className="text-2xl font-bold text-fire-600">{score.level1}/{isDemo ? 5 : levelIQuizData.length}</p>
+                    <p className="text-sm text-navy-600">{(score.level1 / (isDemo ? 5 : levelIQuizData.length) * 100).toFixed(1)}%</p>
                   </div>
                   <div className="bg-white p-4 rounded-lg shadow-sm">
                     <p className="text-navy-800 font-medium">Level II</p>
-                    <p className="text-2xl font-bold text-fire-600">{score.level2}/{levelIIQuizData.length}</p>
-                    <p className="text-sm text-navy-600">{(score.level2 / levelIIQuizData.length * 100).toFixed(1)}%</p>
+                    <p className="text-2xl font-bold text-fire-600">{score.level2}/{isDemo ? 5 : levelIIQuizData.length}</p>
+                    <p className="text-sm text-navy-600">{(score.level2 / (isDemo ? 5 : levelIIQuizData.length) * 100).toFixed(1)}%</p>
                   </div>
                 </div>
               )}
             </div>
             
+            {isDemo && (
+              <p className="text-navy-700 mb-6">
+                This was just a sample of our comprehensive quiz. Get access to all 200 questions with the full package.
+              </p>
+            )}
+            
             <button 
               onClick={handleFinishQuiz}
               className="btn-primary w-full"
             >
-              Return to Dashboard
+              {isDemo ? "Return to Home" : "Return to Dashboard"}
             </button>
           </div>
         </div>
@@ -246,7 +273,10 @@ const Quiz = () => {
           {/* Quiz Header */}
           <div className="bg-fire-600 text-white p-6">
             <div className="flex justify-between items-center">
-              <h1 className="text-xl font-bold">NFPA 1001 {currentLevel === 'level1' ? 'Level I' : 'Level II'} Quiz</h1>
+              <h1 className="text-xl font-bold">
+                {isDemo ? "DEMO: " : ""}
+                NFPA 1001 {currentLevel === 'level1' ? 'Level I' : 'Level II'} Quiz
+              </h1>
               <div className="text-sm bg-white/20 px-3 py-1 rounded-full">
                 Question {currentQuestion + 1} of {questions.length}
               </div>

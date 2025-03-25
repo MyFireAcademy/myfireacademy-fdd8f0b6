@@ -1,4 +1,3 @@
-
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -35,7 +34,11 @@ const Hero = () => {
             <Link to="/#features" className="btn-secondary">
               Learn More
             </Link>
-            <Link to="/quiz" className="btn-secondary bg-navy-100 hover:bg-navy-200">
+            <Link 
+              to="/quiz" 
+              state={{ isDemo: true }}
+              className="btn-secondary bg-navy-100 hover:bg-navy-200"
+            >
               Try Quiz Demo
             </Link>
           </div>
