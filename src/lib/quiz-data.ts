@@ -770,4 +770,3 @@ export const levelIQuizData: Question[] = [
     options: [
       "To respond to incidents involving rescues from mines and other underground environments",
       "To provide medical assistance to injured victims",
-      "To
