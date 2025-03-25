@@ -25,18 +25,18 @@ const Dashboard = () => {
     {
       id: 'nfpa-1001-level1-full',
       title: 'NFPA 1001 Firefighter I',
-      description: 'Complete certification exam preparation with 150 questions covering all Level I objectives',
-      questionCount: 150,
-      estimatedTime: '3 hours',
+      description: 'Complete certification exam preparation with 100 questions covering all Level I objectives',
+      questionCount: 100,
+      estimatedTime: '2 hours',
       level: 'I',
       progress: 0
     },
     {
       id: 'nfpa-1001-level2-full',
       title: 'NFPA 1001 Firefighter II',
-      description: 'Comprehensive Level II certification exam with 150 questions on advanced firefighting concepts',
-      questionCount: 150,
-      estimatedTime: '3 hours',
+      description: 'Comprehensive Level II certification exam with 100 questions on advanced firefighting concepts',
+      questionCount: 100,
+      estimatedTime: '2 hours',
       level: 'II',
       progress: 0
     }
@@ -49,7 +49,7 @@ const Dashboard = () => {
     
     toast({
       title: "Starting Full Quiz",
-      description: "The 150-question quiz is loading...",
+      description: "The 100-question quiz is loading...",
       duration: 3000,
     });
   };
@@ -65,7 +65,7 @@ const Dashboard = () => {
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome to Your NFPA 1001 Study Portal!</h1>
                 <p className="mb-6 md:mb-0 text-white/90">
-                  Your purchase includes full access to both Level I and Level II certification exams with 150 questions each.
+                  Your purchase includes full access to both Level I and Level II certification exams with 100 questions each.
                 </p>
               </div>
             </div>

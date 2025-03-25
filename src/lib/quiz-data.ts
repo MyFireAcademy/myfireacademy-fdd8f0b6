@@ -1,3 +1,4 @@
+
 export interface Question {
   id: number;
   question: string;
@@ -992,4 +993,1422 @@ export const levelIQuizData: Question[] = [
     explanation: "A clove hitch is secure and prevents slippage."
   },
   {
-    id:
+    id: 83,
+    question: "What is the term for the process of setting up a secure water supply from a hydrant?",
+    options: [
+      "Laying in",
+      "Laying out",
+      "Catching the hydrant",
+      "Stretching the line"
+    ],
+    correctAnswer: 2,
+    explanation: "Catching the hydrant ensures a consistent water supply."
+  },
+  {
+    id: 84,
+    question: "What is a primary sign that a fire is ventilation-limited?",
+    options: [
+      "Rapid flame spread",
+      "Thick, black smoke",
+      "Slow flame growth",
+      "High-pressure gas release"
+    ],
+    correctAnswer: 1,
+    explanation: "Thick, black smoke indicates a lack of ventilation."
+  },
+  {
+    id: 85,
+    question: "What should firefighters wear when working around moving traffic at an incident scene?",
+    options: [
+      "Turnout gear only",
+      "High-visibility vest over turnout gear",
+      "Plain clothes",
+      "Fire-resistant hoodie"
+    ],
+    correctAnswer: 1,
+    explanation: "High-visibility vests increase visibility and reduce risk of accidents."
+  },
+  {
+    id: 86,
+    question: "What type of stream should be used for cooling during an interior attack?",
+    options: [
+      "Fog stream",
+      "Straight stream",
+      "Broken stream",
+      "Direct stream"
+    ],
+    correctAnswer: 0,
+    explanation: "A fog stream absorbs more heat and cools the atmosphere."
+  },
+  {
+    id: 87,
+    question: "What symbol and color are used for Class B extinguishers?",
+    options: [
+      "Green triangle",
+      "Blue circle",
+      "Red square",
+      "Yellow star"
+    ],
+    correctAnswer: 2,
+    explanation: "Class B extinguishers are for flammable liquids and are marked with a red square."
+  },
+  {
+    id: 88,
+    question: "When using a ground ladder, what is the proper climbing angle?",
+    options: [
+      "45 degrees",
+      "60 degrees",
+      "75 degrees",
+      "90 degrees"
+    ],
+    correctAnswer: 2,
+    explanation: "A 75-degree angle provides stability and ease of climbing."
+  },
+  {
+    id: 89,
+    question: "What is the primary purpose of a firefighter's PASS device?",
+    options: [
+      "To identify personnel",
+      "To provide breathing assistance",
+      "To alert others if the firefighter is motionless",
+      "To control the air supply"
+    ],
+    correctAnswer: 2,
+    explanation: "A PASS device emits an alarm if the firefighter stops moving."
+  },
+  {
+    id: 90,
+    question: "What type of hose roll allows for quick deployment of a charged line?",
+    options: [
+      "Flat roll",
+      "Donut roll",
+      "Dutchman roll",
+      "Storage roll"
+    ],
+    correctAnswer: 1,
+    explanation: "The donut roll allows for quick deployment and easy attachment to a water source."
+  },
+  {
+    id: 91,
+    question: "What type of roof cut is most effective for vertical ventilation?",
+    options: [
+      "Triangle cut",
+      "X cut",
+      "Trench cut",
+      "Louver cut"
+    ],
+    correctAnswer: 3,
+    explanation: "A louver cut allows for efficient removal of heat and smoke."
+  },
+  {
+    id: 92,
+    question: "What is the most dangerous stage of fire development?",
+    options: [
+      "Incipient stage",
+      "Growth stage",
+      "Fully developed stage",
+      "Decay stage"
+    ],
+    correctAnswer: 2,
+    explanation: "The fully developed stage produces the highest heat and greatest danger."
+  },
+  {
+    id: 93,
+    question: "What is the purpose of a secondary search?",
+    options: [
+      "Confirm that no victims are present",
+      "Locate additional fire sources",
+      "Establish the fire's origin",
+      "Check for structural integrity"
+    ],
+    correctAnswer: 0,
+    explanation: "A secondary search ensures that no victims were missed during the primary search."
+  },
+  {
+    id: 94,
+    question: "What is the minimum staffing required for an interior fire attack according to NFPA standards?",
+    options: [
+      "Two firefighters",
+      "Three firefighters",
+      "Four firefighters",
+      "Five firefighters"
+    ],
+    correctAnswer: 2,
+    explanation: "NFPA standards require a minimum of four personnel for safe interior attacks."
+  },
+  {
+    id: 95,
+    question: "What is a major disadvantage of using a fog stream in an interior attack?",
+    options: [
+      "Reduces visibility",
+      "Increases water consumption",
+      "Slower knockdown",
+      "Higher pressure requirements"
+    ],
+    correctAnswer: 0,
+    explanation: "Fog streams can generate steam, reducing visibility and creating a dangerous environment."
+  },
+  {
+    id: 96,
+    question: "What type of ladder is best for accessing roofs or windows from the ground?",
+    options: [
+      "Folding ladder",
+      "Extension ladder",
+      "Attic ladder",
+      "Step ladder"
+    ],
+    correctAnswer: 1,
+    explanation: "Extension ladders provide adjustable reach for various heights."
+  },
+  {
+    id: 97,
+    question: "What is the purpose of a personnel accountability system?",
+    options: [
+      "Track firefighter location and status",
+      "Record fire investigation data",
+      "Assign fireground responsibilities",
+      "Provide evacuation instructions"
+    ],
+    correctAnswer: 0,
+    explanation: "Accountability systems help track firefighter location and ensure safety."
+  },
+  {
+    id: 98,
+    question: "What are the three components of the fire triangle?",
+    options: [
+      "Heat, smoke, and oxygen",
+      "Fuel, heat, and oxygen",
+      "Fuel, smoke, and carbon dioxide",
+      "Heat, fuel, and water"
+    ],
+    correctAnswer: 1,
+    explanation: "Removing any side of the fire triangle will extinguish the fire."
+  },
+  {
+    id: 99,
+    question: "What is the primary advantage of a fog nozzle over a smooth-bore nozzle?",
+    options: [
+      "Higher flow rate",
+      "Greater reach",
+      "Better heat absorption",
+      "Lower pressure"
+    ],
+    correctAnswer: 2,
+    explanation: "Fog nozzles create a fine mist that absorbs more heat and cools the fire faster."
+  },
+  {
+    id: 100,
+    question: "What is the term for water that remains in the pump after it is shut off?",
+    options: [
+      "Draft",
+      "Static pressure",
+      "Residual pressure",
+      "Backflow"
+    ],
+    correctAnswer: 2,
+    explanation: "Residual pressure refers to the water left in the pump and hose system after use."
+  }
+];
+
+export const levelIIQuizData: Question[] = [
+  {
+    id: 1,
+    question: "What should be done with flames from an LPG relief valve?",
+    options: [
+      "Extinguish with water",
+      "Extinguish with foam",
+      "Extinguish with fog streams",
+      "Do not extinguish"
+    ],
+    correctAnswer: 3,
+    explanation: "Extinguishing vent flames can lead to overpressure and explosions."
+  },
+  {
+    id: 2,
+    question: "What should rescuers do first when gaining access to a vehicle to assist a victim?",
+    options: [
+      "Begin extraction.",
+      "Place a backboard between the victim and the steering wheel.",
+      "Assess/protect the victim(s).",
+      "Remove broken glass."
+    ],
+    correctAnswer: 2,
+    explanation: "Before starting extraction, rescuers must assess the victim's condition and protect them from further harm."
+  },
+  {
+    id: 3,
+    question: "What is the primary function of the incident command post?",
+    options: [
+      "Identify the rehab area",
+      "Direct the incident operation",
+      "Meet with media personnel",
+      "Track units in staging"
+    ],
+    correctAnswer: 1,
+    explanation: "The command post is the central location for managing and directing operations."
+  },
+  {
+    id: 4,
+    question: "What should firefighters do with evidence at a fire scene before the investigator arrives?",
+    options: [
+      "Tag and photograph it",
+      "Protect and preserve it",
+      "Collect and package it",
+      "Isolate and remove it"
+    ],
+    correctAnswer: 1,
+    explanation: "Preserving evidence ensures the fire investigator can properly analyze it."
+  },
+  {
+    id: 5,
+    question: "What system ensures accountability of personnel at an incident?",
+    options: [
+      "Accountability",
+      "Chain of command",
+      "Unity of command",
+      "Span of control"
+    ],
+    correctAnswer: 0,
+    explanation: "Accountability ensures that all personnel are tracked during incidents."
+  },
+  {
+    id: 6,
+    question: "What is essential for the Incident Management System to work effectively?",
+    options: [
+      "Unique terminology",
+      "Mutual aid agreements",
+      "Involvement of a single agency",
+      "Incident Action Plans"
+    ],
+    correctAnswer: 3,
+    explanation: "Incident Action Plans outline the strategy and objectives for managing incidents."
+  },
+  {
+    id: 7,
+    question: "What is true about power equipment maintenance?",
+    options: [
+      "Firefighters should quickly repair broken equipment.",
+      "Routine inspection is unnecessary.",
+      "Inspect and document all preventive maintenance on equipment.",
+      "Fuels should not be stored with stabilizing solutions."
+    ],
+    correctAnswer: 2,
+    explanation: "Regular maintenance and documentation ensure equipment remains functional and safe."
+  },
+  {
+    id: 8,
+    question: "Which type of rescue operation typically requires shoring?",
+    options: [
+      "Cave rescue",
+      "High-angle rescue",
+      "Trench rescue",
+      "Wilderness search and rescue"
+    ],
+    correctAnswer: 2,
+    explanation: "Shoring supports trench walls to prevent collapse during rescue."
+  },
+  {
+    id: 9,
+    question: "How is the Incident Command System (ICS) defined?",
+    options: [
+      "A general plan for managing emergencies",
+      "A structured system for managing emergency incidents",
+      "A flexible and expanding incident structure",
+      "A single person handling the incident"
+    ],
+    correctAnswer: 1,
+    explanation: "ICS provides a standardized and organized approach to incident management."
+  },
+  {
+    id: 10,
+    question: "What is the most effective method to control a flammable liquid fire?",
+    options: [
+      "Foam",
+      "Large amounts of water",
+      "Letting the fire burn out",
+      "Unmanned nozzles"
+    ],
+    correctAnswer: 0,
+    explanation: "Foam creates a barrier that cuts off the fire's oxygen supply."
+  },
+  {
+    id: 11,
+    question: "How should the transfer of command be conducted?",
+    options: [
+      "Over the radio",
+      "Face-to-face",
+      "By cell phone",
+      "Early in the incident"
+    ],
+    correctAnswer: 1,
+    explanation: "Direct communication reduces the chance of miscommunication."
+  },
+  {
+    id: 12,
+    question: "What type of construction uses noncombustible materials but lacks fire resistance?",
+    options: [
+      "Type I",
+      "Type II",
+      "Type III",
+      "Type IV"
+    ],
+    correctAnswer: 1,
+    explanation: "Type II construction uses materials that won't burn but may not provide insulation from heat."
+  },
+  {
+    id: 13,
+    question: "What is the safest approach to a liquid petroleum gas (LPG) vehicle fire?",
+    options: [
+      "From the ends",
+      "From 15 meters away",
+      "At a 45-degree angle",
+      "At right angles"
+    ],
+    correctAnswer: 2,
+    explanation: "Angled approaches reduce risk from pressure-release explosions."
+  },
+  {
+    id: 14,
+    question: "What is a basic hydraulic tool used for vehicle rescue?",
+    options: [
+      "Come-along",
+      "Shears/cutters",
+      "Air impact wrench",
+      "Struts"
+    ],
+    correctAnswer: 1,
+    explanation: "Shears and cutters are used to cut through metal during vehicle rescues."
+  },
+  {
+    id: 15,
+    question: "After the fire investigator finishes collecting evidence, what is the next step?",
+    options: [
+      "Ventilation",
+      "Demobilization",
+      "Inventory",
+      "Overhaul"
+    ],
+    correctAnswer: 3,
+    explanation: "Overhaul ensures that any hidden fires are extinguished and the area is safe."
+  },
+  {
+    id: 16,
+    question: "What percentage of firefighting foam solutions is water?",
+    options: [
+      "80% to 84.9%",
+      "74% to 79.9%",
+      "94% to 99.9%",
+      "60% to 64.9%"
+    ],
+    correctAnswer: 2,
+    explanation: "High water content improves cooling and smothering capability."
+  },
+  {
+    id: 17,
+    question: "What is the last step after maintaining gas-powered equipment?",
+    options: [
+      "Document the work completed in a logbook.",
+      "Clean the work area.",
+      "Notify your officer that the work is done.",
+      "Contact the manufacturer if there's a problem."
+    ],
+    correctAnswer: 0,
+    explanation: "Keeping a record of maintenance ensures accountability and tracking."
+  },
+  {
+    id: 18,
+    question: "How should evidence be handled when removed from a fire scene?",
+    options: [
+      "Picked up with bare hands for better grip",
+      "Placed in large containers to off-gas",
+      "Soaked in water and sealed in buckets",
+      "Properly sealed, labeled, and preserved"
+    ],
+    correctAnswer: 3,
+    explanation: "Correct handling preserves the integrity of the evidence for investigation."
+  },
+  {
+    id: 19,
+    question: "What is the meaning of 'Unified Command' in the Incident Command System (ICS)?",
+    options: [
+      "Adapting to increasing complexity of incidents",
+      "Used when multiple agencies are involved in managing an incident",
+      "Dividing an incident into smaller sections",
+      "Each person having a single supervisor"
+    ],
+    correctAnswer: 1,
+    explanation: "Unified Command allows agencies to work together under a single coordinated plan."
+  },
+  {
+    id: 20,
+    question: "Who holds overall responsibility for managing an incident under the Incident Management System?",
+    options: [
+      "Fire Chief",
+      "Planning Chief",
+      "Incident Commander",
+      "Operations Chief"
+    ],
+    correctAnswer: 2,
+    explanation: "The Incident Commander is responsible for overall strategy and decision-making."
+  },
+  {
+    id: 21,
+    question: "What is the process of creating foam bubbles in firefighting foam called?",
+    options: [
+      "Proportioning",
+      "Aeration",
+      "Mixing",
+      "Blending"
+    ],
+    correctAnswer: 1,
+    explanation: "Aeration forms the foam structure that helps smother fires."
+  },
+  {
+    id: 22,
+    question: "How should a firefighter position themselves when advancing a hose into a fire?",
+    options: [
+      "Standing directly in front",
+      "Kneeling directly in front",
+      "Crouching or kneeling to the side",
+      "Lying flat"
+    ],
+    correctAnswer: 2,
+    explanation: "Kneeling to the side helps avoid direct heat and falling debris."
+  },
+  {
+    id: 23,
+    question: "What is the preferred entry point into a vehicle during rescue?",
+    options: [
+      "Windshield",
+      "Doors",
+      "Roof",
+      "Trunk"
+    ],
+    correctAnswer: 1,
+    explanation: "Doors are the safest and most stable entry point for rescue operations."
+  },
+  {
+    id: 24,
+    question: "When laying out a fire hose for testing, what is the maximum recommended test length?",
+    options: [
+      "120 m (400 ft)",
+      "90 m (300 ft)",
+      "150 m (500 ft)",
+      "300 m (1,000 ft)"
+    ],
+    correctAnswer: 1,
+    explanation: "Keeping test lengths under 300 feet ensures consistency and safety during testing."
+  },
+  {
+    id: 25,
+    question: "What type of electrical device is used when multiple connections are needed?",
+    options: [
+      "Cords",
+      "Junction boxes",
+      "Inverters",
+      "Power take-offs"
+    ],
+    correctAnswer: 1,
+    explanation: "Junction boxes safely handle multiple electrical connections."
+  },
+  {
+    id: 26,
+    question: "How many pneumatic airbags can be safely stacked during a lift?",
+    options: [
+      "Two",
+      "Three",
+      "Four",
+      "Five"
+    ],
+    correctAnswer: 0,
+    explanation: "Stacking more than two airbags can cause instability and increase the risk of failure."
+  },
+  {
+    id: 27,
+    question: "What should firefighters assess before entering a burning building?",
+    options: [
+      "Location of the safety officer",
+      "Smoke conditions and fire behavior",
+      "Staging location",
+      "Establishing rehab"
+    ],
+    correctAnswer: 1,
+    explanation: "Understanding smoke and fire behavior helps anticipate dangers."
+  },
+  {
+    id: 28,
+    question: "What observation can help identify the cause of a fire?",
+    options: [
+      "Closed windows on a cold day",
+      "Evidence of forced entry before the fire",
+      "People observing the fire",
+      "Number of bystanders present"
+    ],
+    correctAnswer: 1,
+    explanation: "Unusual signs of entry may suggest arson or other suspicious activity."
+  },
+  {
+    id: 29,
+    question: "What type of alarm-initiating device contains radioactive material in its sensing chamber?",
+    options: [
+      "Water detector",
+      "Photoelectric detector",
+      "Flame detector",
+      "Ionization detector"
+    ],
+    correctAnswer: 3,
+    explanation: "Ionization detectors use a small amount of radioactive material to detect smoke particles."
+  },
+  {
+    id: 30,
+    question: "What is the most effective way to protect life and property from fire?",
+    options: [
+      "Prevention",
+      "Improved technology",
+      "Increasing inspections",
+      "Shorter response times"
+    ],
+    correctAnswer: 0,
+    explanation: "Fire prevention reduces the likelihood of fires and the potential damage they can cause."
+  },
+  {
+    id: 31,
+    question: "What should be explained first during a fire station tour?",
+    options: [
+      "Costs associated with emergency services.",
+      "Number of firefighters on duty.",
+      "Number of daily calls received.",
+      "What happens if an emergency occurs during the tour."
+    ],
+    correctAnswer: 3,
+    explanation: "Visitors should know what to do if an emergency happens during the tour."
+  },
+  {
+    id: 32,
+    question: "What is the meaning of 'Unity of Command' within the Incident Management System (IMS)?",
+    options: [
+      "Ability to grow and adapt to complex incidents",
+      "Number of subordinates assigned to a supervisor",
+      "Each person reporting to one direct supervisor",
+      "Used when multiple agencies have jurisdiction over an incident"
+    ],
+    correctAnswer: 2,
+    explanation: "Unity of Command ensures clear leadership by assigning each person to one supervisor."
+  },
+  {
+    id: 33,
+    question: "What is the correct action after closing a valve on a flammable gas container?",
+    options: [
+      "Shut off nozzles and leave",
+      "Continue applying water while exiting",
+      "Shut off water and leave",
+      "Monitor the area for reignition"
+    ],
+    correctAnswer: 1,
+    explanation: "Cooling prevents the container from reheating and reigniting."
+  },
+  {
+    id: 34,
+    question: "What should be the first consideration when coordinating an interior attack?",
+    options: [
+      "Water damage",
+      "Controlling utilities",
+      "Salvage operations",
+      "Risk of flare-ups"
+    ],
+    correctAnswer: 1,
+    explanation: "Shutting off utilities reduces the risk of gas leaks and electrical hazards."
+  },
+  {
+    id: 35,
+    question: "What is true about using fog streams in an interior attack?",
+    options: [
+      "Can be adjusted to a solid stream",
+      "Moves large volumes of air",
+      "Not affected by wind",
+      "Effective at absorbing heat"
+    ],
+    correctAnswer: 3,
+    explanation: "Fog streams increase surface area, improving cooling and heat absorption."
+  },
+  {
+    id: 36,
+    question: "What is the proper order of entry to gain access to a vehicle's interior during a rescue?",
+    options: [
+      "Doors, roof, windows",
+      "Doors, windows, body",
+      "Windows, trunk, floor",
+      "Roof, doors, trunk"
+    ],
+    correctAnswer: 1,
+    explanation: "Doors and windows are typically the easiest and quickest points of access, followed by the body if needed."
+  },
+  {
+    id: 37,
+    question: "How should fuel tanks on power tools be left when not in use?",
+    options: [
+      "Full",
+      "Approximately half full",
+      "Almost empty",
+      "Absolutely empty and dry"
+    ],
+    correctAnswer: 0,
+    explanation: "Keeping fuel tanks full prevents moisture buildup and internal corrosion."
+  },
+  {
+    id: 38,
+    question: "What is the first step when cutting a laminated windshield during a rescue?",
+    options: [
+      "Cut across the bottom",
+      "Cut across the top",
+      "Protect the victim from glass fragments",
+      "Cut a starter hole"
+    ],
+    correctAnswer: 2,
+    explanation: "Protecting the victim ensures safety from flying glass."
+  },
+  {
+    id: 39,
+    question: "What type of detector is most effective for sensing visible smoke?",
+    options: [
+      "Photoelectric",
+      "Ionization",
+      "Ultraviolet",
+      "Infrared"
+    ],
+    correctAnswer: 0,
+    explanation: "Photoelectric detectors are better at detecting larger, visible smoke particles from smoldering fires."
+  },
+  {
+    id: 40,
+    question: "What hazard is associated with Type V construction fires?",
+    options: [
+      "Steel components shortening",
+      "Concrete breakdown from heat",
+      "Extensive spalling",
+      "High potential for fire spread within the structure"
+    ],
+    correctAnswer: 3,
+    explanation: "Type V construction uses lightweight materials that burn quickly, allowing for rapid fire spread."
+  },
+  {
+    id: 41,
+    question: "What term describes situations where the victim has been submerged underwater for an extended period with death likely?",
+    options: [
+      "Saves",
+      "Extrications",
+      "Rescues",
+      "Recoveries"
+    ],
+    correctAnswer: 3,
+    explanation: "A recovery is performed when there is little or no chance of survival."
+  },
+  {
+    id: 42,
+    question: "What is the final step in conducting a home safety survey?",
+    options: [
+      "Issue code violations",
+      "Review the results of the survey with the homeowner",
+      "Notify your fire chief of code issues",
+      "Stress the importance of supporting the local fire department"
+    ],
+    correctAnswer: 1,
+    explanation: "Reviewing the results helps the homeowner understand safety improvements."
+  },
+  {
+    id: 43,
+    question: "What should rescuers do with an undeployed airbag during vehicle rescue?",
+    options: [
+      "Leave it untouched",
+      "Place a protective barrier over it",
+      "Cut the wiring",
+      "Inflate it manually"
+    ],
+    correctAnswer: 1,
+    explanation: "An undeployed airbag can activate suddenly, causing injury."
+  },
+  {
+    id: 44,
+    question: "What is the purpose of a standpipe system?",
+    options: [
+      "To automatically boost sprinkler pressure",
+      "To reduce pressure at non-operating sprinkler heads",
+      "To deliver water to each floor of a building",
+      "To be used only with Class II standpipe operations"
+    ],
+    correctAnswer: 2,
+    explanation: "Standpipe systems provide firefighters with a reliable water source on upper floors."
+  },
+  {
+    id: 45,
+    question: "What building feature creates a major hazard during a fire?",
+    options: [
+      "Noncombustible materials",
+      "Trusses",
+      "Curtain walls",
+      "Nonbearing walls"
+    ],
+    correctAnswer: 1,
+    explanation: "Trusses are prone to collapse under heat and stress."
+  },
+  {
+    id: 46,
+    question: "What should be used along with rescue lift airbags during a vehicle rescue?",
+    options: [
+      "Cribbing",
+      "Hose tape",
+      "Block and tackle",
+      "Come-along"
+    ],
+    correctAnswer: 0,
+    explanation: "Cribbing stabilizes the vehicle and prevents shifting when airbags are used."
+  },
+  {
+    id: 47,
+    question: "What is an example of a powered hydraulic tool commonly used in rescue operations?",
+    options: [
+      "Strut",
+      "Hux bar",
+      "Extension adze",
+      "Spreader"
+    ],
+    correctAnswer: 3,
+    explanation: "Spreaders are widely used in vehicle extrication to create openings or remove obstacles."
+  },
+  {
+    id: 48,
+    question: "Which phase of vehicle rescue determines the overall plan?",
+    options: [
+      "Preparation",
+      "Disentanglement",
+      "Hazard control",
+      "Size-up"
+    ],
+    correctAnswer: 3,
+    explanation: "Size-up allows firefighters to assess the situation and plan accordingly."
+  },
+  {
+    id: 49,
+    question: "What is the primary goal of public fire safety education?",
+    options: [
+      "Wake people up to the legal consequences of having a fire.",
+      "Increase public support for the fire department.",
+      "Teach people how to react if a fire occurs.",
+      "Lower insurance rates."
+    ],
+    correctAnswer: 2,
+    explanation: "Fire safety education helps people understand how to respond quickly and effectively in case of a fire."
+  },
+  {
+    id: 50,
+    question: "What happens when a single truss member fails during a fire?",
+    options: [
+      "Only the failed truss collapses",
+      "The neighboring truss supports the load",
+      "The entire truss system is likely to collapse",
+      "Partial collapse is unlikely"
+    ],
+    correctAnswer: 2,
+    explanation: "Trusses are interconnected, so when one fails, the entire system is at risk of collapse."
+  },
+  {
+    id: 51,
+    question: "In mechanical ventilation, how should airflow be directed?",
+    options: [
+      "On the upward side",
+      "On the windward side",
+      "In the same direction as the wind",
+      "Toward master stream operations"
+    ],
+    correctAnswer: 2,
+    explanation: "Aligning ventilation with natural airflow increases efficiency and smoke removal."
+  },
+  {
+    id: 52,
+    question: "When should pressurized flammable liquid fires be extinguished?",
+    options: [
+      "Always",
+      "Only if the fuel source can be shut off",
+      "Only by trained specialists",
+      "Only if vapor density is above one"
+    ],
+    correctAnswer: 1,
+    explanation: "Extinguishing the fire before cutting off the fuel source can lead to reignition."
+  },
+  {
+    id: 53,
+    question: "What foam application technique is used to cover the surface of a burning liquid?",
+    options: [
+      "Roll-on technique",
+      "Sub-surface injection technique",
+      "Drizzle-on technique",
+      "Blitz technique"
+    ],
+    correctAnswer: 0,
+    explanation: "The roll-on method creates a protective layer that cuts off oxygen from the fire."
+  },
+  {
+    id: 54,
+    question: "What is the correct response if fire conditions suddenly worsen during an interior attack?",
+    options: [
+      "Contact the safety officer",
+      "Order the crew to withdraw",
+      "Notify the incident commander",
+      "Call for an accountability report"
+    ],
+    correctAnswer: 1,
+    explanation: "Rapidly worsening conditions require an immediate withdrawal to avoid injury."
+  },
+  {
+    id: 55,
+    question: "How should a firefighter handle a fire hose during a high-rise fire?",
+    options: [
+      "Extend directly from the street connection",
+      "Use the building's standpipe system",
+      "Stretch from the nearest hydrant",
+      "Use an aerial ladder"
+    ],
+    correctAnswer: 1,
+    explanation: "High-rise fires require the use of a standpipe system for quick access to water."
+  },
+  {
+    id: 56,
+    question: "What is the last step after testing a fire hose?",
+    options: [
+      "Clean the hose",
+      "Record the test in the logbook",
+      "Dry the hose",
+      "Remove the couplings"
+    ],
+    correctAnswer: 1,
+    explanation: "Documenting the test ensures accountability and maintenance records."
+  },
+  {
+    id: 57,
+    question: "What type of foam nozzle is recommended for protein and fluoroprotein foams?",
+    options: [
+      "Air aspirating foam nozzles",
+      "Fog nozzle",
+      "High expansion nozzle",
+      "Cannot be used with Class A foam"
+    ],
+    correctAnswer: 0,
+    explanation: "Air aspirating nozzles produce the proper foam consistency."
+  },
+  {
+    id: 58,
+    question: "What is the purpose of the hot zone at an incident scene?",
+    options: [
+      "Incident command post",
+      "Apparatus staging area",
+      "Most dangerous area of the scene",
+      "Decontamination area"
+    ],
+    correctAnswer: 2,
+    explanation: "The hot zone is the most hazardous area and requires full protective equipment."
+  },
+  {
+    id: 59,
+    question: "What should be the first step when rescuing a trapped person from a vehicle?",
+    options: [
+      "Stabilize the vehicle",
+      "Tip it downward",
+      "Extract the person immediately",
+      "Leave it untouched"
+    ],
+    correctAnswer: 0,
+    explanation: "Stabilizing the vehicle prevents movement and additional injury."
+  },
+  {
+    id: 60,
+    question: "How should evidence be managed during overhaul?",
+    options: [
+      "Most evidence is found before overhaul",
+      "Firefighters and investigators work separately",
+      "Evidence is rarely damaged during overhaul",
+      "The investigator should inspect areas before overhaul"
+    ],
+    correctAnswer: 3,
+    explanation: "Allowing the investigator to inspect before overhaul prevents loss of valuable clues."
+  },
+  {
+    id: 61,
+    question: "What should firefighters do after reaching the proper test pressure for a fire hose?",
+    options: [
+      "Release pressure immediately",
+      "Hold the pressure for three to five minutes",
+      "Disconnect the hose",
+      "Check the couplings for leaks"
+    ],
+    correctAnswer: 1,
+    explanation: "Holding the pressure ensures the hose can withstand operating pressure."
+  },
+  {
+    id: 62,
+    question: "What is the recommended inspection interval for fire hoses?",
+    options: [
+      "Six months",
+      "Twelve months",
+      "Eighteen months",
+      "Twenty-four months"
+    ],
+    correctAnswer: 1,
+    explanation: "Fire hoses should be tested at least once a year to ensure safety and reliability."
+  },
+  {
+    id: 63,
+    question: "What should firefighters assess when using foam for a polar solvent fire?",
+    options: [
+      "Use only protein foam",
+      "Use foam compatible with water-based fires",
+      "Ensure proper mixing ratio",
+      "Use regular Class A foam"
+    ],
+    correctAnswer: 2,
+    explanation: "Proper mixing ensures foam effectiveness on polar solvents."
+  },
+  {
+    id: 64,
+    question: "What type of clothing is required for propane gas fires?",
+    options: [
+      "Full personal protective equipment (PPE)",
+      "Level A clothing",
+      "Level B clothing",
+      "Proximity protective clothing"
+    ],
+    correctAnswer: 0,
+    explanation: "Full PPE protects firefighters from heat and toxic fumes."
+  },
+  {
+    id: 65,
+    question: "What is the correct action after a BLEVE (Boiling Liquid Expanding Vapor Explosion)?",
+    options: [
+      "Continue firefighting operations",
+      "Evacuate the area immediately",
+      "Investigate the cause",
+      "Resume foam application"
+    ],
+    correctAnswer: 1,
+    explanation: "A BLEVE creates extreme hazards, requiring immediate evacuation."
+  },
+  {
+    id: 66,
+    question: "What is the most effective method for extinguishing a fire involving an LPG tanker vent?",
+    options: [
+      "Direct streams at the relief valve",
+      "Aim at the ends",
+      "Approach at a 30-degree angle",
+      "Avoid extinguishing vent flames"
+    ],
+    correctAnswer: 3,
+    explanation: "Venting relieves pressure and prevents explosions."
+  },
+  {
+    id: 67,
+    question: "What is the least effective method to detect hidden fires?",
+    options: [
+      "Looking for discoloration",
+      "Feeling the area",
+      "Listening for popping sounds",
+      "Smelling for smoke"
+    ],
+    correctAnswer: 3,
+    explanation: "Smoke can travel far from the fire source, making smell unreliable for pinpointing hidden fires."
+  },
+  {
+    id: 68,
+    question: "What is the proper response to a suspected gas leak in a building?",
+    options: [
+      "Open all windows",
+      "Shut off electrical power",
+      "Turn off gas appliances",
+      "Evacuate immediately"
+    ],
+    correctAnswer: 3,
+    explanation: "Evacuating removes people from danger and prevents ignition."
+  },
+  {
+    id: 69,
+    question: "What system provides firefighters with a reliable water source on upper floors?",
+    options: [
+      "Hydrant system",
+      "Automatic sprinkler system",
+      "Standpipe system",
+      "Water shuttle"
+    ],
+    correctAnswer: 2,
+    explanation: "Standpipe systems provide water directly to each floor."
+  },
+  {
+    id: 70,
+    question: "What gas detector is commonly used in homes?",
+    options: [
+      "Oxygen",
+      "Carbon monoxide",
+      "Methane",
+      "Radon"
+    ],
+    correctAnswer: 1,
+    explanation: "Carbon monoxide detectors help protect against this colorless, odorless gas."
+  },
+  {
+    id: 71,
+    question: "What is the first step to follow when conducting a fire station tour?",
+    options: [
+      "Follow department policy for conducting the tour.",
+      "Base the tour on the visitor's interests.",
+      "Let visitors decide what they want to see.",
+      "Limit the time based on crew availability."
+    ],
+    correctAnswer: 0,
+    explanation: "Following department guidelines ensures that all key points are covered during the tour."
+  },
+  {
+    id: 72,
+    question: "Which fire safety program is intended for young children?",
+    options: [
+      "Stay Away From Hot Things",
+      "Change Your Clock – Change Your Battery",
+      "Fire Safety for Babysitters",
+      "Home Inspections"
+    ],
+    correctAnswer: 0,
+    explanation: "This program teaches young children about the dangers of fire and how to stay safe."
+  },
+  {
+    id: 73,
+    question: "Who should fire departments educate to recognize potential hazards?",
+    options: [
+      "Preschoolers",
+      "The elderly",
+      "Adults",
+      "Citizens of all ages"
+    ],
+    correctAnswer: 3,
+    explanation: "Fire safety education should target people of all ages to increase overall safety awareness."
+  },
+  {
+    id: 74,
+    question: "What is the simplest and most effective way to protect life and property from fire?",
+    options: [
+      "Prevention",
+      "Improved technology",
+      "Increasing inspections",
+      "Shorter response times"
+    ],
+    correctAnswer: 0,
+    explanation: "Fire prevention reduces the likelihood of fires and the potential damage they can cause."
+  },
+  {
+    id: 75,
+    question: "What should firefighters do with smoke alarms during a residential fire safety survey?",
+    options: [
+      "Nothing should be done.",
+      "If smoke detectors are observed, firefighters should comment favorably.",
+      "One detector at random should be checked.",
+      "Each one should be tested."
+    ],
+    correctAnswer: 3,
+    explanation: "Testing each smoke alarm ensures they are functional and ready to provide early warnings."
+  },
+  {
+    id: 76,
+    question: "What type of detector is most effective for sensing visible smoke?",
+    options: [
+      "Photoelectric",
+      "Ionization",
+      "Ultraviolet",
+      "Infrared"
+    ],
+    correctAnswer: 0,
+    explanation: "Photoelectric detectors are better at detecting larger, visible smoke particles from smoldering fires."
+  },
+  {
+    id: 77,
+    question: "What type of alarm component is manually activated?",
+    options: [
+      "Thermally sensitive device",
+      "Flame detector",
+      "Water flow detector",
+      "Pull station"
+    ],
+    correctAnswer: 3,
+    explanation: "Pull stations allow building occupants to manually trigger the fire alarm in case of an emergency."
+  },
+  {
+    id: 78,
+    question: "What observation can help determine the cause of a fire?",
+    options: [
+      "How the fire reacts to water",
+      "People leaving the scene",
+      "Hindrances to firefighting",
+      "Number of observers"
+    ],
+    correctAnswer: 0,
+    explanation: "Water reaction can reveal the type of material burning."
+  },
+  {
+    id: 79,
+    question: "What is the first step when deactivating a vehicle airbag?",
+    options: [
+      "Ground the solenoid.",
+      "Remove the cartridge.",
+      "Unscrew the primer.",
+      "Disconnect the battery."
+    ],
+    correctAnswer: 3,
+    explanation: "Disconnecting the battery prevents accidental airbag deployment during rescue."
+  },
+  {
+    id: 80,
+    question: "What term describes situations where the victim has been submerged underwater for an extended period with death likely?",
+    options: [
+      "Saves",
+      "Extrications",
+      "Rescues",
+      "Recoveries"
+    ],
+    correctAnswer: 3,
+    explanation: "A recovery is performed when there is little or no chance of survival."
+  },
+  {
+    id: 81,
+    question: "What should firefighters do if water is unavailable for an LPG tanker fire?",
+    options: [
+      "Use handlines",
+      "Use aerial nozzles",
+      "Withdraw immediately",
+      "Use fog streams"
+    ],
+    correctAnswer: 2,
+    explanation: "Without sufficient cooling, an LPG fire becomes too dangerous to manage."
+  },
+  {
+    id: 82,
+    question: "What building feature creates a major hazard during a fire?",
+    options: [
+      "Noncombustible materials",
+      "Trusses",
+      "Curtain walls",
+      "Nonbearing walls"
+    ],
+    correctAnswer: 1,
+    explanation: "Trusses are prone to collapse under heat and stress."
+  },
+  {
+    id: 83,
+    question: "What happens when a single truss member fails during a fire?",
+    options: [
+      "Only the failed truss collapses",
+      "The neighboring truss supports the load",
+      "The entire truss system is likely to collapse",
+      "Partial collapse is unlikely"
+    ],
+    correctAnswer: 2,
+    explanation: "Trusses are interconnected, so when one fails, the entire system is at risk of collapse."
+  },
+  {
+    id: 84,
+    question: "What is the correct order for gaining access to a vehicle's interior during a rescue?",
+    options: [
+      "Doors, roof, windows",
+      "Doors, windows, body",
+      "Windows, trunk, floor",
+      "Roof, doors, trunk"
+    ],
+    correctAnswer: 1,
+    explanation: "Doors and windows are typically the easiest and quickest points of access, followed by the body if needed."
+  },
+  {
+    id: 85,
+    question: "What is the last step after maintaining gas-powered equipment?",
+    options: [
+      "Document the work completed in a logbook.",
+      "Clean the work area.",
+      "Notify your officer that the work is done.",
+      "Contact the manufacturer if there's a problem."
+    ],
+    correctAnswer: 0,
+    explanation: "Keeping a record of maintenance ensures accountability and tracking."
+  },
+  {
+    id: 86,
+    question: "What type of construction uses noncombustible materials but lacks fire resistance?",
+    options: [
+      "Type I",
+      "Type II",
+      "Type III",
+      "Type IV"
+    ],
+    correctAnswer: 1,
+    explanation: "Type II construction uses materials that won't burn but may not provide insulation from heat."
+  },
+  {
+    id: 87,
+    question: "What should be the first consideration when coordinating an interior attack?",
+    options: [
+      "Water damage",
+      "Controlling utilities",
+      "Salvage operations",
+      "Risk of flare-ups"
+    ],
+    correctAnswer: 1,
+    explanation: "Shutting off utilities reduces the risk of gas leaks and electrical hazards."
+  },
+  {
+    id: 88,
+    question: "What type of protective clothing is required for propane gas fires?",
+    options: [
+      "Full personal protective equipment (PPE)",
+      "Level A clothing",
+      "Level B clothing",
+      "Proximity protective clothing"
+    ],
+    correctAnswer: 0,
+    explanation: "Full PPE protects firefighters from heat and toxic fumes."
+  },
+  {
+    id: 89,
+    question: "What type of electrical device is used when multiple connections are needed?",
+    options: [
+      "Cords",
+      "Junction boxes",
+      "Inverters",
+      "Power take-offs"
+    ],
+    correctAnswer: 1,
+    explanation: "Junction boxes safely handle multiple electrical connections."
+  },
+  {
+    id: 90,
+    question: "What is the proper response to a suspected gas leak in a building?",
+    options: [
+      "Open all windows",
+      "Shut off electrical power",
+      "Turn off gas appliances",
+      "Evacuate immediately"
+    ],
+    correctAnswer: 3,
+    explanation: "Evacuating removes people from danger and prevents ignition."
+  },
+  {
+    id: 91,
+    question: "What is the safest approach to a liquid petroleum gas (LPG) vehicle fire?",
+    options: [
+      "From the ends",
+      "From 15 meters away",
+      "At a 45-degree angle",
+      "At right angles"
+    ],
+    correctAnswer: 2,
+    explanation: "Angled approaches reduce risk from pressure-release explosions."
+  },
+  {
+    id: 92,
+    question: "What should be done with flames from an LPG tanker vent?",
+    options: [
+      "Direct streams at the relief valve",
+      "Aim at the ends",
+      "Approach at a 30-degree angle",
+      "Avoid extinguishing vent flames"
+    ],
+    correctAnswer: 3,
+    explanation: "Venting relieves pressure and prevents explosions."
+  },
+  {
+    id: 93,
+    question: "What should be done after a BLEVE (Boiling Liquid Expanding Vapor Explosion)?",
+    options: [
+      "Continue firefighting operations",
+      "Evacuate the area immediately",
+      "Investigate the cause",
+      "Resume foam application"
+    ],
+    correctAnswer: 1,
+    explanation: "A BLEVE creates extreme hazards, requiring immediate evacuation."
+  },
+  {
+    id: 94,
+    question: "What should be done with evidence at a fire scene before the investigator arrives?",
+    options: [
+      "Tag and photograph it",
+      "Protect and preserve it",
+      "Collect and package it",
+      "Isolate and remove it"
+    ],
+    correctAnswer: 1,
+    explanation: "Preserving evidence ensures the fire investigator can properly analyze it."
+  },
+  {
+    id: 95,
+    question: "What is the proper action when fire conditions suddenly worsen during an interior attack?",
+    options: [
+      "Contact the safety officer",
+      "Order the crew to withdraw",
+      "Notify the incident commander",
+      "Call for an accountability report"
+    ],
+    correctAnswer: 1,
+    explanation: "Rapidly worsening conditions require an immediate withdrawal to avoid injury."
+  },
+  {
+    id: 96,
+    question: "What should firefighters do after reaching the proper test pressure for a fire hose?",
+    options: [
+      "Release pressure immediately",
+      "Hold the pressure for three to five minutes",
+      "Disconnect the hose",
+      "Check the couplings for leaks"
+    ],
+    correctAnswer: 1,
+    explanation: "Holding the pressure ensures the hose can withstand operating pressure."
+  },
+  {
+    id: 97,
+    question: "What should firefighters do with smoke alarms during a residential fire safety survey?",
+    options: [
+      "Nothing should be done.",
+      "If smoke detectors are observed, firefighters should comment favorably.",
+      "One detector at random should be checked.",
+      "Each one should be tested."
+    ],
+    correctAnswer: 3,
+    explanation: "Testing each smoke alarm ensures they are functional and ready to provide early warnings."
+  },
+  {
+    id: 98,
+    question: "What is the correct order for gaining access to a vehicle's interior during a rescue?",
+    options: [
+      "Doors, roof, windows",
+      "Doors, windows, body",
+      "Windows, trunk, floor",
+      "Roof, doors, trunk"
+    ],
+    correctAnswer: 1,
+    explanation: "Doors and windows are typically the easiest and quickest points of access, followed by the body if needed."
+  },
+  {
+    id: 99,
+    question: "What is the safest approach to a liquid petroleum gas (LPG) vehicle fire?",
+    options: [
+      "From the ends",
+      "From 15 meters away",
+      "At a 45-degree angle",
+      "At right angles"
+    ],
+    correctAnswer: 2,
+    explanation: "Angled approaches reduce risk from pressure-release explosions."
+  },
+  {
+    id: 100,
+    question: "What is the purpose of a standpipe system?",
+    options: [
+      "To automatically boost sprinkler pressure",
+      "To reduce pressure at non-operating sprinkler heads",
+      "To deliver water to each floor of a building",
+      "To be used only with Class II standpipe operations"
+    ],
+    correctAnswer: 2,
+    explanation: "Standpipe systems provide firefighters with a reliable water source on upper floors."
+  }
+];
