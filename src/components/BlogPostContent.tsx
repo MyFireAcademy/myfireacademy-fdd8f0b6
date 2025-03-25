@@ -1,32 +1,16 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react';
-import { 
-  Carousel, 
-  CarouselContent, 
-  CarouselItem, 
-  CarouselNext, 
-  CarouselPrevious 
-} from "@/components/ui/carousel";
 
 // Import blog data from Blog.tsx
 import { blogPosts } from '@/pages/Blog';
 
 const BlogPostContent = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [activeImage, setActiveImage] = useState(0);
   
   // Find the blog post with the matching slug
   const post = blogPosts.find(post => post.slug === slug);
-  
-  const firefighterImages = [
-    '/lovable-uploads/bb36f607-2c4e-46b8-9cf7-8e211bf31069.png',
-    '/lovable-uploads/431d2eec-3a6d-49ca-9ffd-7a1644a61b77.png',
-    '/lovable-uploads/b9db5a04-0eeb-4a39-afa6-65afb90ab3fe.png',
-    '/lovable-uploads/59c2e51c-399d-401e-85b6-36541a4c2d86.png',
-    '/lovable-uploads/72ad512a-7463-4e9f-8ee6-17b7dccf0fec.png'
-  ];
   
   useEffect(() => {
     // Scroll to top when the component mounts
@@ -54,22 +38,12 @@ const BlogPostContent = () => {
     );
   }
   
-  // Function to handle image change - this connects the dot navigation to the carousel
-  const handleCarouselChange = (index: number) => {
-    setActiveImage(index);
-    const carouselContainer = document.querySelector('.embla__container');
-    if (carouselContainer) {
-      const items = carouselContainer.querySelectorAll('.embla__slide');
-      items[index]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
-  };
-  
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Banner - Now uses the first uploaded image as the hero image */}
+      {/* Hero Banner */}
       <div 
         className="w-full h-[40vh] bg-cover bg-center relative"
-        style={{ backgroundImage: `url(${firefighterImages[0]})` }}
+        style={{ backgroundImage: `url(${post.image})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-navy-900/70 to-navy-900/40 flex items-center justify-center">
           <div className="container mx-auto px-6 text-center">
@@ -107,52 +81,6 @@ const BlogPostContent = () => {
             <ArrowLeft size={16} className="mr-2" />
             Back to all blog posts
           </Link>
-          
-          {/* Image Carousel */}
-          <div className="my-8 bg-navy-50 p-4 rounded-lg">
-            <h3 className="text-xl font-semibold text-navy-900 mb-4">Firefighter Training Gallery</h3>
-            <Carousel 
-              className="relative mx-auto w-full max-w-2xl"
-              opts={{
-                loop: true,
-                align: "center"
-              }}
-              onSelect={(api) => {
-                if (api) {
-                  setActiveImage(api.selectedScrollSnap());
-                }
-              }}
-            >
-              <CarouselContent>
-                {firefighterImages.map((image, index) => (
-                  <CarouselItem key={index}>
-                    <div className="aspect-video relative overflow-hidden rounded-lg">
-                      <img 
-                        src={image} 
-                        alt={`Firefighter training image ${index + 1}`} 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="left-2" />
-              <CarouselNext className="right-2" />
-            </Carousel>
-            <div className="mt-4 flex justify-center gap-1.5">
-              {firefighterImages.map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  className={`w-2.5 h-2.5 rounded-full ${activeImage === index ? 'bg-fire-600' : 'bg-navy-300'}`}
-                  onClick={() => handleCarouselChange(index)}
-                />
-              ))}
-            </div>
-            <p className="text-sm text-navy-600 text-center mt-4">
-              Our firefighter training program includes hands-on experience with equipment, ladder operations, and classroom instruction.
-            </p>
-          </div>
           
           {/* Content */}
           <div 
