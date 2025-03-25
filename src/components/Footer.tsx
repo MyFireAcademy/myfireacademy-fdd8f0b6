@@ -58,12 +58,12 @@ const Footer = () => {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold mb-4">Contact</h3>
+              <h3 className="text-lg font-semibold mb-4">Resources</h3>
               <ul className="space-y-3">
-                <li className="text-gray-400">
-                  <a href="mailto:MyFireAcademy@gmail.com" className="hover:text-white transition-colors">
-                    Email Us
-                  </a>
+                <li>
+                  <Link to="/new-to-firefighting" className="text-gray-400 hover:text-white transition-colors">
+                    New To Firefighting
+                  </Link>
                 </li>
                 <li>
                   <Link to="/faq" className="text-gray-400 hover:text-white transition-colors">
@@ -71,8 +71,8 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                    Support
+                  <a href="mailto:MyFireAcademy@gmail.com" className="text-gray-400 hover:text-white transition-colors">
+                    Contact Us
                   </a>
                 </li>
               </ul>
