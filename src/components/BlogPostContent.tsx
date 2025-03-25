@@ -1,16 +1,32 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselNext, 
+  CarouselPrevious 
+} from "@/components/ui/carousel";
 
 // Import blog data from Blog.tsx
 import { blogPosts } from '@/pages/Blog';
 
 const BlogPostContent = () => {
   const { slug } = useParams<{ slug: string }>();
+  const [activeImage, setActiveImage] = useState(0);
   
   // Find the blog post with the matching slug
   const post = blogPosts.find(post => post.slug === slug);
+  
+  const firefighterImages = [
+    '/lovable-uploads/bb36f607-2c4e-46b8-9cf7-8e211bf31069.png',
+    '/lovable-uploads/431d2eec-3a6d-49ca-9ffd-7a1644a61b77.png',
+    '/lovable-uploads/b9db5a04-0eeb-4a39-afa6-65afb90ab3fe.png',
+    '/lovable-uploads/59c2e51c-399d-401e-85b6-36541a4c2d86.png',
+    '/lovable-uploads/72ad512a-7463-4e9f-8ee6-17b7dccf0fec.png'
+  ];
   
   useEffect(() => {
     // Scroll to top when the component mounts
@@ -81,6 +97,41 @@ const BlogPostContent = () => {
             <ArrowLeft size={16} className="mr-2" />
             Back to all blog posts
           </Link>
+          
+          {/* Image Carousel */}
+          <div className="my-8 bg-navy-50 p-4 rounded-lg">
+            <h3 className="text-xl font-semibold text-navy-900 mb-4">Firefighter Training Gallery</h3>
+            <Carousel className="relative mx-auto w-full max-w-2xl">
+              <CarouselContent>
+                {firefighterImages.map((image, index) => (
+                  <CarouselItem key={index}>
+                    <div className="aspect-video relative overflow-hidden rounded-lg">
+                      <img 
+                        src={image} 
+                        alt={`Firefighter training image ${index + 1}`} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-2" />
+              <CarouselNext className="right-2" />
+            </Carousel>
+            <div className="mt-4 flex justify-center gap-1.5">
+              {firefighterImages.map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  className={`w-2.5 h-2.5 rounded-full ${activeImage === index ? 'bg-fire-600' : 'bg-navy-300'}`}
+                  onClick={() => setActiveImage(index)}
+                />
+              ))}
+            </div>
+            <p className="text-sm text-navy-600 text-center mt-4">
+              Our firefighter training program includes hands-on experience with equipment, ladder operations, and classroom instruction.
+            </p>
+          </div>
           
           {/* Content */}
           <div 
