@@ -40,8 +40,8 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-12">
-            <Link to="/#features" className="text-navy-800 hover:text-fire-600 transition-colors font-medium ml-6">
+          <div className="hidden md:flex items-center space-x-8">
+            <Link to="/#features" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               Features
             </Link>
             <Link to="/new-to-firefighting" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
@@ -50,7 +50,7 @@ const Navbar = () => {
             <Link to="/blog" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               Blog
             </Link>
-            <button onClick={handleBuyNowClick} className="btn-primary animate-pulse-soft">
+            <button onClick={handleBuyNowClick} className="btn-primary animate-pulse-soft ml-2">
               Buy Now
             </button>
           </div>
