@@ -269,10 +269,10 @@ const NewToFirefighting = () => {
                 >
                   <Card className="w-full border border-gray-200 hover:shadow-md transition-shadow">
                     <CollapsibleTrigger className="w-full text-left">
-                      <CardHeader className="bg-navy-50 pb-3 cursor-pointer">
+                      <CardHeader className="bg-fire-50 pb-3 cursor-pointer">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
-                            <Lightbulb className="text-navy-600 mr-3" size={24} />
+                            <Lightbulb className="text-fire-600 mr-3" size={24} />
                             <CardTitle className="text-xl font-semibold text-navy-900">Mental Toughness & Resilience</CardTitle>
                           </div>
                           <ChevronDown className={`h-5 w-5 text-navy-700 transition-transform duration-200 ${openSections['mental'] ? 'rotate-180' : ''}`} />
