@@ -48,7 +48,7 @@ const Hero = () => {
             <div className="absolute inset-0 z-20 flex items-center justify-center">
               <h3 className="text-white text-xl md:text-3xl font-medium">Your Path to Firefighter Certification</h3>
             </div>
-            <div className="absolute inset-0 bg-[url('/lovable-uploads/08275796-0357-455b-af70-a8c871f52056.png')] bg-cover bg-center"></div>
+            <div className="absolute inset-0 bg-[url('/lovable-uploads/c6105f04-eeef-4726-a51e-457abe9e7028.png')] bg-cover bg-center"></div>
           </div>
         </div>
       </div>
