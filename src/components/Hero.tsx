@@ -41,14 +41,15 @@ const Hero = () => {
           </div>
         </div>
         
-        {/* Abstract Hero Image or Element */}
+        {/* Firefighter Image */}
         <div className="max-w-5xl mx-auto mt-8 md:mt-16 relative animate-blur-in" style={{ animationDelay: '0.4s' }}>
           <div className="aspect-video relative overflow-hidden rounded-xl shadow-2xl">
-            <div className="absolute inset-0 bg-gradient-to-r from-fire-600/90 to-navy-800/90 z-10"></div>
-            <div className="absolute inset-0 z-20 flex items-center justify-center">
-              <h3 className="text-white text-xl md:text-3xl font-medium">Your Path to Firefighter Certification</h3>
-            </div>
-            <div className="absolute inset-0 bg-[url('/lovable-uploads/c6105f04-eeef-4726-a51e-457abe9e7028.png')] bg-cover bg-center"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-fire-600/10 to-navy-800/10 z-10"></div>
+            <img 
+              src="/lovable-uploads/b5593f85-f49e-4e23-8644-13aab092c078.png" 
+              alt="Firefighters in action" 
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       </div>
