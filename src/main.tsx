@@ -11,7 +11,8 @@ if (!rootElement) throw new Error("Root element not found");
 
 console.log("Root element found, rendering application");
 
-createRoot(rootElement).render(
+const root = createRoot(rootElement);
+root.render(
   <StrictMode>
     <App />
   </StrictMode>

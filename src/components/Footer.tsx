@@ -6,6 +6,8 @@ const Footer = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  console.log("Footer rendering, current path:", location.pathname);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -14,6 +16,8 @@ const Footer = () => {
   };
 
   const handleNavLinkClick = (e: React.MouseEvent, path: string) => {
+    console.log("Footer nav link clicked:", path);
+    
     // Only prevent default if it's a hash link on the same page
     if (path.includes('#')) {
       const isCurrentPage = path.startsWith('/') ? 
@@ -25,16 +29,18 @@ const Footer = () => {
         const id = path.split('#')[1];
         const element = document.getElementById(id);
         if (element) {
+          console.log(`Scrolling to element with id: ${id}`);
           element.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          console.log(`Element with id ${id} not found`);
         }
       } else {
         e.preventDefault();
+        console.log("Navigating to:", path);
         navigate(path);
       }
     }
   };
-
-  console.log("Footer rendering, current path:", location.pathname);
 
   return (
     <footer className="bg-navy-900 text-white pt-16 pb-8">

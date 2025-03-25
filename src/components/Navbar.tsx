@@ -9,7 +9,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  console.log("Current location:", location.pathname);
+  console.log("Navbar rendering on path:", location.pathname);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,11 +22,14 @@ const Navbar = () => {
 
   const handleBuyNowClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    console.log("Navigating to checkout");
     navigate('/checkout');
     setIsMenuOpen(false);
   };
 
   const handleNavLinkClick = (e: React.MouseEvent, path: string) => {
+    console.log("Nav link clicked:", path);
+    
     // Only prevent default if it's a hash link on the same page
     if (path.includes('#')) {
       const isCurrentPage = path.startsWith('/') ? 
@@ -38,16 +41,21 @@ const Navbar = () => {
         const id = path.split('#')[1];
         const element = document.getElementById(id);
         if (element) {
+          console.log("Scrolling to element:", id);
           element.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          console.log("Element not found:", id);
         }
         setIsMenuOpen(false);
       } else {
+        console.log("Navigating to different page with hash:", path);
         navigate(path);
         setIsMenuOpen(false);
       }
     } else {
       // For non-hash links, let React Router handle it
       if (path !== location.pathname) {
+        console.log("Navigating to:", path);
         navigate(path);
       }
       setIsMenuOpen(false);
@@ -66,6 +74,7 @@ const Navbar = () => {
           <Link 
             to="/" 
             className="text-2xl font-bold text-navy-900 flex items-center"
+            onClick={() => console.log("Logo clicked, navigating to /")}
           >
             <span className="text-fire-600">My</span>FireAcademy
           </Link>
@@ -81,7 +90,6 @@ const Navbar = () => {
             <Link 
               to="/new-to-firefighting" 
               className="text-navy-800 hover:text-fire-600 transition-colors font-medium"
-              onClick={() => console.log("Navigating to /new-to-firefighting")}
             >
               New To Firefighting
             </Link>
