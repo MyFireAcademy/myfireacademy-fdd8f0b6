@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -12,7 +11,7 @@ export const blogPosts = [
     excerpt: "Prepare effectively with these proven strategies that will help you ace your firefighter certification exam.",
     date: "June 12, 2023",
     readTime: "5 min read",
-    image: "/lovable-uploads/334fbf37-de19-4114-9cfe-7fee4a750f34.png",
+    image: "/lovable-uploads/c6d4c7ff-17e4-4775-91e6-1a9a055185e4.png",
     slug: "tips-for-passing-nfpa-exam",
     content: `
       <h2>Preparing for Success on Your NFPA 1001 Firefighter Exam</h2>
@@ -486,4 +485,3 @@ const Blog = () => {
 };
 
 export default Blog;
-
