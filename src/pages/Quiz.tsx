@@ -3,6 +3,8 @@ import { ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { levelIQuizData, levelIIQuizData, Question } from '@/lib/quiz-data';
 import { useToast } from '@/hooks/use-toast';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 type QuizLevel = 'level1' | 'level2';
 type LocationState = {
@@ -24,6 +26,7 @@ const Quiz = () => {
   const [quizComplete, setQuizComplete] = useState({ level1: false, level2: false });
   const [isFull, setIsFull] = useState(state.isFull || false);
   const [isDemo, setIsDemo] = useState(state.isDemo || false);
+  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -148,17 +151,29 @@ const Quiz = () => {
   };
 
   const handleFinishQuiz = () => {
-    toast({
-      title: isDemo ? "2025 Exam Prep Completed!" : "Quiz Completed!",
-      description: isDemo 
-        ? "Thank you for trying our quiz demo. Purchase the full version for complete exam preparation." 
-        : "You've completed the quiz. Your final score is displayed.",
-      duration: 5000,
-    });
+    if (isDemo) {
+      setShowUpgradeDialog(true);
+    } else {
+      toast({
+        title: "Quiz Completed!",
+        description: "You've completed the quiz. Your final score is displayed.",
+        duration: 5000,
+      });
+      
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
+    }
+  };
+
+  const handleUpgradeResponse = (wantsToUpgrade: boolean) => {
+    setShowUpgradeDialog(false);
     
-    setTimeout(() => {
-      navigate(isDemo ? '/' : '/dashboard');
-    }, 2000);
+    if (wantsToUpgrade) {
+      navigate('/checkout');
+    } else {
+      navigate('/#testimonials');
+    }
   };
 
   const shouldShowFinalResults = isFull ? 
@@ -242,10 +257,40 @@ const Quiz = () => {
               onClick={handleFinishQuiz}
               className="btn-primary w-full"
             >
-              {isDemo ? "Return to Home" : "Return to Dashboard"}
+              {isDemo ? "See Next Steps" : "Return to Dashboard"}
             </button>
           </div>
         </div>
+
+        <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-xl text-center">Ready to Pass Your Exam?</DialogTitle>
+              <DialogDescription className="text-center">
+                Would you like to unlock the full 2025 Exam Prep with 200 practice questions?
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4">
+              <p className="text-center text-navy-700">
+                Get complete access to both Level I and Level II certification exam questions with detailed explanations.
+              </p>
+            </div>
+            <DialogFooter className="sm:justify-center sm:space-x-4 sm:flex-row">
+              <Button 
+                variant="secondary"
+                onClick={() => handleUpgradeResponse(false)}
+              >
+                Not now
+              </Button>
+              <Button
+                className="bg-fire-600 hover:bg-fire-700 text-white" 
+                onClick={() => handleUpgradeResponse(true)}
+              >
+                Yes, get full access
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }
