@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 
@@ -82,9 +82,9 @@ const BlogPostContent = () => {
             Back to all blog posts
           </Link>
           
-          {/* Content */}
+          {/* Content with improved styling */}
           <div 
-            className="prose prose-lg max-w-none"
+            className="prose prose-lg max-w-none prose-headings:text-navy-900 prose-headings:font-bold prose-p:text-navy-700 prose-p:leading-relaxed prose-li:text-navy-700 prose-li:leading-relaxed prose-a:text-fire-600 prose-a:no-underline hover:prose-a:text-fire-700 prose-strong:text-navy-900 prose-strong:font-semibold prose-img:rounded-md prose-blockquote:border-l-fire-300 prose-blockquote:bg-navy-50 prose-blockquote:p-4 prose-blockquote:italic prose-blockquote:text-navy-700 space-y-6"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
           

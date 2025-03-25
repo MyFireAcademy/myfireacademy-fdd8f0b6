@@ -7,7 +7,7 @@ const BlogPost = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
-      <div className="flex-grow pt-20">
+      <div className="flex-grow">
         <BlogPostContent />
       </div>
       <Footer />
