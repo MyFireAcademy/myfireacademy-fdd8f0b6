@@ -50,13 +50,6 @@ const FAQ = () => {
               </AccordionContent>
             </AccordionItem>
             
-            <AccordionItem value="item-6" className="border border-gray-200 rounded-lg px-5 py-3 shadow-sm">
-              <AccordionTrigger className="text-lg font-medium text-navy-800">Do you offer refunds?</AccordionTrigger>
-              <AccordionContent className="text-gray-600 pt-2 pb-3">
-                We offer a 30-day satisfaction guarantee. If you're not satisfied with our materials within the first 30 days after purchase, you can request a full refund. After this period, refunds are only provided under our pass guarantee policy.
-              </AccordionContent>
-            </AccordionItem>
-            
             <AccordionItem value="item-7" className="border border-gray-200 rounded-lg px-5 py-3 shadow-sm">
               <AccordionTrigger className="text-lg font-medium text-navy-800">How are the practice exams structured?</AccordionTrigger>
               <AccordionContent className="text-gray-600 pt-2 pb-3">
