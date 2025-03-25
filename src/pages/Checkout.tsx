@@ -31,9 +31,9 @@ const Checkout = () => {
         duration: 5000,
       });
 
-      // Redirect to quiz after successful payment
+      // Redirect to dashboard after successful payment
       setTimeout(() => {
-        navigate('/quiz');
+        navigate('/dashboard');
       }, 2000);
     }, 1500);
   };
@@ -81,7 +81,7 @@ const Checkout = () => {
                 A receipt has been sent to your email address.
               </p>
               <button 
-                onClick={() => navigate('/quiz')}
+                onClick={() => navigate('/dashboard')}
                 className="btn-primary w-full"
               >
                 Access Study Materials
