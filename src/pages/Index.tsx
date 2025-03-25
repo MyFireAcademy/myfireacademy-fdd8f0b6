@@ -9,36 +9,27 @@ import Pricing from '@/components/Pricing';
 import Footer from '@/components/Footer';
 
 const Index = () => {
+  console.log("Index page rendering");
+  
   useEffect(() => {
     // Scroll to top when the page loads
     window.scrollTo(0, 0);
     
-    // Handle anchor links with smooth scrolling
-    const handleAnchorClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const anchor = target.closest('a');
-      
-      if (!anchor) return;
-      
-      const href = anchor.getAttribute('href');
-      if (!href || !href.startsWith('/#')) return;
-      
-      e.preventDefault();
-      const id = href.substring(2);
+    // Check if there's a hash in the URL and scroll to that element
+    if (window.location.hash) {
+      const id = window.location.hash.substring(1);
       const element = document.getElementById(id);
-      
       if (element) {
-        element.scrollIntoView({
-          behavior: 'smooth'
-        });
+        console.log(`Scrolling to element with id: ${id}`);
+        setTimeout(() => {
+          element.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }, 500);
+      } else {
+        console.log(`Element with id ${id} not found`);
       }
-    };
-    
-    document.addEventListener('click', handleAnchorClick);
-    
-    return () => {
-      document.removeEventListener('click', handleAnchorClick);
-    };
+    }
   }, []);
   
   return (
