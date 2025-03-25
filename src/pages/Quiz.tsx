@@ -27,28 +27,22 @@ const Quiz = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Get questions based on current level and demo mode
   const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
   
-  // If in demo mode, only use first 5 questions of each level
   const questions = isDemo 
     ? allQuestions.slice(0, 5) 
     : allQuestions;
   
-  // Check if questions exist for the current level
   const hasQuestions = questions && questions.length > 0;
   
-  // Safely get current quiz data only if questions exist
   const currentQuizData = hasQuestions && currentQuestion < questions.length ? questions[currentQuestion] : null;
 
   useEffect(() => {
-    // Reset when changing levels
     if (currentLevel) {
       setCurrentQuestion(0);
       setSelectedOption(null);
       setShowExplanation(false);
       
-      // If no questions available for this level, show toast and switch back to level1
       if (currentLevel === 'level2' && (!levelIIQuizData || levelIIQuizData.length === 0)) {
         toast({
           title: "Level II Quiz Not Available",
@@ -61,13 +55,11 @@ const Quiz = () => {
   }, [currentLevel, toast]);
 
   useEffect(() => {
-    // If we're coming from the dashboard with a specific quiz ID
     if (state.quizId) {
       const level = state.quizId.includes('level1') ? 'level1' : 'level2';
       setCurrentLevel(level);
       setIsFull(state.isFull || false);
       
-      // If no questions available for this level, show toast and switch to level1
       if (level === 'level2' && (!levelIIQuizData || levelIIQuizData.length === 0)) {
         toast({
           title: "Level II Quiz Not Available",
@@ -78,12 +70,11 @@ const Quiz = () => {
       }
     }
     
-    // Check if we're in demo mode
     if (state.isDemo) {
       setIsDemo(true);
       toast({
         title: "Quiz Demo Mode",
-        description: "You're trying our demo quiz with 5 questions from each level.",
+        description: "You're trying our 2025 Exam Prep with 5 questions from each level.",
         duration: 5000,
       });
     }
@@ -125,14 +116,12 @@ const Quiz = () => {
       setSelectedOption(null);
       setShowExplanation(false);
     } else {
-      // Quiz completed
       if (currentLevel === 'level1') {
         setQuizComplete(prev => ({ ...prev, level1: true }));
         toast({
           title: "Level I Quiz Completed!",
           description: `Your score: ${score.level1}/${questions.length}`,
         });
-        // If not full quiz or if it's a demo, move to level 2
         if (!isFull || isDemo) {
           setCurrentLevel('level2');
         }
@@ -160,28 +149,23 @@ const Quiz = () => {
 
   const handleFinishQuiz = () => {
     toast({
-      title: isDemo ? "Demo Quiz Completed!" : "Quiz Completed!",
+      title: isDemo ? "2025 Exam Prep Completed!" : "Quiz Completed!",
       description: isDemo 
         ? "Thank you for trying our quiz demo. Purchase the full version for complete exam preparation." 
         : "You've completed the quiz. Your final score is displayed.",
       duration: 5000,
     });
     
-    // In a real app, we might save the score to the user's profile here
-    
     setTimeout(() => {
       navigate(isDemo ? '/' : '/dashboard');
     }, 2000);
   };
 
-  // Only show results for the current level if we came from dashboard (full quiz mode)
-  // In demo mode, show results after completing both levels
   const shouldShowFinalResults = isFull ? 
     (currentLevel === 'level1' && quizComplete.level1) || 
     (currentLevel === 'level2' && quizComplete.level2) : 
     (quizComplete.level1 && quizComplete.level2);
 
-  // If no questions available, show a message
   if (!hasQuestions && !shouldShowFinalResults) {
     return (
       <div className="min-h-screen bg-gray-50 pt-20 pb-16 px-4">
@@ -213,7 +197,7 @@ const Quiz = () => {
               <CheckCircle className="text-green-500 w-20 h-20" />
             </div>
             <h1 className="text-3xl font-bold text-navy-900 mb-4">
-              {isDemo ? "Quiz Demo Completed!" : "Quiz Completed!"}
+              {isDemo ? "2025 Exam Prep Completed!" : "Quiz Completed!"}
             </h1>
             
             <div className="bg-gray-50 p-6 rounded-lg mb-8">
@@ -270,11 +254,10 @@ const Quiz = () => {
     <div className="min-h-screen bg-gray-50 pt-20 pb-16 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden animate-fade-in">
-          {/* Quiz Header */}
           <div className="bg-fire-600 text-white p-6">
             <div className="flex justify-between items-center">
               <h1 className="text-xl font-bold">
-                {isDemo ? "DEMO: " : ""}
+                {isDemo ? "2025 EXAM PREP: " : ""}
                 NFPA 1001 {currentLevel === 'level1' ? 'Level I' : 'Level II'} Quiz
               </h1>
               <div className="text-sm bg-white/20 px-3 py-1 rounded-full">
@@ -282,7 +265,6 @@ const Quiz = () => {
               </div>
             </div>
             
-            {/* Progress Bar */}
             <div className="w-full bg-white/20 h-2 rounded-full mt-4 overflow-hidden">
               <div 
                 className="bg-white h-full transition-all duration-300 ease-apple"
@@ -291,33 +273,29 @@ const Quiz = () => {
             </div>
           </div>
           
-          {/* Tabs for Level I and Level II - Only show if not in full quiz mode */}
-          {!isFull && (
-            <div className="flex border-b">
-              <button
-                onClick={() => handleChangeLevel('level1')}
-                className={`flex-1 py-3 text-center font-medium transition-all duration-200 ${
-                  currentLevel === 'level1' 
-                    ? 'text-fire-600 border-b-2 border-fire-600' 
-                    : 'text-navy-600 hover:text-fire-600'
-                }`}
-              >
-                Level I {quizComplete.level1 && <CheckCircle className="inline-block ml-2" size={16} />}
-              </button>
-              <button
-                onClick={() => handleChangeLevel('level2')}
-                className={`flex-1 py-3 text-center font-medium transition-all duration-200 ${
-                  currentLevel === 'level2' 
-                    ? 'text-fire-600 border-b-2 border-fire-600' 
-                    : 'text-navy-600 hover:text-fire-600'
-                }`}
-              >
-                Level II {quizComplete.level2 && <CheckCircle className="inline-block ml-2" size={16} />}
-              </button>
-            </div>
-          )}
+          <div className="flex border-b">
+            <button
+              onClick={() => handleChangeLevel('level1')}
+              className={`flex-1 py-3 text-center font-medium transition-all duration-200 ${
+                currentLevel === 'level1' 
+                  ? 'text-fire-600 border-b-2 border-fire-600' 
+                  : 'text-navy-600 hover:text-fire-600'
+              }`}
+            >
+              Level I {quizComplete.level1 && <CheckCircle className="inline-block ml-2" size={16} />}
+            </button>
+            <button
+              onClick={() => handleChangeLevel('level2')}
+              className={`flex-1 py-3 text-center font-medium transition-all duration-200 ${
+                currentLevel === 'level2' 
+                  ? 'text-fire-600 border-b-2 border-fire-600' 
+                  : 'text-navy-600 hover:text-fire-600'
+              }`}
+            >
+              Level II {quizComplete.level2 && <CheckCircle className="inline-block ml-2" size={16} />}
+            </button>
+          </div>
           
-          {/* Question Content */}
           <div className="p-6 md:p-8">
             {currentQuizData && (
               <>
@@ -325,7 +303,6 @@ const Quiz = () => {
                   {currentQuizData.question}
                 </h2>
                 
-                {/* Options */}
                 <div className="space-y-3 mb-8">
                   {currentQuizData.options.map((option, index) => (
                     <button
@@ -364,7 +341,6 @@ const Quiz = () => {
                   ))}
                 </div>
                 
-                {/* Explanation */}
                 {showExplanation && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 animate-fade-in">
                     <h3 className="font-semibold text-navy-800 mb-2">Explanation:</h3>
@@ -374,7 +350,6 @@ const Quiz = () => {
               </>
             )}
             
-            {/* Action Buttons */}
             <div className="flex justify-between mt-8">
               <button
                 onClick={handlePrevQuestion}
