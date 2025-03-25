@@ -26,8 +26,14 @@ const Quiz = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Get questions based on current level
   const questions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
-  const currentQuizData = questions[currentQuestion];
+  
+  // Check if questions exist for the current level
+  const hasQuestions = questions && questions.length > 0;
+  
+  // Safely get current quiz data only if questions exist
+  const currentQuizData = hasQuestions ? questions[currentQuestion] : null;
 
   useEffect(() => {
     // Reset when changing levels
@@ -35,8 +41,18 @@ const Quiz = () => {
       setCurrentQuestion(0);
       setSelectedOption(null);
       setShowExplanation(false);
+      
+      // If no questions available for this level, show toast and switch back to level1
+      if (currentLevel === 'level2' && (!levelIIQuizData || levelIIQuizData.length === 0)) {
+        toast({
+          title: "Level II Quiz Not Available",
+          description: "The Level II quiz is currently being updated. Please try Level I.",
+          variant: "destructive",
+        });
+        setCurrentLevel('level1');
+      }
     }
-  }, [currentLevel]);
+  }, [currentLevel, toast]);
 
   useEffect(() => {
     // If we're coming from the dashboard with a specific quiz ID
@@ -44,8 +60,18 @@ const Quiz = () => {
       const level = state.quizId.includes('level1') ? 'level1' : 'level2';
       setCurrentLevel(level);
       setIsFull(state.isFull || false);
+      
+      // If no questions available for this level, show toast and switch to level1
+      if (level === 'level2' && (!levelIIQuizData || levelIIQuizData.length === 0)) {
+        toast({
+          title: "Level II Quiz Not Available",
+          description: "The Level II quiz is currently being updated. Please try Level I.",
+          variant: "destructive",
+        });
+        setCurrentLevel('level1');
+      }
     }
-  }, [state]);
+  }, [state, toast]);
 
   const handleOptionSelect = (optionIndex: number) => {
     if (showExplanation) return;
@@ -53,6 +79,8 @@ const Quiz = () => {
   };
 
   const handleCheckAnswer = () => {
+    if (!currentQuizData) return;
+    
     if (selectedOption === null) {
       toast({
         title: "Please select an answer",
@@ -74,6 +102,8 @@ const Quiz = () => {
   };
 
   const handleNextQuestion = () => {
+    if (!hasQuestions) return;
+    
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedOption(null);
@@ -131,6 +161,29 @@ const Quiz = () => {
     (currentLevel === 'level1' && quizComplete.level1) || 
     (currentLevel === 'level2' && quizComplete.level2) : 
     (quizComplete.level1 && quizComplete.level2);
+
+  // If no questions available, show a message
+  if (!hasQuestions && !shouldShowFinalResults) {
+    return (
+      <div className="min-h-screen bg-gray-50 pt-20 pb-16 px-4">
+        <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-scale-in">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-navy-900 mb-4">Quiz Not Available</h1>
+            <p className="text-navy-700 mb-6">
+              The quiz for {currentLevel === 'level1' ? 'Level I' : 'Level II'} is currently being updated.
+              Please check back later or try another level.
+            </p>
+            <button 
+              onClick={() => navigate('/dashboard')}
+              className="btn-primary w-full"
+            >
+              Return to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (shouldShowFinalResults) {
     return (
@@ -236,55 +289,59 @@ const Quiz = () => {
           
           {/* Question Content */}
           <div className="p-6 md:p-8">
-            <h2 className="text-xl font-semibold text-navy-900 mb-6">
-              {currentQuizData.question}
-            </h2>
-            
-            {/* Options */}
-            <div className="space-y-3 mb-8">
-              {currentQuizData.options.map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleOptionSelect(index)}
-                  className={`w-full text-left p-4 rounded-lg border ${
-                    selectedOption === index
-                      ? index === currentQuizData.correctAnswer && showExplanation
-                        ? 'bg-green-50 border-green-500'
-                        : selectedOption !== currentQuizData.correctAnswer && showExplanation
-                        ? 'bg-red-50 border-red-500'
-                        : 'bg-fire-50 border-fire-500'
-                      : index === currentQuizData.correctAnswer && showExplanation
-                      ? 'bg-green-50 border-green-500'
-                      : 'border-gray-200 hover:border-fire-300 hover:bg-fire-50'
-                  } transition-all duration-200`}
-                  disabled={showExplanation}
-                >
-                  <div className="flex items-start">
-                    <div className={`w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center mr-3 ${
-                      selectedOption === index
-                        ? index === currentQuizData.correctAnswer && showExplanation
-                          ? 'bg-green-500 text-white'
-                          : selectedOption !== currentQuizData.correctAnswer && showExplanation
-                          ? 'bg-red-500 text-white'
-                          : 'bg-fire-500 text-white'
-                        : index === currentQuizData.correctAnswer && showExplanation
-                        ? 'bg-green-500 text-white'
-                        : 'border border-gray-300 text-gray-500'
-                    }`}>
-                      {String.fromCharCode(65 + index)}
-                    </div>
-                    <span className="pt-0.5">{option}</span>
+            {currentQuizData && (
+              <>
+                <h2 className="text-xl font-semibold text-navy-900 mb-6">
+                  {currentQuizData.question}
+                </h2>
+                
+                {/* Options */}
+                <div className="space-y-3 mb-8">
+                  {currentQuizData.options.map((option, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleOptionSelect(index)}
+                      className={`w-full text-left p-4 rounded-lg border ${
+                        selectedOption === index
+                          ? index === currentQuizData.correctAnswer && showExplanation
+                            ? 'bg-green-50 border-green-500'
+                            : selectedOption !== currentQuizData.correctAnswer && showExplanation
+                            ? 'bg-red-50 border-red-500'
+                            : 'bg-fire-50 border-fire-500'
+                          : index === currentQuizData.correctAnswer && showExplanation
+                          ? 'bg-green-50 border-green-500'
+                          : 'border-gray-200 hover:border-fire-300 hover:bg-fire-50'
+                      } transition-all duration-200`}
+                      disabled={showExplanation}
+                    >
+                      <div className="flex items-start">
+                        <div className={`w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center mr-3 ${
+                          selectedOption === index
+                            ? index === currentQuizData.correctAnswer && showExplanation
+                              ? 'bg-green-500 text-white'
+                              : selectedOption !== currentQuizData.correctAnswer && showExplanation
+                              ? 'bg-red-500 text-white'
+                              : 'bg-fire-500 text-white'
+                            : index === currentQuizData.correctAnswer && showExplanation
+                            ? 'bg-green-500 text-white'
+                            : 'border border-gray-300 text-gray-500'
+                        }`}>
+                          {String.fromCharCode(65 + index)}
+                        </div>
+                        <span className="pt-0.5">{option}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+                
+                {/* Explanation */}
+                {showExplanation && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 animate-fade-in">
+                    <h3 className="font-semibold text-navy-800 mb-2">Explanation:</h3>
+                    <p className="text-navy-700">{currentQuizData.explanation}</p>
                   </div>
-                </button>
-              ))}
-            </div>
-            
-            {/* Explanation */}
-            {showExplanation && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 animate-fade-in">
-                <h3 className="font-semibold text-navy-800 mb-2">Explanation:</h3>
-                <p className="text-navy-700">{currentQuizData.explanation}</p>
-              </div>
+                )}
+              </>
             )}
             
             {/* Action Buttons */}

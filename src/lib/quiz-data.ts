@@ -779,5 +779,126 @@ export const levelIQuizData: Question[] = [
   }
 ];
 
-// Placeholder for Level II quiz data
-export const levelIIQuizData: Question[] = [];
+// Adding Level II quiz data
+export const levelIIQuizData: Question[] = [
+  {
+    id: 1,
+    question: "What is the primary duty of a company officer during a structure fire?",
+    options: [
+      "To operate fire apparatus",
+      "To lead and coordinate the firefighting team",
+      "To establish water supply",
+      "To perform search and rescue operations"
+    ],
+    correctAnswer: 1,
+    explanation: "The primary duty of a company officer during a structure fire is to lead and coordinate the firefighting team, making tactical decisions and ensuring firefighter safety."
+  },
+  {
+    id: 2,
+    question: "Which incident management system is widely adopted by fire departments for emergency response?",
+    options: [
+      "Emergency Response System (ERS)",
+      "Incident Command System (ICS)",
+      "National Fire Management Protocol (NFMP)",
+      "Emergency Operations Framework (EOF)"
+    ],
+    correctAnswer: 1,
+    explanation: "The Incident Command System (ICS) is the standardized approach to incident management adopted by fire departments and other emergency response agencies nationwide."
+  },
+  {
+    id: 3,
+    question: "What is the purpose of performing fire pre-planning for commercial buildings?",
+    options: [
+      "To determine the occupancy classification only",
+      "To establish water supply requirements only",
+      "To identify potential hazards and develop strategic response plans before an incident occurs",
+      "To ensure compliance with building codes only"
+    ],
+    correctAnswer: 2,
+    explanation: "Fire pre-planning involves identifying potential hazards, access points, water supply locations, and developing strategic response plans for specific buildings before an incident occurs."
+  },
+  {
+    id: 4,
+    question: "What is the primary purpose of fire flow calculations?",
+    options: [
+      "To determine the required water pressure for domestic use",
+      "To calculate the necessary water volume for fire suppression",
+      "To measure water quality for firefighting purposes",
+      "To determine hydrant spacing requirements"
+    ],
+    correctAnswer: 1,
+    explanation: "Fire flow calculations determine the volume of water in gallons per minute (GPM) required to control and extinguish a fire in a specific structure or area."
+  },
+  {
+    id: 5,
+    question: "Which statement best describes the relationship between fire prevention and public education?",
+    options: [
+      "They are completely separate aspects of fire service",
+      "Public education is a component of comprehensive fire prevention programs",
+      "Fire prevention only involves code enforcement",
+      "Public education is only necessary for children"
+    ],
+    correctAnswer: 1,
+    explanation: "Public education is a critical component of comprehensive fire prevention programs, helping to inform the public about fire safety practices and preventing fires before they start."
+  },
+  {
+    id: 6,
+    question: "What is the purpose of a post-incident analysis?",
+    options: [
+      "To assign blame for mistakes made during an incident",
+      "To critique individual firefighter performance only",
+      "To identify lessons learned and improve future emergency operations",
+      "To determine legal liability after an incident"
+    ],
+    correctAnswer: 2,
+    explanation: "Post-incident analysis is conducted to identify lessons learned, evaluate the effectiveness of strategies and tactics, and improve future emergency operations through constructive review."
+  },
+  {
+    id: 7,
+    question: "Which factor is most critical when conducting a fire investigation?",
+    options: [
+      "Determining insurance liability",
+      "Preserving evidence and documenting the scene",
+      "Identifying the responsible party",
+      "Calculating the cost of property damage"
+    ],
+    correctAnswer: 1,
+    explanation: "Preserving evidence and properly documenting the fire scene is critical for accurate fire investigation, as improper handling can compromise the entire investigation process."
+  },
+  {
+    id: 8,
+    question: "What is the primary consideration when developing a training program for fire department personnel?",
+    options: [
+      "Minimizing training costs",
+      "Conducting training only during regular work hours",
+      "Meeting state and national training standards and addressing local needs",
+      "Focusing exclusively on firefighting skills"
+    ],
+    correctAnswer: 2,
+    explanation: "Effective training programs must meet state and national standards while addressing the specific risks and needs of the local community, balancing both requirements for comprehensive firefighter development."
+  },
+  {
+    id: 9,
+    question: "Which approach is most effective for fire department resource allocation?",
+    options: [
+      "Distributing resources equally across all areas",
+      "Basing allocation decisions primarily on political considerations",
+      "Risk-based deployment based on community hazards and call volume analysis",
+      "Focusing resources exclusively on areas with the highest property values"
+    ],
+    correctAnswer: 2,
+    explanation: "Risk-based deployment strategically allocates resources based on community risk assessments, historical call data, response time analysis, and identified hazards to provide effective coverage where it's most needed."
+  },
+  {
+    id: 10,
+    question: "What is the purpose of fire department mutual aid agreements?",
+    options: [
+      "To share equipment maintenance costs",
+      "To coordinate joint training exercises only",
+      "To provide additional resources during large-scale incidents that exceed local capabilities",
+      "To standardize operational procedures between departments"
+    ],
+    correctAnswer: 2,
+    explanation: "Mutual aid agreements enable fire departments to request and provide assistance to neighboring jurisdictions when incidents exceed local capabilities, ensuring adequate resources for large-scale emergencies."
+  }
+];
