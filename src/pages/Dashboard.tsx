@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, BookOpen, CheckCircle, Medal } from 'lucide-react';
+import { ArrowRight, BookOpen } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
@@ -43,9 +43,9 @@ const Dashboard = () => {
   ];
 
   const handleStartQuiz = (quizId: string) => {
-    // In a real application, this would navigate to the specific quiz
-    // For now, we'll just navigate to the quiz page and show a toast
-    navigate('/quiz');
+    // Pass the quiz ID to the quiz page to identify which test to load
+    const level = quizId.includes('level1') ? 'level1' : 'level2';
+    navigate('/quiz', { state: { quizId, level, isFull: true } });
     
     toast({
       title: "Starting Full Quiz",
@@ -65,10 +65,9 @@ const Dashboard = () => {
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome to Your NFPA 1001 Study Portal!</h1>
                 <p className="mb-6 md:mb-0 text-white/90">
-                  Your purchase includes full access to both Level I and Level II study materials and practice exams.
+                  Your purchase includes full access to both Level I and Level II certification exams with 150 questions each.
                 </p>
               </div>
-              <CheckCircle className="hidden md:block h-16 w-16 text-white/90" />
             </div>
           </div>
 
@@ -130,35 +129,6 @@ const Dashboard = () => {
                     </div>
                   </div>
                 ))}
-            </div>
-          </div>
-
-          {/* Study Resources */}
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div className="p-6 border-b">
-              <h2 className="text-xl font-semibold text-navy-900">Additional Study Resources</h2>
-            </div>
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-50 rounded-xl p-5 hover:bg-gray-100 transition-colors">
-                <div className="flex items-center mb-3">
-                  <Medal className="text-fire-600 mr-2" size={20} />
-                  <h3 className="text-lg font-semibold text-navy-900">NFPA 1001 Standards Overview</h3>
-                </div>
-                <p className="text-navy-700 mb-4">A comprehensive overview of the NFPA 1001 standards and requirements for firefighter certification.</p>
-                <button className="text-fire-600 font-medium hover:text-fire-700 transition-colors">
-                  View Resource
-                </button>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-5 hover:bg-gray-100 transition-colors">
-                <div className="flex items-center mb-3">
-                  <Medal className="text-fire-600 mr-2" size={20} />
-                  <h3 className="text-lg font-semibold text-navy-900">Firefighting Techniques</h3>
-                </div>
-                <p className="text-navy-700 mb-4">Detailed guides and walkthroughs of essential firefighting techniques and procedures.</p>
-                <button className="text-fire-600 font-medium hover:text-fire-700 transition-colors">
-                  View Resource
-                </button>
-              </div>
             </div>
           </div>
         </div>

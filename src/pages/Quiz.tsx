@@ -1,19 +1,28 @@
 
 import { useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { levelIQuizData, levelIIQuizData, Question } from '@/lib/quiz-data';
 import { useToast } from '@/hooks/use-toast';
 
 type QuizLevel = 'level1' | 'level2';
+type LocationState = {
+  quizId?: string;
+  level?: QuizLevel;
+  isFull?: boolean;
+};
 
 const Quiz = () => {
-  const [currentLevel, setCurrentLevel] = useState<QuizLevel>('level1');
+  const location = useLocation();
+  const state = location.state as LocationState || {};
+  
+  const [currentLevel, setCurrentLevel] = useState<QuizLevel>(state.level || 'level1');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState({ level1: 0, level2: 0 });
   const [quizComplete, setQuizComplete] = useState({ level1: false, level2: false });
+  const [isFull, setIsFull] = useState(state.isFull || false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -28,6 +37,15 @@ const Quiz = () => {
       setShowExplanation(false);
     }
   }, [currentLevel]);
+
+  useEffect(() => {
+    // If we're coming from the dashboard with a specific quiz ID
+    if (state.quizId) {
+      const level = state.quizId.includes('level1') ? 'level1' : 'level2';
+      setCurrentLevel(level);
+      setIsFull(state.isFull || false);
+    }
+  }, [state]);
 
   const handleOptionSelect = (optionIndex: number) => {
     if (showExplanation) return;
@@ -68,7 +86,10 @@ const Quiz = () => {
           title: "Level I Quiz Completed!",
           description: `Your score: ${score.level1}/${questions.length}`,
         });
-        setCurrentLevel('level2');
+        // If not full quiz, move to level 2
+        if (!isFull) {
+          setCurrentLevel('level2');
+        }
       } else {
         setQuizComplete(prev => ({ ...prev, level2: true }));
         toast({
@@ -93,17 +114,25 @@ const Quiz = () => {
 
   const handleFinishQuiz = () => {
     toast({
-      title: "Congratulations!",
-      description: "You've completed both quizzes. Your materials are now available.",
+      title: "Quiz Completed!",
+      description: "You've completed the quiz. Your final score is displayed.",
       duration: 5000,
     });
     
+    // In a real app, we might save the score to the user's profile here
+    
     setTimeout(() => {
-      navigate('/');
+      navigate('/dashboard');
     }, 2000);
   };
 
-  if (quizComplete.level1 && quizComplete.level2) {
+  // Only show results for the current level if we came from dashboard (full quiz mode)
+  const shouldShowFinalResults = isFull ? 
+    (currentLevel === 'level1' && quizComplete.level1) || 
+    (currentLevel === 'level2' && quizComplete.level2) : 
+    (quizComplete.level1 && quizComplete.level2);
+
+  if (shouldShowFinalResults) {
     return (
       <div className="min-h-screen bg-gray-50 pt-20 pb-16 px-4">
         <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-scale-in">
@@ -111,28 +140,45 @@ const Quiz = () => {
             <div className="flex justify-center mb-6">
               <CheckCircle className="text-green-500 w-20 h-20" />
             </div>
-            <h1 className="text-3xl font-bold text-navy-900 mb-4">Congratulations!</h1>
-            <p className="text-lg text-navy-700 mb-6">
-              You've completed both Level I and Level II quizzes.
-            </p>
+            <h1 className="text-3xl font-bold text-navy-900 mb-4">Quiz Completed!</h1>
+            
             <div className="bg-gray-50 p-6 rounded-lg mb-8">
               <h3 className="font-semibold mb-4 text-lg">Your Results:</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white p-4 rounded-lg shadow-sm">
-                  <p className="text-navy-800 font-medium">Level I</p>
-                  <p className="text-2xl font-bold text-fire-600">{score.level1}/{levelIQuizData.length}</p>
+              
+              {isFull ? (
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <p className="text-navy-800 font-medium">
+                    {currentLevel === 'level1' ? 'Level I' : 'Level II'}
+                  </p>
+                  <p className="text-4xl font-bold text-fire-600 mt-2">
+                    {currentLevel === 'level1' ? score.level1 : score.level2}/
+                    {questions.length}
+                  </p>
+                  <p className="text-navy-600 mt-2">
+                    {(currentLevel === 'level1' ? (score.level1 / questions.length) * 100 : (score.level2 / questions.length) * 100).toFixed(1)}% Correct
+                  </p>
                 </div>
-                <div className="bg-white p-4 rounded-lg shadow-sm">
-                  <p className="text-navy-800 font-medium">Level II</p>
-                  <p className="text-2xl font-bold text-fire-600">{score.level2}/{levelIIQuizData.length}</p>
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-white p-4 rounded-lg shadow-sm">
+                    <p className="text-navy-800 font-medium">Level I</p>
+                    <p className="text-2xl font-bold text-fire-600">{score.level1}/{levelIQuizData.length}</p>
+                    <p className="text-sm text-navy-600">{(score.level1 / levelIQuizData.length * 100).toFixed(1)}%</p>
+                  </div>
+                  <div className="bg-white p-4 rounded-lg shadow-sm">
+                    <p className="text-navy-800 font-medium">Level II</p>
+                    <p className="text-2xl font-bold text-fire-600">{score.level2}/{levelIIQuizData.length}</p>
+                    <p className="text-sm text-navy-600">{(score.level2 / levelIIQuizData.length * 100).toFixed(1)}%</p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
+            
             <button 
               onClick={handleFinishQuiz}
               className="btn-primary w-full"
             >
-              Access Full Study Materials
+              Return to Dashboard
             </button>
           </div>
         </div>
@@ -162,29 +208,31 @@ const Quiz = () => {
             </div>
           </div>
           
-          {/* Tabs for Level I and Level II */}
-          <div className="flex border-b">
-            <button
-              onClick={() => handleChangeLevel('level1')}
-              className={`flex-1 py-3 text-center font-medium transition-all duration-200 ${
-                currentLevel === 'level1' 
-                  ? 'text-fire-600 border-b-2 border-fire-600' 
-                  : 'text-navy-600 hover:text-fire-600'
-              }`}
-            >
-              Level I {quizComplete.level1 && <CheckCircle className="inline-block ml-2" size={16} />}
-            </button>
-            <button
-              onClick={() => handleChangeLevel('level2')}
-              className={`flex-1 py-3 text-center font-medium transition-all duration-200 ${
-                currentLevel === 'level2' 
-                  ? 'text-fire-600 border-b-2 border-fire-600' 
-                  : 'text-navy-600 hover:text-fire-600'
-              }`}
-            >
-              Level II {quizComplete.level2 && <CheckCircle className="inline-block ml-2" size={16} />}
-            </button>
-          </div>
+          {/* Tabs for Level I and Level II - Only show if not in full quiz mode */}
+          {!isFull && (
+            <div className="flex border-b">
+              <button
+                onClick={() => handleChangeLevel('level1')}
+                className={`flex-1 py-3 text-center font-medium transition-all duration-200 ${
+                  currentLevel === 'level1' 
+                    ? 'text-fire-600 border-b-2 border-fire-600' 
+                    : 'text-navy-600 hover:text-fire-600'
+                }`}
+              >
+                Level I {quizComplete.level1 && <CheckCircle className="inline-block ml-2" size={16} />}
+              </button>
+              <button
+                onClick={() => handleChangeLevel('level2')}
+                className={`flex-1 py-3 text-center font-medium transition-all duration-200 ${
+                  currentLevel === 'level2' 
+                    ? 'text-fire-600 border-b-2 border-fire-600' 
+                    : 'text-navy-600 hover:text-fire-600'
+                }`}
+              >
+                Level II {quizComplete.level2 && <CheckCircle className="inline-block ml-2" size={16} />}
+              </button>
+            </div>
+          )}
           
           {/* Question Content */}
           <div className="p-6 md:p-8">
