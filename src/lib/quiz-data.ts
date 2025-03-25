@@ -1,3 +1,4 @@
+
 export interface Question {
   id: number;
   question: string;
@@ -770,3 +771,13 @@ export const levelIQuizData: Question[] = [
     options: [
       "To respond to incidents involving rescues from mines and other underground environments",
       "To provide medical assistance to injured victims",
+      "To coordinate fire suppression efforts",
+      "To enforce fire codes and regulations"
+    ],
+    correctAnswer: 0,
+    explanation: "A fire department's mine rescue team is trained and equipped to respond to incidents involving rescues from mines and other underground environments, providing specialized skills and equipment to safely rescue victims."
+  }
+];
+
+// Placeholder for Level II quiz data
+export const levelIIQuizData: Question[] = [];
