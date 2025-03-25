@@ -44,14 +44,8 @@ const Navbar = () => {
             <Link to="/#features" className="text-navy-800 hover:text-fire-600 transition-colors font-medium ml-6">
               Features
             </Link>
-            <Link to="/#guarantee" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
-              Guarantee
-            </Link>
-            <Link to="/#testimonials" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
-              Testimonials
-            </Link>
-            <Link to="/quiz" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
-              Quiz
+            <Link to="/new-to-firefighting" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
+              New To Firefighting
             </Link>
             <Link to="/blog" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               Blog
@@ -87,25 +81,11 @@ const Navbar = () => {
                 Features
               </Link>
               <Link 
-                to="/#guarantee" 
+                to="/new-to-firefighting" 
                 onClick={() => setIsMenuOpen(false)}
                 className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium"
               >
-                Guarantee
-              </Link>
-              <Link 
-                to="/#testimonials" 
-                onClick={() => setIsMenuOpen(false)}
-                className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium"
-              >
-                Testimonials
-              </Link>
-              <Link 
-                to="/quiz" 
-                onClick={() => setIsMenuOpen(false)}
-                className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium"
-              >
-                Quiz
+                New To Firefighting
               </Link>
               <Link 
                 to="/blog" 
