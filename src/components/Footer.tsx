@@ -96,15 +96,15 @@ const Footer = () => {
               &copy; {new Date().getFullYear()} MyFireAcademy. All rights reserved.
             </p>
             <div className="flex space-x-6">
-              <a href="#" className="text-gray-500 text-sm hover:text-gray-400 transition-colors">
+              <Link to="/privacy-policy" className="text-gray-500 text-sm hover:text-gray-400 transition-colors">
                 Privacy Policy
-              </a>
-              <a href="#" className="text-gray-500 text-sm hover:text-gray-400 transition-colors">
+              </Link>
+              <Link to="/terms-of-service" className="text-gray-500 text-sm hover:text-gray-400 transition-colors">
                 Terms of Service
-              </a>
-              <a href="#" className="text-gray-500 text-sm hover:text-gray-400 transition-colors">
+              </Link>
+              <Link to="/refund-policy" className="text-gray-500 text-sm hover:text-gray-400 transition-colors">
                 Refund Policy
-              </a>
+              </Link>
             </div>
           </div>
         </div>
