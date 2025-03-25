@@ -33,7 +33,7 @@ const Quiz = () => {
   const hasQuestions = questions && questions.length > 0;
   
   // Safely get current quiz data only if questions exist
-  const currentQuizData = hasQuestions ? questions[currentQuestion] : null;
+  const currentQuizData = hasQuestions && currentQuestion < questions.length ? questions[currentQuestion] : null;
 
   useEffect(() => {
     // Reset when changing levels

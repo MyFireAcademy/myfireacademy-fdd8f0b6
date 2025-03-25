@@ -1,4 +1,3 @@
-
 export interface Question {
   id: number;
   question: string;
@@ -10,895 +9,987 @@ export interface Question {
 export const levelIQuizData: Question[] = [
   {
     id: 1,
-    question: "What is the primary purpose of a self-contained breathing apparatus (SCBA)?",
+    question: "What creates the most dangerous condition during a vehicle fire?",
     options: [
-      "To provide breathable air in environments that are immediately dangerous to life or health (IDLH)",
-      "To filter contaminants from the surrounding air",
-      "To increase firefighter visibility in smoke-filled environments",
-      "To reduce heat stress during firefighting operations"
+      "Smoking materials",
+      "Electrical short circuits",
+      "Leaking lubricants",
+      "Pressurized components heated to high temperatures"
     ],
-    correctAnswer: 0,
-    explanation: "The primary purpose of an SCBA is to provide the firefighter with breathable air in environments that are immediately dangerous to life or health (IDLH), such as smoke-filled buildings or hazmat incidents."
+    correctAnswer: 3,
+    explanation: "Pressurized components can explode when heated."
   },
   {
     id: 2,
-    question: "What is the recommended method for carrying a victim down a ladder?",
+    question: "When handling emergency calls, complete and accurate records should be maintained for:",
     options: [
-      "Fireman's carry across the shoulders",
-      "Piggyback carry",
-      "Cradle-in-arms carry",
-      "Over-the-arm carry"
+      "All responses",
+      "Only emergency responses",
+      "Only criminally related responses",
+      "High call volume areas"
     ],
-    correctAnswer: 2,
-    explanation: "The cradle-in-arms carry is the recommended method for carrying a victim down a ladder as it provides better security and balance for both the rescuer and victim."
+    correctAnswer: 0,
+    explanation: "Keeping records of all calls helps improve response and accountability."
   },
   {
     id: 3,
-    question: "Which knot is most appropriate for hoisting tools to an elevated position?",
+    question: "What information should a firefighter provide during a mayday call?",
     options: [
-      "Bowline",
-      "Clove hitch",
-      "Figure eight on a bight",
-      "Half hitch"
+      "Time of day",
+      "GPS coordinates",
+      "Help needed",
+      "Accountability tag number"
     ],
     correctAnswer: 2,
-    explanation: "A figure eight on a bight creates a secure loop that doesn't slip under load, making it ideal for hoisting tools safely to elevated positions."
+    explanation: "Stating the type of help needed ensures a proper response."
   },
   {
     id: 4,
-    question: "What is the minimum safe distance to operate a ground ladder from overhead electrical wires?",
+    question: "What type of hose roll is the easiest to work with?",
     options: [
-      "5 feet",
-      "10 feet",
-      "15 feet",
-      "20 feet"
+      "Double donut",
+      "Straight/storage",
+      "Single donut",
+      "Dutchman"
     ],
     correctAnswer: 1,
-    explanation: "Per NFPA standards, ground ladders should be operated at least 10 feet away from overhead electrical wires to prevent accidental contact and electrical hazards."
+    explanation: "A straight roll is simple to store and unroll quickly in an emergency."
   },
   {
     id: 5,
-    question: "What is the proper ratio of water to Class A foam concentrate for structural firefighting?",
+    question: "What is the definition of a dead load?",
     options: [
-      "0.1% to 0.3%",
-      "0.3% to 0.6%",
-      "1% to 3%",
-      "3% to 6%"
+      "Impact",
+      "Fire",
+      "Design",
+      "Weight of permanent building materials"
     ],
-    correctAnswer: 1,
-    explanation: "For structural firefighting, the proper ratio of Class A foam concentrate to water is typically 0.3% to 0.6%, which enhances water's effectiveness by reducing surface tension."
+    correctAnswer: 3,
+    explanation: "Dead load includes permanent parts of a building's structure."
   },
-  // Additional 145 questions for Level I
   {
     id: 6,
-    question: "Which protective ensemble component is specifically designed to protect the firefighter's head from impact?",
+    question: "What should you do if you become disoriented while searching a burning building?",
     options: [
-      "Nomex hood",
-      "SCBA facepiece",
-      "Helmet",
-      "Flash hood"
+      "Lay against a wall",
+      "Retrace steps to your original location",
+      "Activate your PASS device",
+      "Initiate a mayday"
     ],
-    correctAnswer: 2,
-    explanation: "The helmet is specifically designed to protect the firefighter's head from impact, falling objects, and heat."
+    correctAnswer: 3,
+    explanation: "A mayday signals that a firefighter is in trouble and requires immediate assistance."
   },
   {
     id: 7,
-    question: "What is the purpose of a personal alert safety system (PASS) device?",
+    question: "What is an intentionally set fire called?",
     options: [
-      "To monitor air supply in an SCBA",
-      "To alert others when a firefighter becomes motionless",
-      "To communicate with other firefighters",
-      "To detect hazardous gases"
+      "Intrinsic",
+      "Incendiary",
+      "External",
+      "Legal"
     ],
     correctAnswer: 1,
-    explanation: "A PASS device sounds an alarm when a firefighter becomes motionless for a specified period, alerting others that the firefighter may be in distress."
+    explanation: "Incendiary refers to intentional arson."
   },
   {
     id: 8,
-    question: "Which type of fire extinguisher is appropriate for Class B fires?",
+    question: "What should a firefighter remember when answering a phone call at the fire department?",
     options: [
-      "Water extinguisher",
-      "Dry chemical extinguisher",
-      "Class D extinguisher",
-      "Class K extinguisher"
+      "They are representing the fire department",
+      "Keep it brief to avoid tying up the line",
+      "Hang up quickly after gathering information",
+      "Leave the person on hold as long as needed"
     ],
-    correctAnswer: 1,
-    explanation: "Dry chemical extinguishers are appropriate for Class B fires, which involve flammable liquids and gases."
+    correctAnswer: 0,
+    explanation: "Professional conduct reflects positively on the fire department."
   },
   {
     id: 9,
-    question: "What is the term for the process of removing contaminated protective clothing and equipment after a fire?",
+    question: "What are the three main methods of interior fire attack?",
     options: [
-      "Donning",
-      "Doffing",
-      "Decontamination",
-      "Sterilization"
+      "Straight, fog, and solid",
+      "Offensive, defensive, and combination",
+      "Direct, indirect, and combination",
+      "Extinguishment, exposure, and combination"
     ],
     correctAnswer: 2,
-    explanation: "Decontamination is the process of removing contaminants from protective clothing and equipment to reduce the risk of exposure to hazardous substances."
+    explanation: "Direct attack applies water to the base of the fire, indirect cools the atmosphere, and combination uses both."
   },
   {
     id: 10,
-    question: "What is the function of a sprinkler system in a building?",
+    question: "What type of report do first-arriving companies broadcast to incoming units?",
     options: [
-      "To detect smoke and alert occupants",
-      "To automatically suppress or extinguish a fire",
-      "To provide a water supply for firefighters",
-      "To ventilate smoke from the building"
+      "Initial",
+      "Urgent",
+      "Status",
+      "Select"
     ],
-    correctAnswer: 2,
-    explanation: "Sprinkler systems are designed to automatically suppress or extinguish a fire by discharging water when heat is detected, helping to control the fire in its early stages."
+    correctAnswer: 0,
+    explanation: "An initial report provides a quick summary of the scene."
   },
   {
     id: 11,
-    question: "What is the purpose of a fire hose?",
+    question: "What is covered under the NFPA 1500 standard?",
     options: [
-      "To supply water from a water source to a fire",
-      "To provide ventilation during a fire",
-      "To create a barrier to prevent fire spread",
-      "To rescue victims from a fire"
+      "Salvage operations",
+      "Safety programs",
+      "Electrical safety requirements",
+      "Budgeting requirements"
     ],
-    correctAnswer: 0,
-    explanation: "A fire hose is used to supply water from a water source, such as a fire hydrant or fire apparatus, to extinguish a fire."
+    correctAnswer: 1,
+    explanation: "NFPA 1500 focuses on health and safety for firefighters."
   },
   {
     id: 12,
-    question: "What is the role of a firefighter during search and rescue operations?",
+    question: "How often should ropes be inspected?",
     options: [
-      "To locate and remove victims from a fire or hazardous environment",
-      "To operate fire apparatus and equipment",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts"
+      "After every use",
+      "Monthly",
+      "Weekly",
+      "Before use"
     ],
     correctAnswer: 0,
-    explanation: "During search and rescue operations, firefighters locate and remove victims from a fire or hazardous environment, ensuring their safety and well-being."
+    explanation: "Inspecting ropes prevents failure in emergencies."
   },
   {
     id: 13,
-    question: "What is the importance of maintaining situational awareness during firefighting operations?",
+    question: "What symbol and color identify Class C extinguishers?",
     options: [
-      "To ensure the safety of firefighters and victims",
-      "To coordinate fire suppression efforts effectively",
-      "To anticipate potential hazards and risks",
-      "All of the above"
+      "Yellow star",
+      "Green triangle",
+      "Red square",
+      "Blue circle"
     ],
     correctAnswer: 3,
-    explanation: "Maintaining situational awareness is crucial for ensuring the safety of firefighters and victims, coordinating fire suppression efforts effectively, and anticipating potential hazards and risks."
+    explanation: "Class C extinguishers are for electrical fires and use a blue circle."
   },
   {
     id: 14,
-    question: "What is the purpose of a fire hydrant?",
+    question: "What is the side of a building where the wind is hitting called?",
     options: [
-      "To provide a water supply for firefighting operations",
-      "To regulate water pressure in a water distribution system",
-      "To monitor water consumption in a community",
-      "To test water quality in a water supply"
+      "Windward, leeward",
+      "Leeward, windward",
+      "Downwind, upwind",
+      "Upwind, windward"
     ],
     correctAnswer: 0,
-    explanation: "A fire hydrant provides a readily available water supply for firefighting operations, allowing firefighters to quickly access water to extinguish fires."
+    explanation: "The windward side faces the wind, while the leeward side is sheltered."
   },
-    {
+  {
     id: 15,
-    question: "What is the function of a fire alarm system?",
+    question: "What is the process of opening concrete block walls called?",
     options: [
-      "To detect smoke and alert occupants",
-      "To automatically suppress or extinguish a fire",
-      "To provide a water supply for firefighters",
-      "To ventilate smoke from the building"
+      "Breaching",
+      "Barreling",
+      "Mauling",
+      "Tunneling"
     ],
     correctAnswer: 0,
-    explanation: "A fire alarm system is designed to detect smoke or heat and alert occupants of a fire, allowing them to evacuate the building safely."
+    explanation: "Breaching is the act of breaking through barriers."
   },
   {
     id: 16,
-    question: "What is the purpose of a fire department's standard operating procedures (SOPs)?",
+    question: "What is a major safety concern when raising a ladder?",
     options: [
-      "To provide guidelines for safe and effective firefighting operations",
-      "To establish a chain of command within the fire department",
-      "To outline the responsibilities of each firefighter",
-      "All of the above"
+      "Type of ladder",
+      "Teamwork",
+      "Contact with electrical wires and overhead obstructions",
+      "Ladder durability"
     ],
-    correctAnswer: 3,
-    explanation: "Standard operating procedures (SOPs) provide guidelines for safe and effective firefighting operations, establish a chain of command, and outline the responsibilities of each firefighter."
+    correctAnswer: 2,
+    explanation: "Contact with overhead wires can cause electrocution."
   },
   {
     id: 17,
-    question: "What is the role of a fire investigator?",
+    question: "How should the coupling on a high-pressure SCBA hose be secured?",
     options: [
-      "To determine the origin and cause of a fire",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Reverse-threaded",
+      "Hand-tight",
+      "Secured with a wrench",
+      "Treated with Teflon tape"
     ],
-    correctAnswer: 0,
-    explanation: "A fire investigator is responsible for determining the origin and cause of a fire, gathering evidence, and conducting interviews to understand the circumstances surrounding the fire."
+    correctAnswer: 1,
+    explanation: "Hand-tight couplings prevent damage or leaks."
   },
   {
     id: 18,
-    question: "What is the importance of conducting regular fire drills in a building?",
+    question: "What information must be stamped or labeled on a compressed air cylinder?",
     options: [
-      "To familiarize occupants with evacuation procedures",
-      "To test the effectiveness of fire alarm systems",
-      "To identify potential hazards and risks",
-      "All of the above"
+      "Fire department's initials",
+      "Last hydrostatic test date",
+      "Date on which the cylinder must be hydrostatically tested",
+      "Last fill date"
     ],
-    correctAnswer: 3,
-    explanation: "Regular fire drills familiarize occupants with evacuation procedures, test the effectiveness of fire alarm systems, and identify potential hazards and risks, ensuring a safe and orderly evacuation in the event of a fire."
+    correctAnswer: 1,
+    explanation: "The hydrostatic test date ensures the cylinder is safe for use under pressure."
   },
   {
     id: 19,
-    question: "What is the purpose of a fire department's public education program?",
+    question: "What is the safest way to disconnect power to a building?",
     options: [
-      "To educate the public about fire safety and prevention",
-      "To recruit new firefighters",
-      "To raise funds for the fire department",
-      "To promote community relations"
+      "Remove the electrical meter",
+      "Cut the entrance wires",
+      "Shut off the main breaker at the service panel",
+      "Pull the main breaker at the power pole"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's public education program aims to educate the public about fire safety and prevention, reducing the risk of fires and injuries in the community."
+    correctAnswer: 2,
+    explanation: "Shutting off at the main breaker prevents electrical shock and fire hazards."
   },
   {
     id: 20,
-    question: "What is the function of a fire suppression system in a commercial kitchen?",
+    question: "What gas does a closed-circuit SCBA use?",
     options: [
-      "To automatically extinguish grease fires",
-      "To provide ventilation during cooking operations",
-      "To regulate temperature in the kitchen",
-      "To monitor air quality in the kitchen"
+      "Compressed air",
+      "Carbon dioxide",
+      "Oxygen",
+      "Carbon monoxide"
     ],
-    correctAnswer: 0,
-    explanation: "A fire suppression system in a commercial kitchen is designed to automatically extinguish grease fires, preventing them from spreading and causing extensive damage."
+    correctAnswer: 2,
+    explanation: "Closed-circuit SCBA units recycle oxygen for breathing."
   },
   {
     id: 21,
-    question: "What is the purpose of a fire department's hazardous materials (HazMat) team?",
+    question: "What is true about structural firefighting helmets?",
     options: [
-      "To respond to incidents involving hazardous materials",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Face shields should be tinted to reduce glare",
+      "Face shields alone provide enough protection from flying debris",
+      "They must have earflaps or neck covers",
+      "Chin straps are optional"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's hazardous materials (HazMat) team is trained and equipped to respond to incidents involving hazardous materials, mitigating the risks and protecting the environment and public health."
+    correctAnswer: 2,
+    explanation: "Earflaps and neck covers protect firefighters from heat and falling debris."
   },
   {
     id: 22,
-    question: "What is the importance of conducting regular inspections of fire extinguishers?",
+    question: "What should a firefighter do before transmitting on the fire department radio?",
     options: [
-      "To ensure they are properly charged and in good working condition",
-      "To familiarize occupants with their location and operation",
-      "To identify potential hazards and risks",
-      "All of the above"
+      "Press the key two or three times",
+      "Key the microphone and clear their throat",
+      "Turn up the volume",
+      "Ensure the channel is clear"
     ],
     correctAnswer: 3,
-    explanation: "Regular inspections of fire extinguishers ensure they are properly charged and in good working condition, familiarize occupants with their location and operation, and identify potential hazards and risks."
+    explanation: "Ensuring a clear channel prevents communication interference."
   },
   {
     id: 23,
-    question: "What is the role of a fire marshal?",
+    question: "What is hypoxia?",
     options: [
-      "To enforce fire codes and regulations",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To investigate the origin and cause of fires"
+      "Low blood sugar",
+      "Low blood pressure",
+      "A deficiency of oxygen",
+      "A lowering of the body's core temperature"
     ],
-    correctAnswer: 0,
-    explanation: "A fire marshal is responsible for enforcing fire codes and regulations, conducting inspections, and ensuring compliance with fire safety standards."
+    correctAnswer: 2,
+    explanation: "Hypoxia is a condition caused by a lack of oxygen in the body."
   },
   {
     id: 24,
-    question: "What is the purpose of a fire department's community risk reduction program?",
+    question: "How can a trapped firefighter conserve air while awaiting rescue?",
     options: [
-      "To identify and address the specific fire risks in a community",
-      "To recruit new firefighters",
-      "To raise funds for the fire department",
-      "To promote community relations"
+      "Partially close the valve",
+      "Open the bypass valve",
+      "Close the cylinder valve",
+      "Control their breathing"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's community risk reduction program aims to identify and address the specific fire risks in a community, implementing strategies to reduce the likelihood and impact of fires."
+    correctAnswer: 3,
+    explanation: "Controlled breathing conserves oxygen."
   },
   {
     id: 25,
-    question: "What is the function of a fire-resistant door?",
+    question: "Why does a fog stream absorb heat better than a solid stream?",
     options: [
-      "To prevent the spread of fire and smoke",
-      "To provide ventilation during a fire",
-      "To regulate temperature in a building",
-      "To monitor air quality in a building"
+      "Greater surface area",
+      "Free-moving molecules",
+      "Lower viscosity",
+      "Coefficient of heat absorption"
     ],
     correctAnswer: 0,
-    explanation: "A fire-resistant door is designed to prevent the spread of fire and smoke, providing a barrier that can contain a fire and allow occupants to evacuate safely."
+    explanation: "The increased surface area from the fog pattern allows more heat absorption."
   },
   {
     id: 26,
-    question: "What is the purpose of a fire department's emergency medical services (EMS) program?",
+    question: "What is the easiest hose load for preconnected attack lines?",
     options: [
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations",
-      "To investigate the origin and cause of fires"
+      "Flat load",
+      "Stacked load",
+      "Straight load",
+      "Bundle load"
     ],
     correctAnswer: 0,
-    explanation: "A fire department's emergency medical services (EMS) program provides medical assistance to injured victims, offering pre-hospital care and transportation to medical facilities."
+    explanation: "A flat load allows for quick and easy deployment of hose lines."
   },
   {
     id: 27,
-    question: "What is the importance of conducting regular maintenance on fire hydrants?",
+    question: "What is the typical operating pressure for most smooth-bore nozzles?",
     options: [
-      "To ensure they are in good working condition and readily available for firefighting operations",
-      "To regulate water pressure in a water distribution system",
-      "To monitor water consumption in a community",
-      "To test water quality in a water supply"
+      "350 kPa/50 psi",
+      "525 kPa/75 psi",
+      "630 kPa/90 psi",
+      "700 kPa/100 psi"
     ],
     correctAnswer: 0,
-    explanation: "Regular maintenance on fire hydrants ensures they are in good working condition and readily available for firefighting operations, allowing firefighters to quickly access water to extinguish fires."
+    explanation: "Smooth-bore nozzles generally operate at a lower pressure for better control."
   },
   {
     id: 28,
-    question: "What is the role of a fire safety inspector?",
+    question: "What is the process of finding hidden fires and making the building safe?",
     options: [
-      "To conduct inspections of buildings and facilities to ensure compliance with fire codes",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To investigate the origin and cause of fires"
+      "Overhaul",
+      "Secondary search",
+      "Size-up",
+      "Salvage"
     ],
     correctAnswer: 0,
-    explanation: "A fire safety inspector conducts inspections of buildings and facilities to ensure compliance with fire codes, identifying potential hazards and risks and enforcing fire safety standards."
+    explanation: "Overhaul ensures that all hidden fires are extinguished."
   },
   {
     id: 29,
-    question: "What is the purpose of a fire department's arson investigation unit?",
+    question: "When should the firefighter charge the supply line when attaching a hose to a hydrant?",
     options: [
-      "To investigate the origin and cause of suspicious fires",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "As soon as possible",
+      "Not until the driver/operator's signal is received",
+      "After opening the fire hydrant all the way",
+      "After 10 minutes from the time of drop-off"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's arson investigation unit investigates the origin and cause of suspicious fires, gathering evidence and conducting interviews to determine if arson was involved."
+    correctAnswer: 1,
+    explanation: "Charging before the operator's signal can cause unsafe pressure surges."
   },
   {
     id: 30,
-    question: "What is the function of a fire-rated wall?",
+    question: "What is the main difference between Type I and Type II construction?",
     options: [
-      "To prevent the spread of fire and smoke",
-      "To provide ventilation during a fire",
-      "To regulate temperature in a building",
-      "To monitor air quality in a building"
+      "Type I occupants are the main hazard.",
+      "Type I is more prone to collapse.",
+      "Type II roofs are more stable.",
+      "Type II lacks insulation and protection."
     ],
-    correctAnswer: 0,
-    explanation: "A fire-rated wall is designed to prevent the spread of fire and smoke, providing a barrier that can contain a fire and allow occupants to evacuate safely."
+    correctAnswer: 3,
+    explanation: "Type II construction uses less fire-resistant materials."
   },
   {
     id: 31,
-    question: "What is the purpose of a fire department's technical rescue team?",
+    question: "What are the two primary types of self-contained breathing apparatus (SCBA)?",
     options: [
-      "To respond to specialized rescue incidents, such as high-angle rescues and confined space rescues",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Demand and pressure-demand",
+      "Open-circuit and closed-circuit",
+      "National Institute for Occupational Safety and Health approved",
+      "Compressed air and liquid oxygen"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's technical rescue team is trained and equipped to respond to specialized rescue incidents, such as high-angle rescues and confined space rescues, providing specialized skills and equipment to safely rescue victims."
+    correctAnswer: 1,
+    explanation: "Open-circuit SCBAs release exhaled air, while closed-circuit SCBAs recycle exhaled air."
   },
   {
     id: 32,
-    question: "What is the importance of conducting regular training exercises for firefighters?",
+    question: "What is the name of the facility where emergency calls are routed?",
     options: [
-      "To maintain and improve their skills and knowledge",
-      "To familiarize them with new equipment and techniques",
-      "To promote teamwork and coordination",
-      "All of the above"
+      "Public Safety Answering Point (PSAP)/Public Safety Communications Centre",
+      "Unified Command (UC)",
+      "Emergency Collection Point (ECP)",
+      "Emergency Operations Centre (EOC)"
     ],
-    correctAnswer: 3,
-    explanation: "Regular training exercises for firefighters maintain and improve their skills and knowledge, familiarize them with new equipment and techniques, and promote teamwork and coordination, ensuring they are prepared to respond effectively to emergencies."
+    correctAnswer: 0,
+    explanation: "A PSAP handles emergency calls and dispatches responders."
   },
   {
     id: 33,
-    question: "What is the role of a fire protection engineer?",
+    question: "What should a firefighter do if lost, trapped, or disoriented during a fire?",
     options: [
-      "To design and evaluate fire protection systems",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Try to call their partner and activate their PASS device.",
+      "Immediately transmit a mayday.",
+      "Inform command that help might be needed soon.",
+      "Follow the female coupling to the exterior."
     ],
-    correctAnswer: 0,
-    explanation: "A fire protection engineer designs and evaluates fire protection systems, ensuring they meet the required standards and provide effective fire protection for buildings and facilities."
+    correctAnswer: 1,
+    explanation: "Transmitting a mayday ensures that immediate help is sent."
   },
   {
     id: 34,
-    question: "What is the purpose of a fire department's swiftwater rescue team?",
+    question: "What is the measure of how long a structure will maintain its load-bearing capacity during a fire?",
     options: [
-      "To respond to incidents involving water rescues in rivers, streams, and other bodies of water",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Fire code approval",
+      "Noncombustible construction",
+      "Fire resistance rating",
+      "NFPA rating"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's swiftwater rescue team is trained and equipped to respond to incidents involving water rescues in rivers, streams, and other bodies of water, providing specialized skills and equipment to safely rescue victims."
+    correctAnswer: 2,
+    explanation: "Fire resistance rating measures how long structural integrity is maintained under fire conditions."
   },
   {
     id: 35,
-    question: "What is the function of a fire-rated ceiling?",
+    question: "What is a recommended safety practice when cutting a roof?",
     options: [
-      "To prevent the spread of fire and smoke",
-      "To provide ventilation during a fire",
-      "To regulate temperature in a building",
-      "To monitor air quality in a building"
+      "Use antennas for support",
+      "Cut a few small holes",
+      "Ensure structural supports are not cut",
+      "Work from the leeward side"
     ],
-    correctAnswer: 0,
-    explanation: "A fire-rated ceiling is designed to prevent the spread of fire and smoke, providing a barrier that can contain a fire and allow occupants to evacuate safely."
+    correctAnswer: 2,
+    explanation: "Cutting supports can lead to structural collapse."
   },
   {
     id: 36,
-    question: "What is the purpose of a fire department's urban search and rescue (USAR) team?",
+    question: "How often should fire department ladders be inspected?",
     options: [
-      "To respond to incidents involving structural collapses and other complex rescue scenarios",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Tested",
+      "Lubricated",
+      "Inspected",
+      "Varnished"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's urban search and rescue (USAR) team is trained and equipped to respond to incidents involving structural collapses and other complex rescue scenarios, providing specialized skills and equipment to safely rescue victims."
+    correctAnswer: 2,
+    explanation: "Regular inspections ensure readiness."
   },
   {
     id: 37,
-    question: "What is the importance of conducting regular inspections of fire protection systems?",
+    question: "What term signals the immediate need to clear the radio for critical information?",
     options: [
-      "To ensure they are in good working condition and ready to respond to a fire",
-      "To familiarize occupants with their location and operation",
-      "To identify potential hazards and risks",
-      "All of the above"
+      "Emergency Traffic",
+      "10-99",
+      "Signal 2",
+      "Critical Alert"
     ],
-    correctAnswer: 3,
-    explanation: "Regular inspections of fire protection systems ensure they are in good working condition and ready to respond to a fire, familiarize occupants with their location and operation, and identify potential hazards and risks."
+    correctAnswer: 0,
+    explanation: "\"Emergency Traffic\" gives priority to urgent messages."
   },
   {
     id: 38,
-    question: "What is the role of a fire safety educator?",
+    question: "What should a firefighter do when encountering downed power lines?",
     options: [
-      "To educate the public about fire safety and prevention",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Obtain lineman gloves",
+      "Wait until the power company arrives",
+      "Use a dry rope to pull the victim away",
+      "Wear rubber boots"
     ],
-    correctAnswer: 0,
-    explanation: "A fire safety educator educates the public about fire safety and prevention, reducing the risk of fires and injuries in the community."
+    correctAnswer: 1,
+    explanation: "Only the utility company should handle downed power lines."
   },
   {
     id: 39,
-    question: "What is the purpose of a fire department's wildland fire team?",
+    question: "What type of lighting equipment is typically used for emergency services?",
     options: [
-      "To respond to incidents involving wildfires and brush fires",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Portable and fixed",
+      "110 or 220 DC current",
+      "12 or 24-volt AC current",
+      "Portable or wheeled"
     ],
     correctAnswer: 0,
-    explanation: "A fire department's wildland fire team is trained and equipped to respond to incidents involving wildfires and brush fires, protecting lives, property, and natural resources."
+    explanation: "Both portable and fixed lighting are essential for scene visibility."
   },
   {
     id: 40,
-    question: "What is the function of a fire-rated floor?",
+    question: "Why do stacked or piled materials create a hazard when burning?",
     options: [
-      "To prevent the spread of fire and smoke",
-      "To provide ventilation during a fire",
-      "To regulate temperature in a building",
-      "To monitor air quality in a building"
+      "If fog streams are not used, the fire will keep burning and increase stress for firefighters.",
+      "These fires are best fought with piercing nozzles that can accidentally injure firefighters.",
+      "Halligans used to prop up stacked materials can cause trip hazards.",
+      "Stacked materials can fall, causing injury to firefighters."
     ],
-    correctAnswer: 0,
-    explanation: "A fire-rated floor is designed to prevent the spread of fire and smoke, providing a barrier that can contain a fire and allow occupants to evacuate safely."
+    correctAnswer: 3,
+    explanation: "Stacked materials are unstable when burning and can collapse, causing injury."
   },
   {
     id: 41,
-    question: "What is the purpose of a fire department's dive rescue team?",
+    question: "How far should a 40-foot ladder be placed from a building?",
     options: [
-      "To respond to incidents involving water rescues in lakes, rivers, and other bodies of water",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "8 feet",
+      "10 feet",
+      "12 feet",
+      "15 feet"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's dive rescue team is trained and equipped to respond to incidents involving water rescues in lakes, rivers, and other bodies of water, providing specialized skills and equipment to safely rescue victims."
+    correctAnswer: 1,
+    explanation: "A ladder should be placed at a 75-degree angle, which equals 1/4th of its height."
   },
   {
     id: 42,
-    question: "What is the importance of conducting regular inspections of fire apparatus?",
+    question: "What is true about crawling in limited visibility?",
     options: [
-      "To ensure they are in good working condition and ready to respond to emergencies",
-      "To familiarize firefighters with their operation and maintenance",
-      "To identify potential hazards and risks",
-      "All of the above"
+      "It is the fastest method to search",
+      "Send one person ahead to recon",
+      "Duck walk to increase search time",
+      "Feel the floor in front with a tool"
     ],
     correctAnswer: 3,
-    explanation: "Regular inspections of fire apparatus ensure they are in good working condition and ready to respond to emergencies, familiarize firefighters with their operation and maintenance, and identify potential hazards and risks."
+    explanation: "Feeling the floor helps detect hazards and obstructions."
   },
   {
     id: 43,
-    question: "What is the role of a fire safety consultant?",
+    question: "What is the typical length of a single section of a 45 mm (1 ¾ inch) attack line?",
     options: [
-      "To provide expert advice on fire safety and prevention",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "3 m (10 feet)",
+      "7.6 m (25 feet)",
+      "15 m (50 feet)",
+      "23 m (75 feet)"
     ],
-    correctAnswer: 0,
-    explanation: "A fire safety consultant provides expert advice on fire safety and prevention, helping organizations and individuals to reduce the risk of fires and injuries."
+    correctAnswer: 2,
+    explanation: "A standard attack line section is typically 15 m (50 feet) for easy handling and deployment."
   },
   {
     id: 44,
-    question: "What is the purpose of a fire department's high-angle rescue team?",
+    question: "What are signs of oxygen deficiency?",
     options: [
-      "To respond to incidents involving rescues from elevated structures, such as buildings and cliffs",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Sweating and ringing in ears",
+      "Dizziness and impaired vision",
+      "Increased breathing and muscle weakness",
+      "Headache and fatigue"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's high-angle rescue team is trained and equipped to respond to incidents involving rescues from elevated structures, such as buildings and cliffs, providing specialized skills and equipment to safely rescue victims."
+    correctAnswer: 2,
+    explanation: "Increased breathing rate and muscle weakness signal low oxygen levels."
   },
   {
     id: 45,
-    question: "What is the function of a fire-rated window?",
+    question: "What type of heat transfer happens through electromagnetic waves?",
     options: [
-      "To prevent the spread of fire and smoke",
-      "To provide ventilation during a fire",
-      "To regulate temperature in a building",
-      "To monitor air quality in a building"
+      "Convection",
+      "Radiation",
+      "Conduction",
+      "Flame contact"
     ],
-    correctAnswer: 0,
-    explanation: "A fire-rated window is designed to prevent the spread of fire and smoke, providing a barrier that can contain a fire and allow occupants to evacuate safely."
+    correctAnswer: 1,
+    explanation: "Radiation transfers heat without direct contact."
   },
   {
     id: 46,
-    question: "What is the purpose of a fire department's confined space rescue team?",
+    question: "How should an axe be hoisted?",
     options: [
-      "To respond to incidents involving rescues from confined spaces, such as tanks and tunnels",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Using a rope at both ends",
+      "Vertically with the head of the axe up",
+      "Vertically with the head of the axe down",
+      "With a tag line attached"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's confined space rescue team is trained and equipped to respond to incidents involving rescues from confined spaces, such as tanks and tunnels, providing specialized skills and equipment to safely rescue victims."
+    correctAnswer: 2,
+    explanation: "Hoisting with the head down prevents injury."
   },
   {
     id: 47,
-    question: "What is the importance of conducting regular inspections of fire hoses?",
+    question: "What is the main purpose of a public fire service communication system?",
     options: [
-      "To ensure they are in good working condition and ready to supply water to a fire",
-      "To familiarize firefighters with their operation and maintenance",
-      "To identify potential hazards and risks",
-      "All of the above"
+      "Accept reports of emergencies and dispatch emergency units.",
+      "Accept reports of emergencies and generate data.",
+      "Dispatch and communicate with emergency units.",
+      "Communicate with emergency units and generate supportive data."
     ],
-    correctAnswer: 3,
-    explanation: "Regular inspections of fire hoses ensure they are in good working condition and ready to supply water to a fire, familiarize firefighters with their operation and maintenance, and identify potential hazards and risks."
+    correctAnswer: 0,
+    explanation: "A communication system ensures quick and coordinated responses."
   },
   {
     id: 48,
-    question: "What is the role of a fire safety manager?",
+    question: "What is a pry bar or rambar acts as a _______ to multiply the force applied during forcible entry?",
     options: [
-      "To oversee fire safety and prevention efforts in a building or facility",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Spacer",
+      "Gear",
+      "Spring",
+      "Lever"
     ],
-    correctAnswer: 0,
-    explanation: "A fire safety manager oversees fire safety and prevention efforts in a building or facility, ensuring compliance with fire codes and implementing strategies to reduce the risk of fires and injuries."
+    correctAnswer: 3,
+    explanation: "A lever multiplies the applied force, making forcible entry easier."
   },
   {
     id: 49,
-    question: "What is the purpose of a fire department's trench rescue team?",
+    question: "What is the main purpose of salvage operations?",
     options: [
-      "To respond to incidents involving rescues from trenches and excavations",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "To prevent fire extension.",
+      "To protect fire department property from damage.",
+      "To separate or protect interior and exterior materials from the harmful environment.",
+      "To provide better information to the fire inspector."
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's trench rescue team is trained and equipped to respond to incidents involving rescues from trenches and excavations, providing specialized skills and equipment to safely rescue victims."
+    correctAnswer: 2,
+    explanation: "Salvage operations focus on protecting property from further damage."
   },
   {
     id: 50,
-    question: "What is the function of a fire-rated door frame?",
+    question: "What should you do if you become disoriented while searching a burning building?",
     options: [
-      "To prevent the spread of fire and smoke",
-      "To provide ventilation during a fire",
-      "To regulate temperature in a building",
-      "To monitor air quality in a building"
+      "Lay against a wall",
+      "Retrace steps to your original location",
+      "Activate your PASS device",
+      "Initiate a mayday"
     ],
-    correctAnswer: 0,
-    explanation: "A fire-rated door frame is designed to prevent the spread of fire and smoke, providing a barrier that can contain a fire and allow occupants to evacuate safely."
+    correctAnswer: 3,
+    explanation: "A mayday signals that a firefighter is in trouble and requires immediate assistance."
   },
   {
     id: 51,
-    question: "What is the purpose of a fire department's collapse rescue team?",
+    question: "What area should firefighters prioritize when conducting a search during a fire?",
     options: [
-      "To respond to incidents involving structural collapses and other complex rescue scenarios",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Area immediately around the fire",
+      "Exterior of the structure",
+      "Top floor",
+      "Area directly inside the main egress"
     ],
     correctAnswer: 0,
-    explanation: "A fire department's collapse rescue team is trained and equipped to respond to incidents involving structural collapses and other complex rescue scenarios, providing specialized skills and equipment to safely rescue victims."
+    explanation: "Searching near the fire increases the chance of finding victims quickly."
   },
   {
     id: 52,
-    question: "What is the importance of conducting regular inspections of fire sprinkler systems?",
+    question: "What is an exception to the two-in/two-out rule when entering burning buildings?",
     options: [
-      "To ensure they are in good working condition and ready to suppress a fire",
-      "To familiarize occupants with their location and operation",
-      "To identify potential hazards and risks",
-      "All of the above"
+      "None. There are no exceptions allowed.",
+      "It can be waived if not enough people are available.",
+      "During life-threatening situations where immediate action can save a life.",
+      "It can be waived at the discretion of the firefighter."
     ],
-    correctAnswer: 3,
-    explanation: "Regular inspections of fire sprinkler systems ensure they are in good working condition and ready to suppress a fire, familiarize occupants with their location and operation, and identify potential hazards and risks."
+    correctAnswer: 2,
+    explanation: "Firefighters can enter alone if there's a reasonable chance to save a life."
   },
   {
     id: 53,
-    question: "What is the role of a fire safety trainer?",
+    question: "When a firefighter finds a victim during search and rescue, what should they do first?",
     options: [
-      "To provide training on fire safety and prevention",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Contact EMS and have them meet you at the front door.",
+      "Inform Operations that a victim was found.",
+      "Notify Command immediately.",
+      "Pass the victim off to the rapid intervention team."
     ],
-    correctAnswer: 0,
-    explanation: "A fire safety trainer provides training on fire safety and prevention, helping individuals and organizations to reduce the risk of fires and injuries."
+    correctAnswer: 2,
+    explanation: "Immediate communication with Command ensures that resources are directed appropriately."
   },
   {
     id: 54,
-    question: "What is the purpose of a fire department's ice rescue team?",
+    question: "What can happen when wearing wet or damp clothing during firefighting?",
     options: [
-      "To respond to incidents involving rescues from ice-covered bodies of water",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Provides better thermal protection",
+      "Can lead to reduced thermal resistance and burns",
+      "Makes the wearer less susceptible to fatigue",
+      "Does not affect thermal protection"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's ice rescue team is trained and equipped to respond to incidents involving rescues from ice-covered bodies of water, providing specialized skills and equipment to safely rescue victims."
+    correctAnswer: 1,
+    explanation: "Wet clothing allows heat to transfer more easily, increasing the risk of burns."
   },
   {
     id: 55,
-    question: "What is the function of a fire-rated glazing?",
+    question: "What are the two main types of fire hydrants?",
     options: [
-      "To prevent the spread of fire and smoke",
-      "To provide ventilation during a fire",
-      "To regulate temperature in a building",
-      "To monitor air quality in a building"
+      "Wet barrel and dry barrel",
+      "High-pressure and low-pressure",
+      "Groundwater and surface water",
+      "Treated and untreated water"
     ],
     correctAnswer: 0,
-    explanation: "A fire-rated glazing is designed to prevent the spread of fire and smoke, providing a barrier that can contain a fire and allow occupants to evacuate safely."
+    explanation: "Wet barrel hydrants are used in warm climates, while dry barrel hydrants prevent freezing."
   },
   {
     id: 56,
-    question: "What is the purpose of a fire department's marine rescue team?",
+    question: "What should a firefighter do if a compressed air cylinder is found to be defective?",
     options: [
-      "To respond to incidents involving rescues from boats and other watercraft",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Repaired by the person who discovered it",
+      "Removed from service",
+      "Put on reserve",
+      "Filled to 80%"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's marine rescue team is trained and equipped to respond to incidents involving rescues from boats and other watercraft, providing specialized skills and equipment to safely rescue victims."
+    correctAnswer: 1,
+    explanation: "Faulty SCBAs can endanger lives."
   },
   {
     id: 57,
-    question: "What is the importance of conducting regular inspections of fire alarm systems?",
+    question: "What type of gas creates a backdraft situation?",
     options: [
-      "To ensure they are in good working condition and ready to alert occupants to a fire",
-      "To familiarize occupants with their location and operation",
-      "To identify potential hazards and risks",
-      "All of the above"
+      "Natural gas",
+      "Carbon monoxide",
+      "Propane",
+      "Oxygen"
     ],
-    correctAnswer: 3,
-    explanation: "Regular inspections of fire alarm systems ensure they are in good working condition and ready to alert occupants to a fire, familiarize occupants with their location and operation, and identify potential hazards and risks."
+    correctAnswer: 1,
+    explanation: "Backdraft occurs when trapped gases ignite upon oxygen introduction."
   },
   {
     id: 58,
-    question: "What is the role of a fire safety officer?",
+    question: "What should a firefighter do before transmitting on the fire department radio?",
     options: [
-      "To oversee fire safety and prevention efforts in an organization",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Press the key two or three times",
+      "Key the microphone and clear their throat",
+      "Turn up the volume",
+      "Ensure the channel is clear"
     ],
-    correctAnswer: 0,
-    explanation: "A fire safety officer oversees fire safety and prevention efforts in an organization, ensuring compliance with fire codes and implementing strategies to reduce the risk of fires and injuries."
+    correctAnswer: 3,
+    explanation: "Ensuring a clear channel prevents communication interference."
   },
   {
     id: 59,
-    question: "What is the purpose of a fire department's mountain rescue team?",
+    question: "What symbol and color are used for Class A extinguishers?",
     options: [
-      "To respond to incidents involving rescues from mountains and other rugged terrain",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Circle, blue",
+      "Star, yellow",
+      "Triangle, green",
+      "Square, red"
     ],
-    correctAnswer: 0,
-    explanation: "A fire department's mountain rescue team is trained and equipped to respond to incidents involving rescues from mountains and other rugged terrain, providing specialized skills and equipment to safely rescue victims."
+    correctAnswer: 2,
+    explanation: "Class A extinguishers are for ordinary combustibles and use the triangle/green symbol."
   },
   {
     id: 60,
-    question: "What is the function of a fire-rated damper?",
+    question: "What problem can occur due to a water hammer?",
     options: [
-      "To prevent the spread of fire and smoke through ductwork",
-      "To provide ventilation during a fire",
-      "To regulate temperature in a building",
-      "To monitor air quality in a building"
+      "Pressure decrease on the attack line",
+      "Severe injury to a firefighter",
+      "Damage to the hoseline or pumper",
+      "Cavitation of the pumper pump"
     ],
-    correctAnswer: 0,
-    explanation: "A fire-rated damper is designed to prevent the spread of fire and smoke through ductwork, providing a barrier that can contain a fire and allow occupants to evacuate safely."
+    correctAnswer: 2,
+    explanation: "A water hammer creates a pressure surge that can damage equipment."
   },
   {
     id: 61,
-    question: "What is the purpose of a fire department's cave rescue team?",
+    question: "What type of heat transfer occurs through electromagnetic waves?",
     options: [
-      "To respond to incidents involving rescues from caves and other underground environments",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Convection",
+      "Radiation",
+      "Conduction",
+      "Flame contact"
+    ],
+    correctAnswer: 1,
+    explanation: "Radiation transfers heat without direct contact."
+  },
+  {
+    id: 62,
+    question: "What is the main purpose of a public fire service communication system?",
+    options: [
+      "Accept reports of emergencies and dispatch emergency units.",
+      "Accept reports of emergencies and generate data.",
+      "Dispatch and communicate with emergency units.",
+      "Communicate with emergency units and generate supportive data."
     ],
     correctAnswer: 0,
-    explanation: "A fire department's cave rescue team is trained and equipped to respond to incidents involving rescues from caves and other underground environments, providing specialized skills and equipment to safely rescue victims."
-  },
-    {
-    id: 62,
-    question: "What is the importance of conducting regular inspections of fire suppression systems?",
-    options: [
-      "To ensure they are in good working condition and ready to suppress a fire",
-      "To familiarize occupants with their location and operation",
-      "To identify potential hazards and risks",
-      "All of the above"
-    ],
-    correctAnswer: 3,
-    explanation: "Regular inspections of fire suppression systems ensure they are in good working condition and ready to suppress a fire, familiarize occupants with their location and operation, and identify potential hazards and risks."
+    explanation: "A communication system ensures quick and coordinated responses."
   },
   {
     id: 63,
-    question: "What is the role of a fire safety engineer?",
+    question: "What is the safest way to disconnect power to a building?",
     options: [
-      "To design and evaluate fire protection systems",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Remove the electrical meter",
+      "Cut the entrance wires",
+      "Shut off the main breaker at the service panel",
+      "Pull the main breaker at the power pole"
     ],
-    correctAnswer: 0,
-    explanation: "A fire safety engineer designs and evaluates fire protection systems, ensuring they meet the required standards and provide effective fire protection for buildings and facilities."
+    correctAnswer: 2,
+    explanation: "Shutting off at the main breaker prevents electrical shock and fire hazards."
   },
   {
     id: 64,
-    question: "What is the purpose of a fire department's mine rescue team?",
+    question: "What is a telecommunication device or teletype used for?",
     options: [
-      "To respond to incidents involving rescues from mines and other underground environments",
-      "To provide medical assistance to injured victims",
-      "To coordinate fire suppression efforts",
-      "To enforce fire codes and regulations"
+      "Location finders for enhanced 9-1-1 systems",
+      "Routers for calling 9-1-1 from another city",
+      "Devices to help hearing-impaired people use telephones",
+      "Chips that enable computers to call 9-1-1"
+    ],
+    correctAnswer: 2,
+    explanation: "TTY devices allow individuals with hearing impairments to communicate through emergency systems."
+  },
+  {
+    id: 65,
+    question: "How should PPE be cleaned after firefighting?",
+    options: [
+      "Clean once a year",
+      "Hang in direct sunlight",
+      "Wash in station washers",
+      "Decontaminate after interior firefighting"
+    ],
+    correctAnswer: 3,
+    explanation: "Contaminants can be harmful if not removed."
+  },
+  {
+    id: 66,
+    question: "How should a firefighter communicate when receiving an emergency call?",
+    options: [
+      "Be direct but calm",
+      "Ask for details slowly",
+      "Talk as fast as possible",
+      "Transfer the call immediately"
     ],
     correctAnswer: 0,
-    explanation: "A fire department's mine rescue team is trained and equipped to respond to incidents involving rescues from mines and other underground environments, providing specialized skills and equipment to safely rescue victims."
-  }
-];
-
-// Adding Level II quiz data
-export const levelIIQuizData: Question[] = [
+    explanation: "Calm and clear communication ensures accurate information exchange."
+  },
   {
-    id: 1,
-    question: "What is the primary duty of a company officer during a structure fire?",
+    id: 67,
+    question: "How can a firefighter reduce stress while awaiting rescue during a mayday call?",
     options: [
-      "To operate fire apparatus",
-      "To lead and coordinate the firefighting team",
-      "To establish water supply",
-      "To perform search and rescue operations"
+      "Hyperventilate",
+      "Focus on breathing control",
+      "Yell loudly",
+      "Remove their mask"
     ],
     correctAnswer: 1,
-    explanation: "The primary duty of a company officer during a structure fire is to lead and coordinate the firefighting team, making tactical decisions and ensuring firefighter safety."
+    explanation: "Controlled breathing conserves oxygen and reduces panic."
   },
   {
-    id: 2,
-    question: "Which incident management system is widely adopted by fire departments for emergency response?",
+    id: 68,
+    question: "What should a firefighter do when exiting a fire apparatus at an emergency scene?",
     options: [
-      "Emergency Response System (ERS)",
-      "Incident Command System (ICS)",
-      "National Fire Management Protocol (NFMP)",
-      "Emergency Operations Framework (EOF)"
+      "Jump down onto the ground",
+      "Maintain two-hand and two-foot placement",
+      "Wait until the vehicle comes to a complete stop",
+      "Always dismount while backing down"
+    ],
+    correctAnswer: 2,
+    explanation: "Waiting for a complete stop prevents injury from sudden movement."
+  },
+  {
+    id: 69,
+    question: "What type of report do first-arriving companies broadcast to incoming units?",
+    options: [
+      "Initial",
+      "Urgent",
+      "Status",
+      "Select"
+    ],
+    correctAnswer: 0,
+    explanation: "An initial report provides a quick summary of the scene."
+  },
+  {
+    id: 70,
+    question: "What is a warning sign of possible backdraft?",
+    options: [
+      "Smoke-stained windows",
+      "Smoke pouring from the roof",
+      "Front door left open",
+      "Broken upper windows"
+    ],
+    correctAnswer: 0,
+    explanation: "Smoke-stained windows indicate trapped gases."
+  },
+  {
+    id: 71,
+    question: "What type of report should be filed after any incident involving firefighter injury?",
+    options: [
+      "Command report",
+      "After-action review",
+      "Incident action plan",
+      "Hazard report"
     ],
     correctAnswer: 1,
-    explanation: "The Incident Command System (ICS) is the standardized approach to incident management adopted by fire departments and other emergency response agencies nationwide."
+    explanation: "An after-action review helps improve future response and safety."
   },
   {
-    id: 3,
-    question: "What is the purpose of performing fire pre-planning for commercial buildings?",
+    id: 72,
+    question: "What is a rapid intervention team (RIT) responsible for?",
     options: [
-      "To determine the occupancy classification only",
-      "To establish water supply requirements only",
-      "To identify potential hazards and develop strategic response plans before an incident occurs",
-      "To ensure compliance with building codes only"
+      "Finding trapped victims",
+      "Monitoring weather conditions",
+      "Ensuring command structure compliance",
+      "Rescuing downed firefighters"
+    ],
+    correctAnswer: 3,
+    explanation: "RIT teams are on standby to assist firefighters in distress."
+  },
+  {
+    id: 73,
+    question: "How should rope be dried after washing?",
+    options: [
+      "In direct sunlight",
+      "In a warm, humid room",
+      "In a well-ventilated, shaded area",
+      "Coiled while wet"
     ],
     correctAnswer: 2,
-    explanation: "Fire pre-planning involves identifying potential hazards, access points, water supply locations, and developing strategic response plans for specific buildings before an incident occurs."
+    explanation: "Direct sunlight can weaken rope fibers over time."
   },
   {
-    id: 4,
-    question: "What is the primary purpose of fire flow calculations?",
+    id: 74,
+    question: "What is the minimum capacity for an SCBA cylinder?",
     options: [
-      "To determine the required water pressure for domestic use",
-      "To calculate the necessary water volume for fire suppression",
-      "To measure water quality for firefighting purposes",
-      "To determine hydrant spacing requirements"
+      "90%",
+      "75%",
+      "50%",
+      "10%"
+    ],
+    correctAnswer: 0,
+    explanation: "Maintaining at least 90% ensures enough air supply during emergencies."
+  },
+  {
+    id: 75,
+    question: "What should firefighters remember when performing a rescue in a hazardous environment?",
+    options: [
+      "Quick movements",
+      "Slow, deliberate movements",
+      "Yell for help",
+      "Abandon tools if possible"
     ],
     correctAnswer: 1,
-    explanation: "Fire flow calculations determine the volume of water in gallons per minute (GPM) required to control and extinguish a fire in a specific structure or area."
+    explanation: "Slow and deliberate movements reduce the risk of injury."
   },
   {
-    id: 5,
-    question: "Which statement best describes the relationship between fire prevention and public education?",
+    id: 76,
+    question: "What is the NFPA 1001 standard used for?",
     options: [
-      "They are completely separate aspects of fire service",
-      "Public education is a component of comprehensive fire prevention programs",
-      "Fire prevention only involves code enforcement",
-      "Public education is only necessary for children"
+      "Fire Fighter Professional Qualifications",
+      "Fire Apparatus Driver/Operator Professional Qualifications",
+      "Fire Officer Professional Qualifications",
+      "Fire Service Instructor Professional Qualifications"
+    ],
+    correctAnswer: 0,
+    explanation: "NFPA 1001 sets the minimum professional standards for firefighters."
+  },
+  {
+    id: 77,
+    question: "What is a key hazard in newer vehicle fires?",
+    options: [
+      "Explosive fuels",
+      "Larger vehicle size",
+      "Supplemental restraint systems/airbags",
+      "Toxic smoke"
+    ],
+    correctAnswer: 2,
+    explanation: "Airbags can deploy unexpectedly and cause injury."
+  },
+  {
+    id: 78,
+    question: "What is true about searching burning buildings?",
+    options: [
+      "Primary searches should be slow and careful to make sure no one is missed.",
+      "The secondary search is the most dangerous.",
+      "Two types of searches are performed: primary and secondary.",
+      "Secondary searches are performed quickly in areas most likely to have victims."
+    ],
+    correctAnswer: 2,
+    explanation: "Primary searches focus on quick rescue, while secondary searches are thorough checks."
+  },
+  {
+    id: 79,
+    question: "What is a key safety practice in a hazardous environment?",
+    options: [
+      "Situational awareness",
+      "Zone control",
+      "A crew of four",
+      "A rapid intervention team on standby"
+    ],
+    correctAnswer: 0,
+    explanation: "Situational awareness helps firefighters detect changes and avoid hazards."
+  },
+  {
+    id: 80,
+    question: "How often should PPE be inspected?",
+    options: [
+      "Once a year",
+      "After every use",
+      "Monthly",
+      "Annually"
     ],
     correctAnswer: 1,
-    explanation: "Public education is a critical component of comprehensive fire prevention programs, helping to inform the public about fire safety practices and preventing fires before they start."
+    explanation: "Regular inspection ensures PPE is in proper working condition."
   },
   {
-    id: 6,
-    question: "What is the purpose of a post-incident analysis?",
+    id: 81,
+    question: "What type of fire extinguisher is best for flammable liquid fires?",
     options: [
-      "To assign blame for mistakes made during an incident",
-      "To critique individual firefighter performance only",
-      "To identify lessons learned and improve future emergency operations",
-      "To determine legal liability after an incident"
+      "Water",
+      "Dry chemical",
+      "Foam",
+      "Carbon dioxide"
     ],
     correctAnswer: 2,
-    explanation: "Post-incident analysis is conducted to identify lessons learned, evaluate the effectiveness of strategies and tactics, and improve future emergency operations through constructive review."
+    explanation: "Foam extinguishers are effective for flammable liquid fires."
   },
   {
-    id: 7,
-    question: "Which factor is most critical when conducting a fire investigation?",
+    id: 82,
+    question: "What should a firefighter remember when hoisting a charged hoseline?",
     options: [
-      "Determining insurance liability",
-      "Preserving evidence and documenting the scene",
-      "Identifying the responsible party",
-      "Calculating the cost of property damage"
+      "Use a clove hitch",
+      "Attach it to the top coupling",
+      "Hold the nozzle down",
+      "Use a figure-eight knot"
     ],
-    correctAnswer: 1,
-    explanation: "Preserving evidence and properly documenting the fire scene is critical for accurate fire investigation, as improper handling can compromise the entire investigation process."
+    correctAnswer: 0,
+    explanation: "A clove hitch is secure and prevents slippage."
   },
   {
-    id: 8,
-    question: "What is the primary consideration when developing a training program for fire department personnel?",
-    options: [
-      "Minimizing training costs",
-      "Conducting training only during regular work hours",
-      "Meeting state and national training standards and addressing local needs",
-      "Focusing exclusively on firefighting skills"
-    ],
-    correctAnswer: 2,
-    explanation: "Effective training programs must meet state and national standards while addressing the specific risks and needs of the local community, balancing both requirements for comprehensive firefighter development."
-  },
-  {
-    id: 9,
-    question: "Which approach is most effective for fire department resource allocation?",
-    options: [
-      "Distributing resources equally across all areas",
-      "Basing allocation decisions primarily on political considerations",
-      "Risk-based deployment based on community hazards and call volume analysis",
-      "Focusing resources exclusively on areas with the highest property values"
-    ],
-    correctAnswer: 2,
-    explanation: "Risk-based deployment strategically allocates resources based on community risk assessments, historical call data, response time analysis, and identified hazards to provide effective coverage where it's most needed."
-  },
-  {
-    id: 10,
-    question: "What is the purpose of fire department mutual aid agreements?",
-    options: [
-      "To share equipment maintenance costs",
-      "To coordinate joint training exercises only",
-      "To provide additional resources during large-scale incidents that exceed local capabilities",
-      "To standardize operational procedures between departments"
-    ],
-    correctAnswer: 2,
-    explanation: "Mutual aid agreements enable fire departments to request and provide assistance to neighboring jurisdictions when incidents exceed local capabilities, ensuring adequate resources for large-scale emergencies."
-  }
-];
+    id:
