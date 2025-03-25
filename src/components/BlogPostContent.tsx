@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { 
   Carousel, 
   CarouselContent, 
@@ -113,7 +113,15 @@ const BlogPostContent = () => {
             <h3 className="text-xl font-semibold text-navy-900 mb-4">Firefighter Training Gallery</h3>
             <Carousel 
               className="relative mx-auto w-full max-w-2xl"
-              onSlideChange={setActiveImage}
+              opts={{
+                loop: true,
+                align: "center"
+              }}
+              onSelect={(api) => {
+                if (api) {
+                  setActiveImage(api.selectedScrollSnap());
+                }
+              }}
             >
               <CarouselContent>
                 {firefighterImages.map((image, index) => (
