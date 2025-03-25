@@ -3,8 +3,9 @@ import { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Helmet } from 'react-helmet';
-import { Book, Dumbbell, Clock, Users, Flag, Lightbulb, Heart } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Book, Dumbbell, Clock, Users, Flag, Lightbulb, Heart, Shield, FileText } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const NewToFirefighting = () => {
   useEffect(() => {
@@ -38,153 +39,178 @@ const NewToFirefighting = () => {
           </div>
         </section>
         
-        {/* Main Content */}
-        <section className="py-16 md:py-24">
+        {/* Main Content - Reorganized */}
+        <section className="py-16 md:py-24 bg-white">
           <div className="container mx-auto px-6">
-            <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-              
-              {/* What to Expect */}
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover animate-fade-up" style={{ animationDelay: '0.2s' }}>
-                <CardContent className="p-0">
-                  <div className="bg-fire-600 p-5 flex items-center">
-                    <Book className="text-white mr-3" size={24} />
-                    <h2 className="text-xl font-semibold text-white">What to Expect in the Fire Academy</h2>
-                  </div>
-                  <div className="p-6">
+            {/* Academy Preparation Section */}
+            <div className="mb-16">
+              <div className="flex items-center justify-center mb-10">
+                <div className="w-16 h-16 bg-fire-600 rounded-full flex items-center justify-center mr-4">
+                  <Shield className="text-white" size={28} />
+                </div>
+                <h2 className="text-3xl font-bold text-navy-900">Academy Preparation</h2>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover">
+                  <CardHeader className="bg-fire-600 pb-3">
+                    <div className="flex items-center">
+                      <Book className="text-white mr-3" size={24} />
+                      <CardTitle className="text-xl font-semibold text-white">What to Expect in the Fire Academy</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-6">
                     <p className="text-navy-700">
                       The fire academy is a mix of classroom learning and hands-on training. You will study from the
                       IFSTA Essentials 7 textbook and cover topics like fire behavior, hose operations, search and rescue,
                       and more. Be prepared for a lot of studying, physical training, and high expectations.
                     </p>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Uniform & Professionalism */}
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover animate-fade-up" style={{ animationDelay: '0.3s' }}>
-                <CardContent className="p-0">
-                  <div className="bg-navy-800 p-5 flex items-center">
-                    <Users className="text-white mr-3" size={24} />
-                    <h2 className="text-xl font-semibold text-white">Uniform & Professionalism</h2>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-navy-700">
-                      Your appearance and conduct are critical. Always show up clean-shaven, with a neat haircut, and a
-                      clean uniform. Fire service is built on respect and discipline, so address everyone professionally,
-                      introduce yourself, and always demonstrate a strong work ethic.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Physical Fitness */}
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover animate-fade-up" style={{ animationDelay: '0.4s' }}>
-                <CardContent className="p-0">
-                  <div className="bg-fire-600 p-5 flex items-center">
-                    <Dumbbell className="text-white mr-3" size={24} />
-                    <h2 className="text-xl font-semibold text-white">Physical Fitness Expectations</h2>
-                  </div>
-                  <div className="p-6">
+                  </CardContent>
+                </Card>
+
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover">
+                  <CardHeader className="bg-fire-600 pb-3">
+                    <div className="flex items-center">
+                      <Dumbbell className="text-white mr-3" size={24} />
+                      <CardTitle className="text-xl font-semibold text-white">Physical Fitness Expectations</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-6">
                     <p className="text-navy-700">
                       Firefighting is physically demanding. You must be able to lift 50-60 lbs repeatedly, have strong
                       cardiovascular endurance, and be able to work in high-stress situations. Train beforehand with
                       weightlifting, endurance training, and functional fitness exercises like stair climbs and carrying
                       equipment.
                     </p>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Terminology */}
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover animate-fade-up" style={{ animationDelay: '0.5s' }}>
-                <CardContent className="p-0">
-                  <div className="bg-navy-800 p-5 flex items-center">
-                    <Book className="text-white mr-3" size={24} />
-                    <h2 className="text-xl font-semibold text-white">Understanding Firefighting Terminology</h2>
-                  </div>
-                  <div className="p-6">
+                  </CardContent>
+                </Card>
+
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover">
+                  <CardHeader className="bg-fire-600 pb-3">
+                    <div className="flex items-center">
+                      <FileText className="text-white mr-3" size={24} />
+                      <CardTitle className="text-xl font-semibold text-white">Understanding Firefighting Terminology</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-6">
                     <p className="text-navy-700">
                       Familiarizing yourself with key firefighting terms from the IFSTA Essentials 7 book will give you a
                       head start. Understanding fireground commands, tools, and techniques is crucial for success in the
                       academy and on the job.
                     </p>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Challenges & Career Preparation */}
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover animate-fade-up" style={{ animationDelay: '0.6s' }}>
-                <CardContent className="p-0">
-                  <div className="bg-fire-600 p-5 flex items-center">
-                    <Flag className="text-white mr-3" size={24} />
-                    <h2 className="text-xl font-semibold text-white">Challenges & Career Preparation</h2>
-                  </div>
-                  <div className="p-6">
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Professional Standards Section */}
+            <div className="mb-16">
+              <div className="flex items-center justify-center mb-10">
+                <div className="w-16 h-16 bg-navy-800 rounded-full flex items-center justify-center mr-4">
+                  <Users className="text-white" size={28} />
+                </div>
+                <h2 className="text-3xl font-bold text-navy-900">Professional Standards</h2>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover">
+                  <CardHeader className="bg-navy-800 pb-3">
+                    <div className="flex items-center">
+                      <Users className="text-white mr-3" size={24} />
+                      <CardTitle className="text-xl font-semibold text-white">Uniform & Professionalism</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-6">
+                    <p className="text-navy-700">
+                      Your appearance and conduct are critical. Always show up clean-shaven, with a neat haircut, and a
+                      clean uniform. Fire service is built on respect and discipline, so address everyone professionally,
+                      introduce yourself, and always demonstrate a strong work ethic.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover">
+                  <CardHeader className="bg-navy-800 pb-3">
+                    <div className="flex items-center">
+                      <Users className="text-white mr-3" size={24} />
+                      <CardTitle className="text-xl font-semibold text-white">Hierarchy & Chain of Command</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-6">
+                    <p className="text-navy-700">
+                      The fire service follows a strict chain of command. Understanding rank structure and respecting
+                      senior officers is essential. Listen more than you speak, follow orders, and be eager to learn from
+                      experienced firefighters.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Career Development Section */}
+            <div className="mb-16">
+              <div className="flex items-center justify-center mb-10">
+                <div className="w-16 h-16 bg-fire-600 rounded-full flex items-center justify-center mr-4">
+                  <Flag className="text-white" size={28} />
+                </div>
+                <h2 className="text-3xl font-bold text-navy-900">Career Development</h2>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover">
+                  <CardHeader className="bg-fire-600 pb-3">
+                    <div className="flex items-center">
+                      <Flag className="text-white mr-3" size={24} />
+                      <CardTitle className="text-xl font-semibold text-white">Challenges & Career Preparation</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-6">
                     <p className="text-navy-700">
                       Getting into firefighting is highly competitive. To improve your chances, gain volunteer experience in
                       your community, develop hands-on skills through trades (electrical, plumbing, mechanics), obtain
                       medical certifications (EMT, paramedic), or participate in team sports to demonstrate teamwork.
                       Having post-secondary education can also be a major advantage.
                     </p>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Mental Toughness */}
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover animate-fade-up" style={{ animationDelay: '0.7s' }}>
-                <CardContent className="p-0">
-                  <div className="bg-navy-800 p-5 flex items-center">
-                    <Lightbulb className="text-white mr-3" size={24} />
-                    <h2 className="text-xl font-semibold text-white">Mental Toughness & Resilience</h2>
-                  </div>
-                  <div className="p-6">
+                  </CardContent>
+                </Card>
+
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover">
+                  <CardHeader className="bg-navy-800 pb-3">
+                    <div className="flex items-center">
+                      <Lightbulb className="text-white mr-3" size={24} />
+                      <CardTitle className="text-xl font-semibold text-white">Mental Toughness & Resilience</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-6">
                     <p className="text-navy-700">
                       Firefighting is both physically and mentally demanding. You will face stressful situations, long hours,
                       and emotional challenges. Developing resilience, stress management strategies, and a strong
                       support system is essential for long-term success.
                     </p>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Shift Work */}
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover animate-fade-up" style={{ animationDelay: '0.8s' }}>
-                <CardContent className="p-0">
-                  <div className="bg-fire-600 p-5 flex items-center">
-                    <Clock className="text-white mr-3" size={24} />
-                    <h2 className="text-xl font-semibold text-white">Shift Work & Lifestyle Adjustment</h2>
-                  </div>
-                  <div className="p-6">
+                  </CardContent>
+                </Card>
+
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover">
+                  <CardHeader className="bg-fire-600 pb-3">
+                    <div className="flex items-center">
+                      <Clock className="text-white mr-3" size={24} />
+                      <CardTitle className="text-xl font-semibold text-white">Shift Work & Lifestyle Adjustment</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-6">
                     <p className="text-navy-700">
                       Many fire departments operate on 24-hour shifts or rotating schedules. Adjusting to shift work
                       requires good sleep hygiene, meal prepping, and balancing personal life. Time management is key
                       to maintaining physical health and relationships.
                     </p>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Hierarchy */}
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow card-hover animate-fade-up" style={{ animationDelay: '0.9s' }}>
-                <CardContent className="p-0">
-                  <div className="bg-navy-800 p-5 flex items-center">
-                    <Users className="text-white mr-3" size={24} />
-                    <h2 className="text-xl font-semibold text-white">Hierarchy & Chain of Command</h2>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-navy-700">
-                      The fire service follows a strict chain of command. Understanding rank structure and respecting
-                      senior officers is essential. Listen more than you speak, follow orders, and be eager to learn from
-                      experienced firefighters.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
             
             {/* Final Thoughts */}
-            <div className="max-w-4xl mx-auto mt-16 text-center animate-fade-up" style={{ animationDelay: '1s' }}>
-              <div className="bg-navy-50 p-8 rounded-xl border border-navy-100">
+            <div className="max-w-4xl mx-auto mt-16 text-center">
+              <div className="bg-gradient-to-r from-navy-50 to-gray-50 p-8 rounded-xl border border-navy-100">
                 <div className="inline-flex justify-center items-center w-16 h-16 bg-fire-600 rounded-full mb-4">
                   <Heart className="text-white" size={28} />
                 </div>
