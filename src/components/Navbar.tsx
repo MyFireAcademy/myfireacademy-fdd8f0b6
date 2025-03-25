@@ -1,15 +1,12 @@
 
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  
-  console.log("Navbar rendering on path:", location.pathname);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,44 +19,8 @@ const Navbar = () => {
 
   const handleBuyNowClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log("Navigating to checkout");
     navigate('/checkout');
     setIsMenuOpen(false);
-  };
-
-  const handleNavLinkClick = (e: React.MouseEvent, path: string) => {
-    console.log("Nav link clicked:", path);
-    
-    // Only prevent default if it's a hash link on the same page
-    if (path.includes('#')) {
-      const isCurrentPage = path.startsWith('/') ? 
-        location.pathname === path.split('#')[0] : 
-        location.pathname === '/';
-      
-      if (isCurrentPage) {
-        e.preventDefault();
-        const id = path.split('#')[1];
-        const element = document.getElementById(id);
-        if (element) {
-          console.log("Scrolling to element:", id);
-          element.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          console.log("Element not found:", id);
-        }
-        setIsMenuOpen(false);
-      } else {
-        console.log("Navigating to different page with hash:", path);
-        navigate(path);
-        setIsMenuOpen(false);
-      }
-    } else {
-      // For non-hash links, let React Router handle it
-      if (path !== location.pathname) {
-        console.log("Navigating to:", path);
-        navigate(path);
-      }
-      setIsMenuOpen(false);
-    }
   };
 
   return (
@@ -74,29 +35,19 @@ const Navbar = () => {
           <Link 
             to="/" 
             className="text-2xl font-bold text-navy-900 flex items-center"
-            onClick={() => console.log("Logo clicked, navigating to /")}
           >
             <span className="text-fire-600">My</span>FireAcademy
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <button 
-              onClick={(e) => handleNavLinkClick(e, '/#features')} 
-              className="text-navy-800 hover:text-fire-600 transition-colors font-medium"
-            >
+            <Link to="/#features" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               Features
-            </button>
-            <Link 
-              to="/new-to-firefighting" 
-              className="text-navy-800 hover:text-fire-600 transition-colors font-medium"
-            >
+            </Link>
+            <Link to="/new-to-firefighting" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               New To Firefighting
             </Link>
-            <Link 
-              to="/blog" 
-              className="text-navy-800 hover:text-fire-600 transition-colors font-medium"
-            >
+            <Link to="/blog" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               Blog
             </Link>
             <button onClick={handleBuyNowClick} className="btn-primary animate-pulse-soft ml-2">
@@ -122,18 +73,16 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg animate-fade-in">
             <div className="flex flex-col py-4 px-6 space-y-4">
-              <button 
-                onClick={(e) => handleNavLinkClick(e, '/#features')}
-                className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium text-left"
+              <Link 
+                to="/#features" 
+                onClick={() => setIsMenuOpen(false)}
+                className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium"
               >
                 Features
-              </button>
+              </Link>
               <Link 
                 to="/new-to-firefighting" 
-                onClick={() => {
-                  console.log("Mobile: Navigating to /new-to-firefighting");
-                  setIsMenuOpen(false);
-                }}
+                onClick={() => setIsMenuOpen(false)}
                 className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium"
               >
                 New To Firefighting

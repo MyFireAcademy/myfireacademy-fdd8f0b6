@@ -1,6 +1,5 @@
 
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
@@ -10,45 +9,46 @@ import Pricing from '@/components/Pricing';
 import Footer from '@/components/Footer';
 
 const Index = () => {
-  const location = useLocation();
-  console.log("Index page rendering with location:", location);
-  
   useEffect(() => {
     // Scroll to top when the page loads
     window.scrollTo(0, 0);
     
-    // Check if there's a hash in the URL and scroll to that element
-    if (location.hash) {
-      const id = location.hash.substring(1);
-      console.log("Hash detected in URL, looking for element with id:", id);
+    // Handle anchor links with smooth scrolling
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest('a');
+      
+      if (!anchor) return;
+      
+      const href = anchor.getAttribute('href');
+      if (!href || !href.startsWith('/#')) return;
+      
+      e.preventDefault();
+      const id = href.substring(2);
       const element = document.getElementById(id);
+      
       if (element) {
-        console.log(`Scrolling to element with id: ${id}`);
-        setTimeout(() => {
-          element.scrollIntoView({
-            behavior: 'smooth'
-          });
-        }, 500);
-      } else {
-        console.log(`Element with id ${id} not found`);
+        element.scrollIntoView({
+          behavior: 'smooth'
+        });
       }
-    }
-  }, [location]);
+    };
+    
+    document.addEventListener('click', handleAnchorClick);
+    
+    return () => {
+      document.removeEventListener('click', handleAnchorClick);
+    };
+  }, []);
   
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
       <Hero />
       <Features />
-      <div id="guarantee">
-        <Guarantee />
-      </div>
-      <div id="testimonials">
-        <Testimonials />
-      </div>
-      <div id="pricing">
-        <Pricing />
-      </div>
+      <Guarantee />
+      <Testimonials />
+      <Pricing />
       <Footer />
     </div>
   );

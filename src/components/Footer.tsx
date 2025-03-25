@@ -1,45 +1,13 @@
 
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 
 const Footer = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  console.log("Footer rendering, current path:", location.pathname);
-
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
-  };
-
-  const handleNavLinkClick = (e: React.MouseEvent, path: string) => {
-    console.log("Footer nav link clicked:", path);
-    
-    // Only prevent default if it's a hash link on the same page
-    if (path.includes('#')) {
-      const isCurrentPage = path.startsWith('/') ? 
-        location.pathname === path.split('#')[0] : 
-        location.pathname === '/';
-      
-      if (isCurrentPage) {
-        e.preventDefault();
-        const id = path.split('#')[1];
-        const element = document.getElementById(id);
-        if (element) {
-          console.log(`Scrolling to element with id: ${id}`);
-          element.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          console.log(`Element with id ${id} not found`);
-        }
-      } else {
-        e.preventDefault();
-        console.log("Navigating to:", path);
-        navigate(path);
-      }
-    }
   };
 
   return (
@@ -62,28 +30,19 @@ const Footer = () => {
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-3">
                 <li>
-                  <button
-                    onClick={(e) => handleNavLinkClick(e, '/#features')}
-                    className="text-gray-400 hover:text-white transition-colors text-left"
-                  >
+                  <Link to="/#features" className="text-gray-400 hover:text-white transition-colors">
                     Features
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={(e) => handleNavLinkClick(e, '/#guarantee')}
-                    className="text-gray-400 hover:text-white transition-colors text-left"
-                  >
+                  <Link to="/#guarantee" className="text-gray-400 hover:text-white transition-colors">
                     Guarantee
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={(e) => handleNavLinkClick(e, '/#testimonials')}
-                    className="text-gray-400 hover:text-white transition-colors text-left"
-                  >
+                  <Link to="/#testimonials" className="text-gray-400 hover:text-white transition-colors">
                     Testimonials
-                  </button>
+                  </Link>
                 </li>
                 <li>
                   <Link to="/blog" className="text-gray-400 hover:text-white transition-colors">
@@ -91,27 +50,20 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={(e) => handleNavLinkClick(e, '/#pricing')}
-                    className="text-gray-400 hover:text-white transition-colors text-left"
-                  >
+                  <Link to="/#pricing" className="text-gray-400 hover:text-white transition-colors">
                     Buy Now
-                  </button>
+                  </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold mb-4">Resources</h3>
+              <h3 className="text-lg font-semibold mb-4">Contact</h3>
               <ul className="space-y-3">
-                <li>
-                  <Link 
-                    to="/new-to-firefighting" 
-                    className="text-gray-400 hover:text-white transition-colors"
-                    onClick={() => console.log("Footer: Navigating to /new-to-firefighting")}
-                  >
-                    New To Firefighting
-                  </Link>
+                <li className="text-gray-400">
+                  <a href="mailto:MyFireAcademy@gmail.com" className="hover:text-white transition-colors">
+                    Email Us
+                  </a>
                 </li>
                 <li>
                   <Link to="/faq" className="text-gray-400 hover:text-white transition-colors">
@@ -119,8 +71,8 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  <a href="mailto:MyFireAcademy@gmail.com" className="text-gray-400 hover:text-white transition-colors">
-                    Contact Us
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                    Support
                   </a>
                 </li>
               </ul>
