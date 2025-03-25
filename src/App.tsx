@@ -9,6 +9,7 @@ import Quiz from "./pages/Quiz";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Checkout from "./pages/Checkout";
+import ProfileSetup from "./pages/ProfileSetup";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import NewToFirefighting from "./pages/NewToFirefighting";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/profile-setup" element={<ProfileSetup />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/new-to-firefighting" element={<NewToFirefighting />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

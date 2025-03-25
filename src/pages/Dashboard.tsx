@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import Navbar from '@/components/Navbar';
@@ -15,10 +16,34 @@ interface QuizMetadata {
   progress?: number;
 }
 
+interface User {
+  username: string;
+  isAuthenticated: boolean;
+}
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'level1' | 'level2'>('level1');
+  const [user, setUser] = useState<User | null>(null);
+  
+  // Check if user is authenticated on component mount
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+    } else {
+      // If no user data exists, redirect to checkout
+      navigate('/checkout');
+      toast({
+        title: "Access Denied",
+        description: "Please purchase access or log in to view this content.",
+        variant: "destructive",
+        duration: 4000,
+      });
+    }
+  }, [navigate, toast]);
   
   const quizzes: QuizMetadata[] = [
     {
@@ -53,6 +78,15 @@ const Dashboard = () => {
     });
   };
 
+  if (!user) {
+    // Show loading state while checking authentication
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fire-600"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -62,7 +96,7 @@ const Dashboard = () => {
           <div className="bg-fire-600 text-white rounded-2xl p-8 mb-10 shadow-xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between">
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome to Your NFPA 1001 Study Portal!</h1>
+                <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome, {user.username}!</h1>
                 <p className="mb-6 md:mb-0 text-white/90">
                   Your purchase includes full access to both Level I and Level II certification exams with 100 questions each.
                 </p>

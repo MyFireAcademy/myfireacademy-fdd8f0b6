@@ -27,13 +27,13 @@ const Checkout = () => {
       
       toast({
         title: "Payment Successful!",
-        description: "Thank you for your purchase. You now have access to the full study materials.",
+        description: "Thank you for your purchase. Please set up your account to access the study materials.",
         duration: 5000,
       });
 
-      // Redirect to dashboard after successful payment
+      // Redirect to profile setup page after successful payment
       setTimeout(() => {
-        navigate('/dashboard');
+        navigate('/profile-setup');
       }, 2000);
     }, 1500);
   };
@@ -75,16 +75,16 @@ const Checkout = () => {
               </div>
               <h1 className="text-2xl font-bold text-navy-900 mb-4">Payment Successful!</h1>
               <p className="text-navy-700 mb-6">
-                Thank you for your purchase. You now have access to the full study materials.
+                Thank you for your purchase. You'll need to create an account to access the study materials.
               </p>
               <p className="text-sm text-navy-600 mb-8">
                 A receipt has been sent to your email address.
               </p>
               <button 
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate('/profile-setup')}
                 className="btn-primary w-full"
               >
-                Access Study Materials
+                Create Your Account
               </button>
             </div>
           </div>
