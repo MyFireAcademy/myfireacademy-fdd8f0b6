@@ -29,7 +29,7 @@ const Navbar = () => {
             to="/" 
             className="text-2xl font-bold text-navy-900 flex items-center"
           >
-            <span className="text-fire-600">Pass</span>Fire
+            <span className="text-fire-600">My</span>FireAcademy
           </Link>
 
           {/* Desktop Navigation */}
@@ -45,6 +45,9 @@ const Navbar = () => {
             </Link>
             <Link to="/quiz" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               Quiz
+            </Link>
+            <Link to="/blog" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
+              Blog
             </Link>
             <Link to="/#pricing" className="btn-primary animate-pulse-soft">
               Buy Now
@@ -96,6 +99,13 @@ const Navbar = () => {
                 className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium"
               >
                 Quiz
+              </Link>
+              <Link 
+                to="/blog" 
+                onClick={() => setIsMenuOpen(false)}
+                className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium"
+              >
+                Blog
               </Link>
               <Link 
                 to="/#pricing" 

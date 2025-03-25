@@ -17,7 +17,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="mb-10 lg:mb-0 lg:max-w-xs">
             <Link to="/" className="text-2xl font-bold flex items-center mb-6">
-              <span className="text-fire-500">Pass</span>Fire
+              <span className="text-fire-500">My</span>FireAcademy
             </Link>
             <p className="text-gray-400 mb-6">
               Helping firefighters achieve certification with comprehensive study materials and a 100% pass guarantee.
@@ -56,6 +56,11 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/blog" className="text-gray-400 hover:text-white transition-colors">
+                    Blog
+                  </Link>
+                </li>
+                <li>
                   <Link to="/#pricing" className="text-gray-400 hover:text-white transition-colors">
                     Buy Now
                   </Link>
@@ -67,7 +72,7 @@ const Footer = () => {
               <h3 className="text-lg font-semibold mb-4">Contact</h3>
               <ul className="space-y-3">
                 <li className="text-gray-400">
-                  <a href="mailto:support@passfire.com" className="hover:text-white transition-colors">
+                  <a href="mailto:MyFireAcademy@gmail.com" className="hover:text-white transition-colors">
                     Email Us
                   </a>
                 </li>
@@ -104,7 +109,7 @@ const Footer = () => {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-500 text-sm mb-4 md:mb-0">
-              &copy; {new Date().getFullYear()} PassFire. All rights reserved.
+              &copy; {new Date().getFullYear()} MyFireAcademy. All rights reserved.
             </p>
             <div className="flex space-x-6">
               <a href="#" className="text-gray-500 text-sm hover:text-gray-400 transition-colors">

@@ -48,7 +48,7 @@ const Pricing = () => {
             <div className="bg-fire-600 text-white p-6 text-center">
               <h3 className="text-2xl font-bold mb-2">NFPA 1001 Level I & II Study Guide</h3>
               <div className="flex justify-center items-baseline my-4">
-                <span className="text-3xl font-semibold">$49.99</span>
+                <span className="text-3xl font-semibold">$47.00</span>
                 <span className="ml-2 text-white/70 line-through">$79.99</span>
               </div>
             </div>
@@ -94,7 +94,7 @@ const Pricing = () => {
           </div>
           
           <div className="text-center mt-8 text-navy-700">
-            <p>Questions? Contact our support team at <a href="mailto:support@passfire.com" className="text-fire-600 hover:underline">support@passfire.com</a></p>
+            <p>Questions? Contact our support team at <a href="mailto:MyFireAcademy@gmail.com" className="text-fire-600 hover:underline">MyFireAcademy@gmail.com</a></p>
           </div>
         </div>
       </div>
