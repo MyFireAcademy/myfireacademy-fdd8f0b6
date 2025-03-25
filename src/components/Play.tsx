@@ -1,11 +1,15 @@
 
 import { SVGProps } from 'react';
 
-const Play = (props: SVGProps<SVGSVGElement>) => (
+interface PlayProps extends SVGProps<SVGSVGElement> {
+  size?: number;
+}
+
+const Play = ({ size, ...props }: PlayProps) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
-    width={props.width || 24} 
-    height={props.height || 24} 
+    width={size || props.width || 24} 
+    height={size || props.height || 24} 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 

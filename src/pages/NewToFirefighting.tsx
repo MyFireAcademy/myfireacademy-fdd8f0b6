@@ -56,7 +56,7 @@ const NewToFirefighting = () => {
                   Try Firefighting Quiz <ChevronRight size={16} className="ml-1" />
                 </Button>
                 <Button variant="outline" className="border-navy-800 text-navy-800 hover:bg-navy-50">
-                  Watch Academy Tour <Play size={16} className="ml-1" />
+                  Watch Academy Tour <Play className="ml-1" size={16} />
                 </Button>
               </div>
             </div>
@@ -89,7 +89,7 @@ const NewToFirefighting = () => {
           </div>
         </section>
         
-        {/* Main Content Cards */}
+        {/* Main Content Cards - Reorganized for better flow */}
         <section className="py-10 md:py-16">
           <div className="container mx-auto px-6">
             <div className="text-center mb-16 animate-fade-up">
@@ -100,6 +100,11 @@ const NewToFirefighting = () => {
             </div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+              
+              {/* Training Section Group */}
+              <div className="lg:col-span-3 mb-8">
+                <h3 className="text-2xl font-bold text-navy-800 mb-6 border-b border-gray-200 pb-2">Training & Education</h3>
+              </div>
               
               {/* What to Expect */}
               <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 border-t-fire-600 group hover:transform hover:-translate-y-2 animate-fade-up" style={{ animationDelay: '0.2s' }}>
@@ -125,20 +130,20 @@ const NewToFirefighting = () => {
                 </CardContent>
               </Card>
               
-              {/* Uniform & Professionalism */}
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 border-t-navy-800 group hover:transform hover:-translate-y-2 animate-fade-up" style={{ animationDelay: '0.3s' }}>
+              {/* Terminology */}
+              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 border-t-navy-800 group hover:transform hover:-translate-y-2 animate-fade-up" style={{ animationDelay: '0.5s' }}>
                 <CardContent className="p-0">
                   <div className="bg-gradient-to-r from-navy-700 to-navy-800 p-6 flex items-center">
                     <div className="bg-white/20 p-3 rounded-full mr-4 group-hover:bg-white/30 transition-all">
-                      <Users className="text-white" size={24} />
+                      <Megaphone className="text-white" size={24} />
                     </div>
-                    <h2 className="text-xl font-semibold text-white">Uniform & Professionalism</h2>
+                    <h2 className="text-xl font-semibold text-white">Understanding Firefighting Terminology</h2>
                   </div>
                   <div className="p-6">
                     <p className="text-navy-700">
-                      Your appearance and conduct are critical. Always show up clean-shaven, with a neat haircut, and a
-                      clean uniform. Fire service is built on respect and discipline, so address everyone professionally,
-                      introduce yourself, and always demonstrate a strong work ethic.
+                      Familiarizing yourself with key firefighting terms from the IFSTA Essentials 7 book will give you a
+                      head start. Understanding fireground commands, tools, and techniques is crucial for success in the
+                      academy and on the job.
                     </p>
                     <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
                       <span className="text-navy-600 font-medium flex items-center text-sm">
@@ -174,96 +179,28 @@ const NewToFirefighting = () => {
                 </CardContent>
               </Card>
               
-              {/* Terminology */}
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 border-t-navy-800 group hover:transform hover:-translate-y-2 animate-fade-up" style={{ animationDelay: '0.5s' }}>
+              {/* Professional Conduct Section Group */}
+              <div className="lg:col-span-3 mb-8 mt-12">
+                <h3 className="text-2xl font-bold text-navy-800 mb-6 border-b border-gray-200 pb-2">Professional Conduct & Etiquette</h3>
+              </div>
+              
+              {/* Uniform & Professionalism */}
+              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 border-t-navy-800 group hover:transform hover:-translate-y-2 animate-fade-up" style={{ animationDelay: '0.3s' }}>
                 <CardContent className="p-0">
                   <div className="bg-gradient-to-r from-navy-700 to-navy-800 p-6 flex items-center">
                     <div className="bg-white/20 p-3 rounded-full mr-4 group-hover:bg-white/30 transition-all">
-                      <Megaphone className="text-white" size={24} />
+                      <Users className="text-white" size={24} />
                     </div>
-                    <h2 className="text-xl font-semibold text-white">Understanding Firefighting Terminology</h2>
+                    <h2 className="text-xl font-semibold text-white">Uniform & Professionalism</h2>
                   </div>
                   <div className="p-6">
                     <p className="text-navy-700">
-                      Familiarizing yourself with key firefighting terms from the IFSTA Essentials 7 book will give you a
-                      head start. Understanding fireground commands, tools, and techniques is crucial for success in the
-                      academy and on the job.
+                      Your appearance and conduct are critical. Always show up clean-shaven, with a neat haircut, and a
+                      clean uniform. Fire service is built on respect and discipline, so address everyone professionally,
+                      introduce yourself, and always demonstrate a strong work ethic.
                     </p>
                     <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
                       <span className="text-navy-600 font-medium flex items-center text-sm">
-                        Learn more <ChevronRight size={16} className="ml-1" />
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Challenges & Career Preparation */}
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 border-t-fire-600 group hover:transform hover:-translate-y-2 animate-fade-up" style={{ animationDelay: '0.6s' }}>
-                <CardContent className="p-0">
-                  <div className="bg-gradient-to-r from-fire-600 to-fire-700 p-6 flex items-center">
-                    <div className="bg-white/20 p-3 rounded-full mr-4 group-hover:bg-white/30 transition-all">
-                      <Flag className="text-white" size={24} />
-                    </div>
-                    <h2 className="text-xl font-semibold text-white">Challenges & Career Preparation</h2>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-navy-700">
-                      Getting into firefighting is highly competitive. To improve your chances, gain volunteer experience in
-                      your community, develop hands-on skills through trades (electrical, plumbing, mechanics), obtain
-                      medical certifications (EMT, paramedic), or participate in team sports to demonstrate teamwork.
-                      Having post-secondary education can also be a major advantage.
-                    </p>
-                    <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
-                      <span className="text-fire-600 font-medium flex items-center text-sm">
-                        Learn more <ChevronRight size={16} className="ml-1" />
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Mental Toughness */}
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 border-t-navy-800 group hover:transform hover:-translate-y-2 animate-fade-up" style={{ animationDelay: '0.7s' }}>
-                <CardContent className="p-0">
-                  <div className="bg-gradient-to-r from-navy-700 to-navy-800 p-6 flex items-center">
-                    <div className="bg-white/20 p-3 rounded-full mr-4 group-hover:bg-white/30 transition-all">
-                      <Lightbulb className="text-white" size={24} />
-                    </div>
-                    <h2 className="text-xl font-semibold text-white">Mental Toughness & Resilience</h2>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-navy-700">
-                      Firefighting is both physically and mentally demanding. You will face stressful situations, long hours,
-                      and emotional challenges. Developing resilience, stress management strategies, and a strong
-                      support system is essential for long-term success.
-                    </p>
-                    <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
-                      <span className="text-navy-600 font-medium flex items-center text-sm">
-                        Learn more <ChevronRight size={16} className="ml-1" />
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Shift Work */}
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 border-t-fire-600 group hover:transform hover:-translate-y-2 animate-fade-up" style={{ animationDelay: '0.8s' }}>
-                <CardContent className="p-0">
-                  <div className="bg-gradient-to-r from-fire-600 to-fire-700 p-6 flex items-center">
-                    <div className="bg-white/20 p-3 rounded-full mr-4 group-hover:bg-white/30 transition-all">
-                      <Clock className="text-white" size={24} />
-                    </div>
-                    <h2 className="text-xl font-semibold text-white">Shift Work & Lifestyle Adjustment</h2>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-navy-700">
-                      Many fire departments operate on 24-hour shifts or rotating schedules. Adjusting to shift work
-                      requires good sleep hygiene, meal prepping, and balancing personal life. Time management is key
-                      to maintaining physical health and relationships.
-                    </p>
-                    <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
-                      <span className="text-fire-600 font-medium flex items-center text-sm">
                         Learn more <ChevronRight size={16} className="ml-1" />
                       </span>
                     </div>
@@ -294,6 +231,87 @@ const NewToFirefighting = () => {
                   </div>
                 </CardContent>
               </Card>
+              
+              {/* Mental Toughness */}
+              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 border-t-fire-600 group hover:transform hover:-translate-y-2 animate-fade-up" style={{ animationDelay: '0.7s' }}>
+                <CardContent className="p-0">
+                  <div className="bg-gradient-to-r from-fire-600 to-fire-700 p-6 flex items-center">
+                    <div className="bg-white/20 p-3 rounded-full mr-4 group-hover:bg-white/30 transition-all">
+                      <Lightbulb className="text-white" size={24} />
+                    </div>
+                    <h2 className="text-xl font-semibold text-white">Mental Toughness & Resilience</h2>
+                  </div>
+                  <div className="p-6">
+                    <p className="text-navy-700">
+                      Firefighting is both physically and mentally demanding. You will face stressful situations, long hours,
+                      and emotional challenges. Developing resilience, stress management strategies, and a strong
+                      support system is essential for long-term success.
+                    </p>
+                    <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
+                      <span className="text-fire-600 font-medium flex items-center text-sm">
+                        Learn more <ChevronRight size={16} className="ml-1" />
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Career Development Section Group */}
+              <div className="lg:col-span-3 mb-8 mt-12">
+                <h3 className="text-2xl font-bold text-navy-800 mb-6 border-b border-gray-200 pb-2">Career Development & Lifestyle</h3>
+              </div>
+              
+              {/* Shift Work */}
+              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 border-t-fire-600 group hover:transform hover:-translate-y-2 animate-fade-up" style={{ animationDelay: '0.8s' }}>
+                <CardContent className="p-0">
+                  <div className="bg-gradient-to-r from-fire-600 to-fire-700 p-6 flex items-center">
+                    <div className="bg-white/20 p-3 rounded-full mr-4 group-hover:bg-white/30 transition-all">
+                      <Clock className="text-white" size={24} />
+                    </div>
+                    <h2 className="text-xl font-semibold text-white">Shift Work & Lifestyle Adjustment</h2>
+                  </div>
+                  <div className="p-6">
+                    <p className="text-navy-700">
+                      Many fire departments operate on 24-hour shifts or rotating schedules. Adjusting to shift work
+                      requires good sleep hygiene, meal prepping, and balancing personal life. Time management is key
+                      to maintaining physical health and relationships.
+                    </p>
+                    <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
+                      <span className="text-fire-600 font-medium flex items-center text-sm">
+                        Learn more <ChevronRight size={16} className="ml-1" />
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Challenges & Career Preparation */}
+              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 border-t-navy-800 group hover:transform hover:-translate-y-2 animate-fade-up" style={{ animationDelay: '0.6s' }}>
+                <CardContent className="p-0">
+                  <div className="bg-gradient-to-r from-navy-700 to-navy-800 p-6 flex items-center">
+                    <div className="bg-white/20 p-3 rounded-full mr-4 group-hover:bg-white/30 transition-all">
+                      <Flag className="text-white" size={24} />
+                    </div>
+                    <h2 className="text-xl font-semibold text-white">Challenges & Career Preparation</h2>
+                  </div>
+                  <div className="p-6">
+                    <p className="text-navy-700">
+                      Getting into firefighting is highly competitive. To improve your chances, gain volunteer experience in
+                      your community, develop hands-on skills through trades (electrical, plumbing, mechanics), obtain
+                      medical certifications (EMT, paramedic), or participate in team sports to demonstrate teamwork.
+                      Having post-secondary education can also be a major advantage.
+                    </p>
+                    <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
+                      <span className="text-navy-600 font-medium flex items-center text-sm">
+                        Learn more <ChevronRight size={16} className="ml-1" />
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Empty card for better grid alignment */}
+              <div className="hidden lg:block"></div>
             </div>
           </div>
         </section>
