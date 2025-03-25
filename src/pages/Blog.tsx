@@ -12,7 +12,7 @@ const blogPosts = [
     excerpt: "Prepare effectively with these proven strategies that will help you ace your firefighter certification exam.",
     date: "June 12, 2023",
     readTime: "5 min read",
-    image: "https://images.unsplash.com/photo-1529265912812-a54a9f0cbbb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80",
+    image: "https://images.unsplash.com/photo-1518156677180-95a2893f3499?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80",
     slug: "tips-for-passing-nfpa-exam"
   },
   {
@@ -48,7 +48,7 @@ const blogPosts = [
     excerpt: "Discover effective study techniques tailored for those who learn best through visual information.",
     date: "April 10, 2023",
     readTime: "4 min read",
-    image: "https://images.unsplash.com/photo-1486162928267-e6274cb3106f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+    image: "https://images.unsplash.com/photo-1507835661088-ac1e84fe645f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
     slug: "visual-learner-study-strategies"
   },
   {
@@ -57,7 +57,7 @@ const blogPosts = [
     excerpt: "An important discussion on addressing mental health challenges faced by firefighters in their careers.",
     date: "March 28, 2023",
     readTime: "9 min read",
-    image: "https://images.unsplash.com/photo-1599594762594-a7f0e75a2b1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1574&q=80",
+    image: "https://images.unsplash.com/photo-1523920290228-4f321a939b4c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1574&q=80",
     slug: "mental-health-fire-service"
   }
 ];
