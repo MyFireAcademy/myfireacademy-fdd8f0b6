@@ -1,10 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, CheckCircle, ShieldAlert, Mail, Lock } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { levelIQuizData, levelIIQuizData, Question } from '@/lib/quiz-data';
 import { useToast } from '@/hooks/use-toast';
-import { Dialog, DialogContent, DialogHeader, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -43,7 +42,6 @@ const Quiz = () => {
 
   const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
   
-  // Check if user is authenticated for full quiz access
   useEffect(() => {
     if (isFull && !isDemo && !isAuthenticated()) {
       setShowAuthDialog(true);
@@ -74,7 +72,6 @@ const Quiz = () => {
     }
   };
 
-  // Redirect to sign-in if user tries to access auth-protected content
   const handleAuthPrompt = (action: 'signin' | 'signup' | 'cancel') => {
     setShowAuthDialog(false);
     if (action === 'signin') {
@@ -82,7 +79,6 @@ const Quiz = () => {
     } else if (action === 'signup') {
       navigate('/profile-setup');
     } else {
-      // If user cancels auth, set to demo mode
       setIsDemo(true);
       setIsFull(false);
       toast({
@@ -526,8 +522,8 @@ const Quiz = () => {
         <DialogContent className="sm:max-w-md p-0 overflow-hidden">
           <div className="p-6">
             <DialogHeader>
-              <h2 className="text-2xl font-bold text-center">Welcome to Firefighter Exam Prep</h2>
-              <p className="text-center text-gray-500 mt-2">Sign in to access the full exam</p>
+              <DialogTitle className="text-2xl font-bold text-center">Welcome to Firefighter Exam Prep</DialogTitle>
+              <DialogDescription className="text-center text-gray-500 mt-2">Sign in to access the full exam</DialogDescription>
             </DialogHeader>
             
             <form onSubmit={handleSignIn} className="mt-6 space-y-4">

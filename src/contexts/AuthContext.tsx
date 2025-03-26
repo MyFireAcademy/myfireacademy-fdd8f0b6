@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -116,7 +117,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string): Promise<void> => {
     try {
       setLoading(true);
       console.log("Attempting to sign in with:", { email });
@@ -148,8 +149,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } else {
         navigate('/subscription');
       }
-
-      return data;
     } catch (error: any) {
       console.error('Error signing in:', error);
       toast({
