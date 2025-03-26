@@ -1,4 +1,6 @@
+
 import { supabase } from "@/integrations/supabase/client";
+import { verifyPayment, verifyPaymentIntent } from "@/utils/stripe";
 
 // This function will check if there's a successful payment for a given payment ID
 export const verifyPaymentSuccess = async (paymentId: string): Promise<boolean> => {
@@ -24,23 +26,90 @@ export const verifyPaymentSuccess = async (paymentId: string): Promise<boolean> 
 };
 
 // Check if payment was successful using URL params from Stripe redirect
-export const checkPaymentFromUrl = async (searchParams: URLSearchParams) => {
+export const checkPaymentFromUrl = async (searchParams: URLSearchParams, userId?: string) => {
+  // Get all the possible payment identifiers from the URL
+  const sessionId = searchParams.get("session_id");
   const paymentIntent = searchParams.get("payment_intent");
   const redirectStatus = searchParams.get("redirect_status");
+  const paymentSuccess = searchParams.get("payment_success");
   
-  console.log("Payment Intent:", paymentIntent);
-  console.log("Redirect Status:", redirectStatus);
+  console.log("Payment verification from URL:", {
+    sessionId,
+    paymentIntent,
+    redirectStatus,
+    paymentSuccess,
+    userId
+  });
   
-  // Check if we have a payment_intent OR if redirect_status is "succeeded"
-  if (!paymentIntent && redirectStatus !== "succeeded") {
-    return false;
+  // If payment_success is set to true, we can verify from our database
+  if (paymentSuccess === "true") {
+    if (userId) {
+      // Check if user has a valid payment in our database
+      const { data, error } = await supabase
+        .from("payments")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("payment_status", "succeeded")
+        .maybeSingle();
+      
+      if (error && error.code !== 'PGRST116') {
+        console.error("Error checking payment status:", error);
+        return false;
+      }
+      
+      if (data) {
+        console.log("Found successful payment in database:", data);
+        return true;
+      }
+    }
   }
   
-  // If we have a redirect_status of "succeeded", we can directly return true
+  // If we have a session ID, verify through Stripe
+  if (sessionId) {
+    return await verifyPayment(sessionId, userId);
+  }
+  
+  // If we have a payment intent, verify through Stripe
+  if (paymentIntent) {
+    return await verifyPaymentIntent(paymentIntent, userId);
+  }
+  
+  // If redirect_status is "succeeded", that's a good sign
   if (redirectStatus === "succeeded") {
     return true;
   }
   
-  // Otherwise check the database
-  return await verifyPaymentSuccess(paymentIntent as string);
+  // No payment identifiers found
+  return false;
+};
+
+// Check if user has an active subscription
+export const checkUserSubscription = async (userId?: string): Promise<boolean> => {
+  if (!userId) return false;
+  
+  try {
+    console.log("Checking subscription for user:", userId);
+    
+    const { data, error } = await supabase
+      .from('payments')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('payment_status', 'succeeded')
+      .maybeSingle();
+    
+    if (error && error.code !== 'PGRST116') {
+      console.error('Error checking subscription:', error);
+      return false;
+    }
+    
+    if (data) {
+      console.log("User has an active subscription:", data);
+      return true;
+    }
+    
+    return false;
+  } catch (error) {
+    console.error('Error checking subscription status:', error);
+    return false;
+  }
 };

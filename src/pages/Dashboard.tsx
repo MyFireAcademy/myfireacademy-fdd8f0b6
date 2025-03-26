@@ -1,12 +1,12 @@
-
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight, BookOpen, LogOut } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { checkPaymentFromUrl, checkUserSubscription } from '@/utils/paymentVerification';
 
 interface QuizMetadata {
   id: string;
@@ -28,6 +28,7 @@ interface ExamAttempt {
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const { user, signOut } = useAuth();
   const [activeTab, setActiveTab] = useState<'level1' | 'level2'>('level1');
@@ -37,32 +38,41 @@ const Dashboard = () => {
   const [hasSubscription, setHasSubscription] = useState(false);
   
   useEffect(() => {
-    // Check if user is authenticated
     if (!user) {
       navigate('/sign-in');
       return;
     }
 
-    // Fetch user profile, exam attempts, and subscription status
+    const searchParams = new URLSearchParams(location.search);
+    const checkPaymentStatus = async () => {
+      if (searchParams.has('payment_success') || 
+          searchParams.has('session_id') || 
+          searchParams.has('payment_intent')) {
+        
+        const isPaymentVerified = await checkPaymentFromUrl(searchParams, user.id);
+        
+        if (isPaymentVerified) {
+          toast({
+            title: "Payment Verified",
+            description: "Thank you for your purchase! You now have full access to the study materials.",
+            duration: 4000,
+          });
+          
+          navigate('/dashboard', { replace: true });
+          setHasSubscription(true);
+        }
+      }
+    };
+    
+    checkPaymentStatus();
+    
     const fetchUserData = async () => {
       try {
         setIsLoading(true);
         
-        // Check if user has a valid subscription
-        const { data: paymentData, error: paymentError } = await supabase
-          .from('payments')
-          .select('*')
-          .eq('user_id', user.id)
-          .eq('payment_status', 'succeeded')
-          .maybeSingle();
+        const hasValidSubscription = await checkUserSubscription(user.id);
         
-        if (paymentError && paymentError.code !== 'PGRST116') {
-          console.error("Error checking payment status:", paymentError);
-          throw paymentError;
-        }
-        
-        // If no subscription, redirect to subscription page
-        if (!paymentData) {
+        if (!hasValidSubscription) {
           setHasSubscription(false);
           toast({
             title: "Subscription Required",
@@ -75,7 +85,6 @@ const Dashboard = () => {
         
         setHasSubscription(true);
         
-        // Fetch user profile
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
           .select('username')
@@ -90,7 +99,6 @@ const Dashboard = () => {
           setUsername(profileData.username || user.email?.split('@')[0] || 'User');
         }
         
-        // Fetch exam attempts
         const { data: attemptsData, error: attemptsError } = await supabase
           .from('exam_attempts')
           .select('*')
@@ -117,7 +125,7 @@ const Dashboard = () => {
     };
     
     fetchUserData();
-  }, [user, navigate, toast]);
+  }, [user, navigate, toast, location.search]);
   
   const quizzes: QuizMetadata[] = [
     {
@@ -141,7 +149,6 @@ const Dashboard = () => {
   ];
 
   const handleStartQuiz = (quizId: string) => {
-    // Pass the quiz ID to the quiz page to identify which test to load
     const level = quizId.includes('level1') ? 'level1' : 'level2';
     navigate('/quiz', { state: { quizId, level, isFull: true } });
     
@@ -164,7 +171,6 @@ const Dashboard = () => {
     );
   }
 
-  // If user doesn't have a subscription, they should be redirected already
   if (!hasSubscription) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -187,7 +193,6 @@ const Dashboard = () => {
       <Navbar />
       <main className="pt-28 pb-16">
         <div className="container mx-auto px-6">
-          {/* Welcome Banner */}
           <div className="bg-fire-600 text-white rounded-2xl p-8 mb-10 shadow-xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between">
               <div>
@@ -206,7 +211,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Quiz Section */}
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-10">
             <div className="flex border-b">
               <button
@@ -267,7 +271,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Exam History Section */}
           {examAttempts.length > 0 && (
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
               <div className="p-6 border-b border-gray-200">

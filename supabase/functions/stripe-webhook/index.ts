@@ -70,16 +70,19 @@ serve(async (req) => {
         
         // Extract user metadata if available
         const clientReferenceId = session.client_reference_id;
-        const userId = clientReferenceId || null;
+        const userId = clientReferenceId || session.metadata?.user_id || null;
         
         if (!userId) {
           console.warn("No user ID found in session:", session.id);
+        } else {
+          console.log(`Processing completed checkout for user: ${userId}`);
         }
         
         // Store the payment information in our database
         const { error } = await supabase.from("payments").insert({
           stripe_payment_id: session.payment_intent,
           stripe_customer_id: session.customer,
+          stripe_session_id: session.id,
           amount: session.amount_total / 100, // Stripe amounts are in cents
           currency: session.currency,
           payment_status: "succeeded",
@@ -103,6 +106,8 @@ serve(async (req) => {
         
         if (!userId) {
           console.warn("No user ID found in payment intent:", paymentIntent.id);
+        } else {
+          console.log(`Processing succeeded payment intent for user: ${userId}`);
         }
         
         // First check if a record already exists

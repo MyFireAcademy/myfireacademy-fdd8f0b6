@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Lock, User, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { verifyPayment } from '@/utils/stripe';
+import { checkPaymentFromUrl } from '@/utils/paymentVerification';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/contexts/AuthContext';
@@ -72,68 +72,41 @@ const Checkout = () => {
   // Check if the user has been redirected back from Stripe with payment information
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    
-    // Check if payment was successful
-    if (searchParams.has('payment_success')) {
-      toast({
-        title: "Payment Successful",
-        description: "Your purchase was completed successfully.",
-        duration: 3000,
-      });
-      
-      // If user is already logged in, go to dashboard
-      if (user) {
-        navigate('/dashboard');
-      }
-    }
-    
-    // Check if payment was canceled
-    if (searchParams.has('payment_canceled')) {
-      toast({
-        title: "Payment Canceled",
-        description: "Your purchase was not completed. You can try again when you're ready.",
-        duration: 3000,
-      });
-    }
-    
-    // Check for Stripe session ID
-    const sessionId = searchParams.get('session_id');
-    if (sessionId) {
+    const checkStripePayment = async () => {
       setIsLoading(true);
       
-      // Verify the payment
-      verifyPayment(sessionId)
-        .then(success => {
-          if (success) {
-            toast({
-              title: "Payment Verified",
-              description: "Your purchase was completed successfully.",
-              duration: 3000,
-            });
-            
-            // Redirect to dashboard
-            navigate('/dashboard');
-          } else {
-            toast({
-              title: "Payment Verification Failed",
-              description: "We couldn't verify your payment. Please contact support if you believe this is an error.",
-              variant: "destructive",
-              duration: 5000,
-            });
-          }
-        })
-        .catch(error => {
-          console.error("Error verifying payment:", error);
-          toast({
-            title: "Error",
-            description: "An unexpected error occurred. Please contact support.",
-            variant: "destructive",
-            duration: 5000,
-          });
-        })
-        .finally(() => {
-          setIsLoading(false);
+      // Check if payment was successful using the utility function
+      const isPaymentSuccessful = await checkPaymentFromUrl(searchParams, user?.id);
+      
+      if (isPaymentSuccessful) {
+        toast({
+          title: "Payment Successful",
+          description: "Your purchase was completed successfully. Redirecting to dashboard...",
+          duration: 3000,
         });
+        
+        // Redirect to dashboard
+        navigate('/dashboard');
+      } else if (searchParams.has('payment_canceled')) {
+        toast({
+          title: "Payment Canceled",
+          description: "Your purchase was not completed. You can try again when you're ready.",
+          duration: 3000,
+        });
+      } else if (searchParams.has('session_id') || searchParams.has('payment_intent')) {
+        toast({
+          title: "Payment Verification Failed",
+          description: "We couldn't verify your payment. Please contact support if you believe this is an error.",
+          variant: "destructive",
+          duration: 5000,
+        });
+      }
+      
+      setIsLoading(false);
+    };
+    
+    if (location.search && user) {
+      checkStripePayment();
     }
   }, [location.search, navigate, toast, user]);
 

@@ -1,9 +1,11 @@
+
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { createCheckoutSession } from '@/utils/stripe';
+import { checkPaymentFromUrl, checkUserSubscription } from '@/utils/paymentVerification';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { supabase } from '@/integrations/supabase/client';
@@ -12,9 +14,46 @@ const SubscriptionPage = () => {
   const { user, loading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [hasSubscription, setHasSubscription] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
+
+  // Check for payment success from URL parameters
+  useEffect(() => {
+    if (!user) return;
+    
+    const searchParams = new URLSearchParams(location.search);
+    const checkPaymentStatus = async () => {
+      if (searchParams.has('payment_success') || 
+          searchParams.has('session_id') || 
+          searchParams.has('payment_intent')) {
+        
+        setIsLoading(true);
+        const isPaymentVerified = await checkPaymentFromUrl(searchParams, user.id);
+        
+        if (isPaymentVerified) {
+          toast({
+            title: "Payment Successful",
+            description: "Thank you for your purchase! Redirecting to your dashboard...",
+            duration: 3000,
+          });
+          
+          // Redirect to dashboard
+          navigate('/dashboard');
+        } else {
+          toast({
+            title: "Payment Verification",
+            description: "We're verifying your payment. Please wait a moment...",
+            duration: 3000,
+          });
+        }
+        setIsLoading(false);
+      }
+    };
+    
+    checkPaymentStatus();
+  }, [user, location.search, navigate, toast]);
 
   useEffect(() => {
     const checkSubscription = async () => {
@@ -24,19 +63,9 @@ const SubscriptionPage = () => {
         setPageLoading(true);
         console.log("Checking subscription for user:", user.id);
         
-        const { data, error } = await supabase
-          .from('payments')
-          .select('*')
-          .eq('user_id', user.id)
-          .eq('payment_status', 'succeeded')
-          .maybeSingle();
+        const hasValidSubscription = await checkUserSubscription(user.id);
         
-        if (error && error.code !== 'PGRST116') {
-          console.error('Error checking subscription:', error);
-          return;
-        }
-        
-        if (data) {
+        if (hasValidSubscription) {
           console.log("User has an active subscription");
           setHasSubscription(true);
           toast({

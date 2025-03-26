@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 
 // Success and cancel URLs
@@ -46,14 +47,18 @@ export const createCheckoutSession = async (userId?: string): Promise<string> =>
 /**
  * Verifies a payment was successful using Supabase Edge Function
  * @param sessionId The Stripe checkout session ID
+ * @param userId Optional user ID to ensure payment is recorded for the user
  * @returns Boolean indicating if payment was successful
  */
-export const verifyPayment = async (sessionId: string): Promise<boolean> => {
+export const verifyPayment = async (sessionId: string, userId?: string): Promise<boolean> => {
   try {
     console.log("Verifying payment for session:", sessionId);
     
     const { data, error } = await supabase.functions.invoke('verify-payment', {
-      body: { session_id: sessionId },
+      body: { 
+        session_id: sessionId,
+        user_id: userId  // Pass user ID to ensure payment is recorded
+      },
     });
 
     if (error) {
@@ -65,6 +70,36 @@ export const verifyPayment = async (sessionId: string): Promise<boolean> => {
     return data?.success === true;
   } catch (error) {
     console.error('Error in verifyPayment:', error);
+    return false;
+  }
+};
+
+/**
+ * Checks if a payment intent was successful
+ * @param paymentIntentId The Stripe payment intent ID
+ * @param userId Optional user ID to ensure payment is recorded for the user
+ * @returns Boolean indicating if payment was successful
+ */
+export const verifyPaymentIntent = async (paymentIntentId: string, userId?: string): Promise<boolean> => {
+  try {
+    console.log("Verifying payment intent:", paymentIntentId);
+    
+    const { data, error } = await supabase.functions.invoke('verify-payment', {
+      body: { 
+        payment_intent: paymentIntentId,
+        user_id: userId
+      },
+    });
+
+    if (error) {
+      console.error('Error verifying payment intent:', error);
+      return false;
+    }
+
+    console.log("Payment intent verification result:", data);
+    return data?.success === true;
+  } catch (error) {
+    console.error('Error in verifyPaymentIntent:', error);
     return false;
   }
 };
