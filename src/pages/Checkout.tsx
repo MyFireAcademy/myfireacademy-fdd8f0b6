@@ -1,23 +1,21 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Lock, Check, CreditCard } from 'lucide-react';
-import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import { ArrowLeft, Lock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { toast } from '@/components/ui/use-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import StripeCardElement from '@/components/stripe/CardElement';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const stripe = useStripe();
-  const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   
-  // Get the current URL for the success redirect
-  const successUrl = `${window.location.origin}/profile-setup`;
-  const cancelUrl = `${window.location.origin}/checkout`;
+  // Get absolute URLs for success and cancel redirects
+  const successUrl = encodeURIComponent(`${window.location.origin}/profile-setup`);
+  const cancelUrl = encodeURIComponent(`${window.location.origin}/checkout`);
+  
+  // Construct the full Stripe checkout URL
+  const stripeCheckoutUrl = `https://buy.stripe.com/9AQ14l4Q11AY6D67su?success_url=${successUrl}&cancel_url=${cancelUrl}`;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -69,7 +67,7 @@ const Checkout = () => {
                 </p>
                 
                 <a 
-                  href={`https://buy.stripe.com/9AQ14l4Q11AY6D67su?success_url=${encodeURIComponent(successUrl)}&cancel_url=${encodeURIComponent(cancelUrl)}`}
+                  href={stripeCheckoutUrl}
                   className="btn-primary w-full flex items-center justify-center"
                   target="_blank"
                   rel="noopener noreferrer"
