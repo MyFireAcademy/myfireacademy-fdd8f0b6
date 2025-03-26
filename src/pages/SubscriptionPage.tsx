@@ -40,7 +40,7 @@ const SubscriptionPage = () => {
           });
           
           // Redirect to dashboard
-          navigate('/dashboard');
+          navigate('/dashboard', { replace: true });
         } else {
           toast({
             title: "Payment Verification",
