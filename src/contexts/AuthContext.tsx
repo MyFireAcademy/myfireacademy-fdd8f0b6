@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(true);
       
       // Sign up with email and password
-      const { error } = await supabase.auth.signUp({ 
+      const { error, data } = await supabase.auth.signUp({ 
         email, 
         password,
         options: {
@@ -79,6 +79,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       if (error) throw error;
       
+      console.log("Signup response:", data);
+      
       // The user profile will be created automatically via the database trigger
       toast({
         title: "Sign up successful",
@@ -86,7 +88,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         duration: 3000,
       });
       
-      navigate('/dashboard');
+      // Directly sign in the user after signup
+      if (data.user) {
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+        
+        if (signInError) {
+          console.error("Error signing in after signup:", signInError);
+          navigate('/sign-in');
+          return;
+        }
+        
+        navigate('/dashboard');
+      }
     } catch (error: any) {
       console.error('Error signing up:', error);
       toast({
@@ -103,16 +119,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      console.log("Attempting to sign in with:", { email });
+      
+      const { error, data } = await supabase.auth.signInWithPassword({ 
+        email, 
+        password 
+      });
       
       if (error) throw error;
       
+      console.log("Sign in successful:", data);
       navigate('/dashboard');
     } catch (error: any) {
       console.error('Error signing in:', error);
       toast({
         title: "Sign in failed",
-        description: error.message || "An unexpected error occurred",
+        description: error.message || "Check your email and password",
         variant: "destructive",
         duration: 5000,
       });

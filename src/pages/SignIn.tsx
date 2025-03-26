@@ -10,7 +10,6 @@ const SignIn = () => {
   const { user, signIn, loading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
   // If user is already logged in, redirect to dashboard
   if (user) {
@@ -19,8 +18,7 @@ const SignIn = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    
+    console.log("Attempting to sign in with:", email);
     await signIn(email, password);
   };
 
@@ -34,12 +32,6 @@ const SignIn = () => {
               <h1 className="text-2xl font-bold text-navy-900">Sign In</h1>
               <p className="text-navy-600 mt-2">Access your study portal</p>
             </div>
-
-            {error && (
-              <div className="bg-red-50 text-red-700 px-4 py-3 rounded-lg mb-6">
-                {error}
-              </div>
-            )}
 
             <form onSubmit={handleSubmit}>
               <div className="space-y-5">

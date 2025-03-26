@@ -17,6 +17,19 @@ const Pricing = () => {
   
   const handlePurchase = (e: React.MouseEvent) => {
     e.preventDefault();
+    
+    if (!isAuthenticated()) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in or create an account to continue.",
+        duration: 5000,
+      });
+      
+      // Redirect to sign-in page
+      navigate('/sign-in');
+      return;
+    }
+    
     navigate('/checkout');
   };
 
