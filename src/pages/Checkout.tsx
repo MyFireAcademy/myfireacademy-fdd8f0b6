@@ -26,7 +26,7 @@ const Checkout = () => {
   const [authLoading, setAuthLoading] = useState(false);
 
   // Define success and cancel URLs
-  const successUrl = `${window.location.origin}/quiz?payment_success=true`;
+  const successUrl = `${window.location.origin}/quizzes?payment_success=true`;
   const cancelUrl = `${window.location.origin}/checkout?payment_canceled=true`;
 
   useEffect(() => {
@@ -51,19 +51,14 @@ const Checkout = () => {
             return;
           }
           
-          // If user already has a subscription, redirect to quiz page
+          // If user already has a subscription, redirect to quizzes page
           if (data) {
             toast({
               title: "Already Subscribed",
               description: "You already have access to the study materials.",
               duration: 3000,
             });
-            navigate('/quiz', { 
-              state: { 
-                level: 'level1',
-                isFull: true
-              }
-            });
+            navigate('/quizzes', { replace: true });
           }
         } catch (error) {
           console.error('Error checking subscription status:', error);
@@ -86,17 +81,12 @@ const Checkout = () => {
       if (isPaymentSuccessful) {
         toast({
           title: "Payment Successful",
-          description: "Your purchase was completed successfully. Redirecting to quiz...",
+          description: "Your purchase was completed successfully. Redirecting to quizzes...",
           duration: 3000,
         });
         
-        // Redirect to quiz page
-        navigate('/quiz', { 
-          state: { 
-            level: 'level1',
-            isFull: true
-          }
-        });
+        // Redirect to quizzes page instead of quiz
+        navigate('/quizzes', { replace: true });
       } else if (searchParams.has('payment_canceled')) {
         toast({
           title: "Payment Canceled",
