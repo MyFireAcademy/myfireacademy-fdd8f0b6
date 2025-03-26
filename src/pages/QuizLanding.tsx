@@ -120,7 +120,21 @@ const QuizLanding = () => {
   ];
 
   const handleStartQuiz = (quiz: QuizCard) => {
-    if (!user && !quiz.isDemo) {
+    // For demo quizzes or if the user has a subscription, allow starting the quiz directly
+    if (quiz.isDemo || hasSubscription || paymentJustCompleted) {
+      navigate('/quiz', { 
+        state: { 
+          quizId: quiz.id,
+          level: quiz.level,
+          isFull: !quiz.isDemo,
+          isDemo: quiz.isDemo
+        } 
+      });
+      return;
+    }
+
+    // If not logged in, prompt to sign in
+    if (!user) {
       toast({
         title: "Sign in required",
         description: "Please sign in to access the full quizzes.",
@@ -130,24 +144,13 @@ const QuizLanding = () => {
       return;
     }
 
-    if (!hasSubscription && !quiz.isDemo) {
-      toast({
-        title: "Subscription required",
-        description: "Please subscribe to access the full certification exams.",
-        duration: 5000,
-      });
-      navigate('/subscription');
-      return;
-    }
-
-    navigate('/quiz', { 
-      state: { 
-        quizId: quiz.id,
-        level: quiz.level,
-        isFull: !quiz.isDemo,
-        isDemo: quiz.isDemo
-      } 
+    // If not subscribed, prompt to subscribe
+    toast({
+      title: "Subscription required",
+      description: "Please subscribe to access the full certification exams.",
+      duration: 5000,
     });
+    navigate('/subscription');
   };
 
   if (isLoading) {
@@ -209,7 +212,7 @@ const QuizLanding = () => {
               <div 
                 key={quiz.id}
                 className={`bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden ${
-                  (hasSubscription || quiz.isDemo) ? 'cursor-pointer' : 'opacity-70'
+                  (hasSubscription || paymentJustCompleted || quiz.isDemo) ? 'cursor-pointer' : 'opacity-70'
                 }`}
                 onClick={() => handleStartQuiz(quiz)}
               >
@@ -232,7 +235,7 @@ const QuizLanding = () => {
                         Free
                       </span>
                     )}
-                    {hasSubscription && !quiz.isDemo && (
+                    {(hasSubscription || paymentJustCompleted) && !quiz.isDemo && (
                       <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
                         Premium
                       </span>
