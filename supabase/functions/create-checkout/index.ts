@@ -24,6 +24,8 @@ serve(async (req) => {
     // Parse the request body
     const { price, success_url, cancel_url, user_id } = await req.json();
 
+    console.log("Creating checkout session with:", { price, user_id });
+
     // Create the checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -41,6 +43,8 @@ serve(async (req) => {
         user_id: user_id || "",
       },
     });
+
+    console.log("Checkout session created:", session.id);
 
     // Return the session URL
     return new Response(

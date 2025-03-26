@@ -34,25 +34,37 @@ serve(async (req) => {
       throw new Error("No session ID provided");
     }
 
+    console.log("Verifying payment for session:", session_id);
+
     // Retrieve the session from Stripe
     const session = await stripe.checkout.sessions.retrieve(session_id);
+    
+    console.log("Session retrieved:", {
+      id: session.id,
+      payment_status: session.payment_status,
+      client_reference_id: session.client_reference_id
+    });
     
     // Check if the payment status is paid
     const isPaid = session.payment_status === "paid";
     
     if (isPaid && session.client_reference_id) {
+      console.log("Payment succeeded, storing in database");
+      
       // Store payment information in the database
       const { error } = await supabase.from("payments").insert({
         user_id: session.client_reference_id,
         stripe_session_id: session.id,
         stripe_payment_id: session.payment_intent as string,
         amount: session.amount_total ? session.amount_total / 100 : 0,
-        status: "succeeded",
+        payment_status: "succeeded",
         created_at: new Date().toISOString(),
       });
 
       if (error) {
         console.error("Error storing payment information:", error);
+      } else {
+        console.log("Payment information stored successfully");
       }
     }
 

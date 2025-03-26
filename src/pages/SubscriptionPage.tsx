@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Check, Lock } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { createCheckoutSession } from '@/utils/stripe';
@@ -15,6 +15,7 @@ const SubscriptionPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [hasSubscription, setHasSubscription] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
 
   // Check if user already has a subscription
   useEffect(() => {
@@ -22,13 +23,16 @@ const SubscriptionPage = () => {
       if (!user) return;
       
       try {
+        setPageLoading(true);
+        console.log("Checking subscription for user:", user.id);
+        
         // Check if user has a payment record
         const { data, error } = await supabase
           .from('payments')
           .select('*')
           .eq('user_id', user.id)
           .eq('payment_status', 'succeeded')
-          .single();
+          .maybeSingle();
         
         if (error && error.code !== 'PGRST116') {
           console.error('Error checking subscription:', error);
@@ -37,21 +41,30 @@ const SubscriptionPage = () => {
         
         // If user has a payment, they have access
         if (data) {
+          console.log("User has an active subscription");
           setHasSubscription(true);
           // Redirect to dashboard if already subscribed
+          toast({
+            title: "Already Subscribed",
+            description: "You already have access to the study materials.",
+            duration: 3000,
+          });
           navigate('/dashboard');
         }
       } catch (error) {
         console.error('Error checking subscription status:', error);
+      } finally {
+        setPageLoading(false);
       }
     };
     
     checkSubscription();
-  }, [user, navigate]);
+  }, [user, navigate, toast]);
 
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!loading && !user) {
+      console.log("User not authenticated, redirecting to sign-in");
       navigate('/sign-in');
     }
   }, [user, loading, navigate]);
@@ -76,8 +89,12 @@ const SubscriptionPage = () => {
         duration: 3000,
       });
       
+      console.log("Creating checkout session for user:", user.id);
+      
       // Create checkout session
       const url = await createCheckoutSession(user.id);
+      
+      console.log("Redirecting to Stripe Checkout:", url);
       
       // Redirect to Stripe Checkout
       window.location.href = url;
@@ -93,10 +110,27 @@ const SubscriptionPage = () => {
     }
   };
 
-  if (loading || hasSubscription) {
+  if (loading || pageLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fire-600"></div>
+      </div>
+    );
+  }
+
+  if (hasSubscription) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-navy-900">You already have a subscription</h2>
+          <p className="mt-2 mb-4 text-navy-700">You have full access to all study materials.</p>
+          <button 
+            onClick={() => navigate('/dashboard')}
+            className="btn-primary"
+          >
+            Go to Dashboard
+          </button>
+        </div>
       </div>
     );
   }

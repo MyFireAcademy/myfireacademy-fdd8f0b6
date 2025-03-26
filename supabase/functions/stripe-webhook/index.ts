@@ -1,6 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { Stripe } from "https://esm.sh/stripe@14.19.0?target=deno";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -14,47 +15,66 @@ serve(async (req) => {
   }
 
   try {
+    const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY");
     const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL") || "https://jlqhpccootrwvslvstdm.supabase.co";
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
-    if (!STRIPE_WEBHOOK_SECRET) {
-      throw new Error("Missing STRIPE_WEBHOOK_SECRET env variable");
+    if (!STRIPE_SECRET_KEY) {
+      throw new Error("Missing STRIPE_SECRET_KEY env variable");
     }
 
     if (!SUPABASE_SERVICE_ROLE_KEY) {
       throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY env variable");
     }
 
+    // Initialize Stripe
+    const stripe = new Stripe(STRIPE_SECRET_KEY, {
+      apiVersion: "2023-10-16",
+      httpClient: Stripe.createFetchHttpClient(),
+    });
+
     // Initialize Supabase client with admin privileges
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     // Get the signature from the headers
     const signature = req.headers.get("stripe-signature");
-    if (!signature) {
-      return new Response(JSON.stringify({ error: "No signature provided" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
+    
     // Get the raw body as text
     const body = await req.text();
+    let event;
     
-    // For webhook verification we would normally use the Stripe library, but
-    // as a simpler implementation for this demo, we'll just process the event directly
-    const event = JSON.parse(body);
+    // Verify signature if webhook secret is provided
+    if (STRIPE_WEBHOOK_SECRET && signature) {
+      try {
+        event = stripe.webhooks.constructEvent(body, signature, STRIPE_WEBHOOK_SECRET);
+      } catch (err) {
+        console.error(`⚠️ Webhook signature verification failed.`, err.message);
+        return new Response(JSON.stringify({ error: `Webhook Error: ${err.message}` }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    } else {
+      // For testing: parse the event from the body
+      event = JSON.parse(body);
+    }
+    
     console.log(`Processing Stripe event: ${event.type}`);
 
     // Handle the event
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object;
-        console.log("Checkout session completed:", session);
+        console.log("Checkout session completed:", session.id);
         
         // Extract user metadata if available
         const clientReferenceId = session.client_reference_id;
         const userId = clientReferenceId || null;
+        
+        if (!userId) {
+          console.warn("No user ID found in session:", session.id);
+        }
         
         // Store the payment information in our database
         const { error } = await supabase.from("payments").insert({
@@ -71,7 +91,7 @@ serve(async (req) => {
           throw error;
         }
 
-        console.log(`Payment session ${session.id} completed successfully`);
+        console.log(`Payment session ${session.id} completed successfully for user ${userId}`);
         break;
       }
       case "payment_intent.succeeded": {
@@ -81,6 +101,10 @@ serve(async (req) => {
         // Extract user metadata if available
         const userId = paymentIntent.metadata?.user_id || null;
         
+        if (!userId) {
+          console.warn("No user ID found in payment intent:", paymentIntent.id);
+        }
+        
         // First check if a record already exists
         const { data: existingData } = await supabase
           .from("payments")
@@ -88,6 +112,7 @@ serve(async (req) => {
           .eq("stripe_payment_id", paymentIntent.id);
           
         if (existingData && existingData.length > 0) {
+          console.log("Updating existing payment record:", paymentIntent.id);
           // Update existing record
           const { error } = await supabase
             .from("payments")
@@ -101,6 +126,7 @@ serve(async (req) => {
             console.error("Error updating payment record:", error);
           }
         } else {
+          console.log("Creating new payment record for:", paymentIntent.id);
           // Create a new record
           const { error } = await supabase.from("payments").insert({
             stripe_payment_id: paymentIntent.id,
@@ -133,6 +159,8 @@ serve(async (req) => {
         break;
       }
       // Add other event types as needed
+      default:
+        console.log(`Unhandled event type: ${event.type}`);
     }
 
     return new Response(JSON.stringify({ received: true }), {
