@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { checkPaymentFromUrl, checkUserSubscription } from '@/utils/paymentVerification';
 
-interface QuizMetadata {
+interface ExamMetadata {
   id: string;
   title: string;
   description: string;
@@ -128,7 +128,7 @@ const Dashboard = () => {
     fetchUserData();
   }, [user, navigate, toast, location.search]);
   
-  const exams: QuizMetadata[] = [
+  const exams: ExamMetadata[] = [
     {
       id: 'nfpa-1001-level1-full',
       title: 'NFPA 1001 Firefighter I',
@@ -149,9 +149,9 @@ const Dashboard = () => {
     }
   ];
 
-  const handleStartExam = (quizId: string) => {
-    const level = quizId.includes('level1') ? 'level1' : 'level2';
-    navigate('/quiz', { state: { quizId, level, isFull: true } });
+  const handleStartExam = (examId: string) => {
+    const level = examId.includes('level1') ? 'level1' : 'level2';
+    navigate('/quiz', { state: { examId, level, isFull: true } });
     
     toast({
       title: "Starting Full Exam",
@@ -197,9 +197,9 @@ const Dashboard = () => {
           <div className="bg-fire-600 text-white rounded-2xl p-8 mb-10 shadow-xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between">
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome, {username}!</h1>
+                <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome back, {username}!</h1>
                 <p className="mb-6 md:mb-0 text-white/90">
-                  Your purchase includes full access to both Level I and Level II certification exams with 100 questions each.
+                  Select an exam below to begin or resume your certification preparation.
                 </p>
               </div>
               <button
@@ -212,20 +212,10 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {isNewPurchase && (
-            <div className="bg-green-50 border border-green-200 rounded-2xl p-6 mb-10 shadow-sm">
-              <h2 className="text-xl font-semibold text-green-800 mb-2">Thank You for Your Purchase!</h2>
-              <p className="text-green-700 mb-4">
-                You now have full access to both Level I and Level II certification exams. 
-                Begin your preparation by selecting an exam below.
-              </p>
-            </div>
-          )}
-
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-10">
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-navy-900">Available Certification Exams</h2>
-              <p className="text-navy-700 mt-1">Select an exam to begin your assessment</p>
+              <p className="text-navy-700 mt-1">Select an exam to begin or resume your assessment</p>
             </div>
             
             <div className="p-6">
