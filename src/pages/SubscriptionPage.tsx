@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Check } from 'lucide-react';
@@ -17,7 +16,6 @@ const SubscriptionPage = () => {
   const [hasSubscription, setHasSubscription] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
 
-  // Check if user already has a subscription
   useEffect(() => {
     const checkSubscription = async () => {
       if (!user) return;
@@ -26,7 +24,6 @@ const SubscriptionPage = () => {
         setPageLoading(true);
         console.log("Checking subscription for user:", user.id);
         
-        // Check if user has a payment record
         const { data, error } = await supabase
           .from('payments')
           .select('*')
@@ -39,11 +36,9 @@ const SubscriptionPage = () => {
           return;
         }
         
-        // If user has a payment, they have access
         if (data) {
           console.log("User has an active subscription");
           setHasSubscription(true);
-          // Redirect to dashboard if already subscribed
           toast({
             title: "Already Subscribed",
             description: "You already have access to the study materials.",
@@ -61,7 +56,6 @@ const SubscriptionPage = () => {
     checkSubscription();
   }, [user, navigate, toast]);
 
-  // Redirect to login if not authenticated
   useEffect(() => {
     if (!loading && !user) {
       console.log("User not authenticated, redirecting to sign-in");
@@ -91,12 +85,10 @@ const SubscriptionPage = () => {
       
       console.log("Creating checkout session for user:", user.id);
       
-      // Create checkout session
       const url = await createCheckoutSession(user.id);
       
       console.log("Redirecting to Stripe Checkout:", url);
       
-      // Redirect to Stripe Checkout
       window.location.href = url;
     } catch (error) {
       console.error('Error creating checkout session:', error);

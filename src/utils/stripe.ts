@@ -5,9 +5,8 @@ import { supabase } from '@/integrations/supabase/client';
 const SUCCESS_URL = `${window.location.origin}/dashboard?payment_success=true`;
 const CANCEL_URL = `${window.location.origin}/checkout?payment_canceled=true`;
 
-// This is the Stripe price ID for your product
-// In a production app, this could be stored in a config or fetched from an API
-const PRICE_ID = 'price_1OqjgvKqzGq23456Bj8UdLLt'; // Replace with your actual price ID when ready
+// Your Stripe product ID
+const PRODUCT_ID = 'prod_S0kBCt5bzNnIPt';
 
 /**
  * Creates a Stripe checkout session using Supabase Edge Function
@@ -21,7 +20,7 @@ export const createCheckoutSession = async (userId?: string): Promise<string> =>
     // Call the Supabase Edge Function to create a checkout session
     const { data, error } = await supabase.functions.invoke('create-checkout', {
       body: {
-        price: PRICE_ID,
+        product_id: PRODUCT_ID, // Use product ID instead of price ID
         success_url: SUCCESS_URL,
         cancel_url: CANCEL_URL,
         user_id: userId,

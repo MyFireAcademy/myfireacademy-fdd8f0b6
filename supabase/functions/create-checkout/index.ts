@@ -22,16 +22,28 @@ serve(async (req) => {
 
   try {
     // Parse the request body
-    const { price, success_url, cancel_url, user_id } = await req.json();
+    const { product_id, success_url, cancel_url, user_id } = await req.json();
 
-    console.log("Creating checkout session with:", { price, user_id });
+    console.log("Creating checkout session with:", { product_id, user_id });
 
-    // Create the checkout session
+    if (!product_id) {
+      throw new Error("Product ID is required");
+    }
+
+    // Get the default price for the product
+    const product = await stripe.products.retrieve(product_id);
+    console.log("Product retrieved:", product.id, "Default price:", product.default_price);
+
+    if (!product.default_price) {
+      throw new Error("Product does not have a default price");
+    }
+
+    // Create the checkout session with the default price
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
         {
-          price: price, // Use the price ID from the request
+          price: product.default_price as string,
           quantity: 1,
         },
       ],
