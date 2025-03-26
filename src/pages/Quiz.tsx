@@ -5,6 +5,8 @@ import { levelIQuizData, levelIIQuizData, Question } from '@/lib/quiz-data';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 type QuizLevel = 'level1' | 'level2';
 type LocationState = {
@@ -18,6 +20,8 @@ const Quiz = () => {
   const location = useLocation();
   const state = location.state as LocationState || {};
   
+  const { user } = useAuth();
+
   const [currentLevel, setCurrentLevel] = useState<QuizLevel>(state.level || 'level1');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -111,6 +115,32 @@ const Quiz = () => {
     }
   };
 
+  const saveExamAttempt = async (level: string, score: number, totalQuestions: number) => {
+    if (!user) return;
+    
+    try {
+      const { error } = await supabase
+        .from('exam_attempts')
+        .insert({
+          user_id: user.id,
+          level,
+          score,
+          total_questions: totalQuestions,
+        });
+        
+      if (error) throw error;
+      
+      console.log('Exam attempt saved successfully');
+    } catch (error) {
+      console.error('Error saving exam attempt:', error);
+      toast({
+        title: "Error Saving Results",
+        description: "Your exam results couldn't be saved. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleNextQuestion = () => {
     if (!hasQuestions) return;
     
@@ -125,6 +155,9 @@ const Quiz = () => {
           title: "Level I Quiz Completed!",
           description: `Your score: ${score.level1}/${questions.length}`,
         });
+        
+        saveExamAttempt('level1', score.level1, questions.length);
+        
         if (!isFull || isDemo) {
           setCurrentLevel('level2');
         }
@@ -134,6 +167,8 @@ const Quiz = () => {
           title: "Level II Quiz Completed!",
           description: `Your score: ${score.level2}/${questions.length}`,
         });
+        
+        saveExamAttempt('level2', score.level2, questions.length);
       }
     }
   };

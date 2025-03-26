@@ -1,10 +1,12 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, BookOpen } from 'lucide-react';
+import { ArrowRight, BookOpen, LogOut } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 interface QuizMetadata {
   id: string;
@@ -16,34 +18,78 @@ interface QuizMetadata {
   progress?: number;
 }
 
-interface User {
-  username: string;
-  isAuthenticated: boolean;
+interface ExamAttempt {
+  id: string;
+  level: string;
+  score: number;
+  total_questions: number;
+  completed_at: string;
 }
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, signOut } = useAuth();
   const [activeTab, setActiveTab] = useState<'level1' | 'level2'>('level1');
-  const [user, setUser] = useState<User | null>(null);
+  const [username, setUsername] = useState<string>('');
+  const [examAttempts, setExamAttempts] = useState<ExamAttempt[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
-  // Check if user is authenticated on component mount
   useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
-    } else {
-      // If no user data exists, redirect to checkout
-      navigate('/checkout');
-      toast({
-        title: "Access Denied",
-        description: "Please purchase access or log in to view this content.",
-        variant: "destructive",
-        duration: 4000,
-      });
+    // Check if user is authenticated
+    if (!user) {
+      navigate('/sign-in');
+      return;
     }
-  }, [navigate, toast]);
+
+    // Fetch user profile and exam attempts
+    const fetchUserData = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Fetch user profile
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('username')
+          .eq('id', user.id)
+          .single();
+        
+        if (profileError) {
+          throw profileError;
+        }
+        
+        if (profileData) {
+          setUsername(profileData.username || user.email?.split('@')[0] || 'User');
+        }
+        
+        // Fetch exam attempts
+        const { data: attemptsData, error: attemptsError } = await supabase
+          .from('exam_attempts')
+          .select('*')
+          .order('completed_at', { ascending: false });
+        
+        if (attemptsError) {
+          throw attemptsError;
+        }
+        
+        if (attemptsData) {
+          setExamAttempts(attemptsData);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        toast({
+          title: "Error Loading Data",
+          description: "Failed to load your profile data. Please try again.",
+          variant: "destructive",
+          duration: 4000,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchUserData();
+  }, [user, navigate, toast]);
   
   const quizzes: QuizMetadata[] = [
     {
@@ -78,8 +124,11 @@ const Dashboard = () => {
     });
   };
 
-  if (!user) {
-    // Show loading state while checking authentication
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fire-600"></div>
@@ -96,11 +145,18 @@ const Dashboard = () => {
           <div className="bg-fire-600 text-white rounded-2xl p-8 mb-10 shadow-xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between">
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome, {user.username}!</h1>
+                <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome, {username}!</h1>
                 <p className="mb-6 md:mb-0 text-white/90">
                   Your purchase includes full access to both Level I and Level II certification exams with 100 questions each.
                 </p>
               </div>
+              <button
+                onClick={handleSignOut}
+                className="self-start bg-white/20 hover:bg-white/30 text-white py-2 px-4 rounded-lg flex items-center transition-colors"
+              >
+                <LogOut size={18} className="mr-2" />
+                Sign Out
+              </button>
             </div>
           </div>
 
@@ -164,6 +220,47 @@ const Dashboard = () => {
                 ))}
             </div>
           </div>
+
+          {/* Exam History Section */}
+          {examAttempts.length > 0 && (
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div className="p-6 border-b border-gray-200">
+                <h2 className="text-xl font-semibold text-navy-900">Your Exam History</h2>
+              </div>
+              <div className="p-6">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="text-left text-navy-700 border-b">
+                        <th className="pb-3 font-medium">Date</th>
+                        <th className="pb-3 font-medium">Level</th>
+                        <th className="pb-3 font-medium">Score</th>
+                        <th className="pb-3 font-medium">Percentage</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {examAttempts.map((attempt) => (
+                        <tr key={attempt.id} className="border-b border-gray-100 hover:bg-gray-50">
+                          <td className="py-3">
+                            {new Date(attempt.completed_at).toLocaleDateString()}
+                          </td>
+                          <td className="py-3">
+                            {attempt.level === 'level1' ? 'Level I' : 'Level II'}
+                          </td>
+                          <td className="py-3">
+                            {attempt.score}/{attempt.total_questions}
+                          </td>
+                          <td className="py-3">
+                            {Math.round((attempt.score / attempt.total_questions) * 100)}%
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
       <Footer />

@@ -6,11 +6,13 @@ import { useToast } from '@/hooks/use-toast';
 import { checkPaymentFromUrl } from '@/utils/paymentVerification';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   
   // Get the current URL for the success redirect
@@ -41,8 +43,12 @@ const Checkout = () => {
               duration: 3000,
             });
             
-            // Redirect to profile setup
-            navigate('/profile-setup');
+            // If user is already logged in, go to dashboard, otherwise go to profile setup
+            if (user) {
+              navigate('/dashboard');
+            } else {
+              navigate('/profile-setup');
+            }
           } else {
             toast({
               title: "Payment Verification Issue",
@@ -66,7 +72,7 @@ const Checkout = () => {
       
       checkPayment();
     }
-  }, [location.search, navigate, toast]);
+  }, [location.search, navigate, toast, user]);
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -1,12 +1,14 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +22,12 @@ const Navbar = () => {
   const handleBuyNowClick = (e: React.MouseEvent) => {
     e.preventDefault();
     navigate('/checkout');
+    setIsMenuOpen(false);
+  };
+
+  const handleSignOutClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    await signOut();
     setIsMenuOpen(false);
   };
 
@@ -50,9 +58,30 @@ const Navbar = () => {
             <Link to="/blog" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               Blog
             </Link>
-            <button onClick={handleBuyNowClick} className="btn-primary animate-pulse-soft ml-2">
-              Buy Now
-            </button>
+            
+            {user ? (
+              <div className="flex items-center space-x-4">
+                <Link to="/dashboard" className="text-navy-800 hover:text-fire-600 transition-colors font-medium flex items-center">
+                  <User size={18} className="mr-1" />
+                  Dashboard
+                </Link>
+                <button 
+                  onClick={handleSignOutClick} 
+                  className="text-navy-800 hover:text-fire-600 transition-colors font-medium"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <Link to="/sign-in" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
+                  Sign In
+                </Link>
+                <button onClick={handleBuyNowClick} className="btn-primary animate-pulse-soft ml-2">
+                  Buy Now
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -94,12 +123,41 @@ const Navbar = () => {
               >
                 Blog
               </Link>
-              <button 
-                onClick={handleBuyNowClick}
-                className="btn-primary w-full text-center"
-              >
-                Buy Now
-              </button>
+              
+              {user ? (
+                <>
+                  <Link 
+                    to="/dashboard" 
+                    onClick={() => setIsMenuOpen(false)}
+                    className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium flex items-center"
+                  >
+                    <User size={18} className="mr-2" />
+                    Dashboard
+                  </Link>
+                  <button 
+                    onClick={handleSignOutClick}
+                    className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium text-left"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link 
+                    to="/sign-in" 
+                    onClick={() => setIsMenuOpen(false)}
+                    className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium"
+                  >
+                    Sign In
+                  </Link>
+                  <button 
+                    onClick={handleBuyNowClick}
+                    className="btn-primary w-full text-center"
+                  >
+                    Buy Now
+                  </button>
+                </>
+              )}
             </div>
           </div>
         )}

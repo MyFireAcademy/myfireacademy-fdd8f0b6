@@ -52,6 +52,10 @@ serve(async (req) => {
         const session = event.data.object;
         console.log("Checkout session completed:", session);
         
+        // Extract user metadata if available
+        const clientReferenceId = session.client_reference_id;
+        const userId = clientReferenceId || null;
+        
         // Store the payment information in our database
         const { error } = await supabase.from("payments").insert({
           stripe_payment_id: session.payment_intent,
@@ -59,7 +63,7 @@ serve(async (req) => {
           amount: session.amount_total / 100, // Stripe amounts are in cents
           currency: session.currency,
           payment_status: "succeeded",
-          // Note: user_id would typically come from session metadata or be linked later
+          user_id: userId,
         });
 
         if (error) {
@@ -74,6 +78,9 @@ serve(async (req) => {
         const paymentIntent = event.data.object;
         console.log("Payment intent succeeded:", paymentIntent.id);
         
+        // Extract user metadata if available
+        const userId = paymentIntent.metadata?.user_id || null;
+        
         // First check if a record already exists
         const { data: existingData } = await supabase
           .from("payments")
@@ -84,7 +91,10 @@ serve(async (req) => {
           // Update existing record
           const { error } = await supabase
             .from("payments")
-            .update({ payment_status: "succeeded" })
+            .update({ 
+              payment_status: "succeeded",
+              user_id: userId || existingData[0].user_id
+            })
             .eq("stripe_payment_id", paymentIntent.id);
 
           if (error) {
@@ -98,6 +108,7 @@ serve(async (req) => {
             amount: paymentIntent.amount / 100,
             currency: paymentIntent.currency,
             payment_status: "succeeded",
+            user_id: userId,
           });
 
           if (error) {
