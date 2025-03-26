@@ -84,15 +84,15 @@ const Navbar = () => {
                 
                 <DropdownMenu>
                   <DropdownMenuTrigger className="text-navy-800 hover:text-fire-600 transition-colors font-medium inline-flex items-center">
-                    <span>Quizzes</span>
+                    <span>Exams</span>
                     <ChevronDown size={16} className="ml-1" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="bg-white">
                     <DropdownMenuItem onClick={() => handleStartQuizClick('level1')}>
-                      Level I Quiz
+                      Level I Exam
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleStartQuizClick('level2')}>
-                      Level II Quiz
+                      Level II Exam
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -168,18 +168,18 @@ const Navbar = () => {
                   </Link>
                   
                   <div className="py-2">
-                    <div className="font-medium text-navy-800 mb-2">Quizzes:</div>
+                    <div className="font-medium text-navy-800 mb-2">Exams:</div>
                     <button 
                       onClick={() => handleStartQuizClick('level1')}
                       className="w-full text-left pl-4 py-2 text-navy-800 hover:text-fire-600 transition-colors"
                     >
-                      Level I Quiz
+                      Level I Exam
                     </button>
                     <button 
                       onClick={() => handleStartQuizClick('level2')}
                       className="w-full text-left pl-4 py-2 text-navy-800 hover:text-fire-600 transition-colors"
                     >
-                      Level II Quiz
+                      Level II Exam
                     </button>
                   </div>
                   
