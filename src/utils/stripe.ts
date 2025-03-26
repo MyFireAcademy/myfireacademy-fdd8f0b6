@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 
 // Success and cancel URLs
@@ -6,7 +5,7 @@ const SUCCESS_URL = `${window.location.origin}/dashboard?payment_success=true`;
 const CANCEL_URL = `${window.location.origin}/checkout?payment_canceled=true`;
 
 // Your Stripe product ID
-const PRODUCT_ID = 'prod_S0oLfcn1F5kZ64';
+const PRODUCT_ID = 'prod_S0kBCt5bzNnIPt';
 
 /**
  * Creates a Stripe checkout session using Supabase Edge Function
