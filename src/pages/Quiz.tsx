@@ -18,7 +18,19 @@ type LocationState = {
   isDemo?: boolean;
 };
 
-const Quiz = () => {
+interface QuizProps {
+  initialLevel?: QuizLevel;
+  initialIsFull?: boolean;
+  initialIsDemo?: boolean;
+  quizId?: string;
+}
+
+const Quiz = ({ 
+  initialLevel = 'level1', 
+  initialIsFull = false, 
+  initialIsDemo = false,
+  quizId = 'nfpa-1001-level1-full'
+}: QuizProps) => {
   const location = useLocation();
   const state = location.state as LocationState || {};
   
@@ -26,14 +38,14 @@ const Quiz = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [currentLevel, setCurrentLevel] = useState<QuizLevel>(state.level || 'level1');
+  const [currentLevel, setCurrentLevel] = useState<QuizLevel>(initialLevel || state.level || 'level1');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState({ level1: 0, level2: 0 });
   const [quizComplete, setQuizComplete] = useState({ level1: false, level2: false });
-  const [isFull, setIsFull] = useState(state.isFull || false);
-  const [isDemo, setIsDemo] = useState(state.isDemo || false);
+  const [isFull, setIsFull] = useState(initialIsFull || state.isFull || false);
+  const [isDemo, setIsDemo] = useState(initialIsDemo || state.isDemo || false);
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const [email, setEmail] = useState('');
