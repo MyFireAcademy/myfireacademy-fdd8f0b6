@@ -1,14 +1,16 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Lock, User } from 'lucide-react';
+import { ArrowLeft, Lock, User, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { verifyPayment } from '@/utils/stripe';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/contexts/AuthContext';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { createCheckoutSession } from '@/utils/stripe';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -16,9 +18,12 @@ const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, signIn } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
 
   // Define success and cancel URLs
   const successUrl = `${window.location.origin}/dashboard?payment_success=true`;
@@ -131,6 +136,20 @@ const Checkout = () => {
         });
     }
   }, [location.search, navigate, toast, user]);
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    
+    try {
+      await signIn(email, password);
+      setShowAuthDialog(false);
+    } catch (error) {
+      console.error('Sign in error:', error);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
 
   const handleAuthDialogAction = (action: 'signin' | 'signup' | 'cancel') => {
     setShowAuthDialog(false);
@@ -285,41 +304,69 @@ const Checkout = () => {
 
       {/* Authentication Dialog */}
       <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-xl text-center">Authentication Required</DialogTitle>
-            <DialogDescription className="text-center">
-              You need to create an account or sign in to complete your purchase.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            <div className="text-center">
-              <User className="h-16 w-16 text-fire-500 mx-auto mb-4" />
-              <p className="text-navy-700">
-                Creating an account allows you to access your study materials anytime and track your progress.
-              </p>
+        <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+          <div className="p-6">
+            <DialogHeader>
+              <h2 className="text-2xl font-bold text-center">Welcome to Firefighter Exam Prep</h2>
+              <p className="text-center text-gray-500 mt-2">Sign in to access your exam materials</p>
+            </DialogHeader>
+            
+            <form onSubmit={handleSignIn} className="mt-6 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email address</Label>
+                <div className="relative">
+                  <Input 
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Your email address"
+                    className="pl-10"
+                    required
+                  />
+                  <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password">Your Password</Label>
+                <div className="relative">
+                  <Input 
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Your password"
+                    className="pl-10"
+                    required
+                  />
+                  <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                </div>
+              </div>
+              
+              <Button 
+                type="submit"
+                className="w-full bg-fire-600 hover:bg-fire-700 text-white font-medium py-3"
+                disabled={authLoading}
+              >
+                {authLoading ? 'Signing in...' : 'Sign in'}
+              </Button>
+            </form>
+            
+            <div className="mt-6 text-center space-y-2">
+              <a href="#" className="text-fire-600 hover:underline text-sm">
+                Forgot your password?
+              </a>
+              <div className="text-sm text-gray-500">
+                Don't have an account? <button 
+                  onClick={() => handleAuthDialogAction('signup')}
+                  className="text-fire-600 hover:underline font-medium"
+                >
+                  Sign up
+                </button>
+              </div>
             </div>
           </div>
-          <DialogFooter className="sm:justify-center sm:space-x-4 sm:flex-row">
-            <Button 
-              variant="secondary"
-              onClick={() => handleAuthDialogAction('cancel')}
-            >
-              Cancel
-            </Button>
-            <Button 
-              variant="outline"
-              onClick={() => handleAuthDialogAction('signin')}
-            >
-              Sign In
-            </Button>
-            <Button
-              className="bg-fire-600 hover:bg-fire-700 text-white" 
-              onClick={() => handleAuthDialogAction('signup')}
-            >
-              Create Account
-            </Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

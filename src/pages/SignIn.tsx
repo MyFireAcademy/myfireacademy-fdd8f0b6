@@ -5,6 +5,8 @@ import { ArrowRight, Mail, Lock } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const SignIn = () => {
   const { user, signIn, loading } = useAuth();
@@ -29,56 +31,46 @@ const SignIn = () => {
         <div className="max-w-md mx-auto px-6">
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <div className="text-center mb-6">
-              <h1 className="text-2xl font-bold text-navy-900">Sign In</h1>
-              <p className="text-navy-600 mt-2">Access your study portal</p>
+              <h1 className="text-2xl font-bold text-navy-900">Welcome Back</h1>
+              <p className="text-gray-500 mt-2">Sign in to access your study materials</p>
             </div>
 
-            <form onSubmit={handleSubmit}>
-              <div className="space-y-5">
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-navy-700 mb-1">
-                    Email
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-3 text-navy-500">
-                      <Mail size={18} />
-                    </span>
-                    <input
-                      id="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-fire-500 focus:border-fire-500 outline-none transition-colors"
-                      placeholder="Enter your email"
-                      required
-                    />
-                  </div>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email address</Label>
+                <div className="relative">
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="pl-10"
+                    placeholder="Your email address"
+                    required
+                  />
+                  <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                 </div>
-                
-                <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-navy-700 mb-1">
-                    Password
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-3 text-navy-500">
-                      <Lock size={18} />
-                    </span>
-                    <input
-                      id="password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-fire-500 focus:border-fire-500 outline-none transition-colors"
-                      placeholder="Enter your password"
-                      required
-                    />
-                  </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password">Your Password</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-10"
+                    placeholder="Your password"
+                    required
+                  />
+                  <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                 </div>
               </div>
               
               <button
                 type="submit"
-                className="btn-primary w-full mt-6 flex items-center justify-center"
+                className="w-full bg-fire-600 hover:bg-fire-700 text-white rounded-md py-3 font-medium flex items-center justify-center transition-colors"
                 disabled={loading}
               >
                 {loading ? (
@@ -97,8 +89,15 @@ const SignIn = () => {
               </button>
             </form>
             
-            <div className="mt-6 text-center text-sm text-navy-600">
-              <p>Don't have an account? <Link to="/profile-setup" className="text-fire-600 hover:underline">Sign Up</Link></p>
+            <div className="mt-6 text-center">
+              <a href="#" className="text-fire-600 hover:underline text-sm block mb-2">
+                Forgot your password?
+              </a>
+              <div className="text-sm text-gray-500">
+                Don't have an account? <Link to="/profile-setup" className="text-fire-600 hover:underline font-medium">
+                  Sign Up
+                </Link>
+              </div>
             </div>
           </div>
         </div>

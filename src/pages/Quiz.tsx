@@ -1,11 +1,13 @@
 
 import { useState, useEffect } from 'react';
-import { ArrowRight, ArrowLeft, CheckCircle, ShieldAlert } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle, ShieldAlert, Mail, Lock } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { levelIQuizData, levelIIQuizData, Question } from '@/lib/quiz-data';
 import { useToast } from '@/hooks/use-toast';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -21,7 +23,7 @@ const Quiz = () => {
   const location = useLocation();
   const state = location.state as LocationState || {};
   
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, signIn } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -35,6 +37,9 @@ const Quiz = () => {
   const [isDemo, setIsDemo] = useState(state.isDemo || false);
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
 
   const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
   
@@ -55,11 +60,27 @@ const Quiz = () => {
   
   const currentQuizData = hasQuestions && currentQuestion < questions.length ? questions[currentQuestion] : null;
 
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    
+    try {
+      await signIn(email, password);
+      setShowAuthDialog(false);
+    } catch (error) {
+      console.error('Sign in error:', error);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
   // Redirect to sign-in if user tries to access auth-protected content
-  const handleAuthPrompt = (action: 'signin' | 'cancel') => {
+  const handleAuthPrompt = (action: 'signin' | 'signup' | 'cancel') => {
     setShowAuthDialog(false);
     if (action === 'signin') {
       navigate('/sign-in');
+    } else if (action === 'signup') {
+      navigate('/profile-setup');
     } else {
       // If user cancels auth, set to demo mode
       setIsDemo(true);
@@ -502,35 +523,78 @@ const Quiz = () => {
 
       {/* Authentication Required Dialog */}
       <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-xl text-center">Authentication Required</DialogTitle>
-            <DialogDescription className="text-center">
-              You need to sign in to access the full 200-question exam.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4 flex justify-center">
-            <div className="text-center">
-              <ShieldAlert className="h-16 w-16 text-fire-500 mx-auto mb-4" />
-              <p className="text-navy-700">
-                The full exam is only available to authenticated users. Please sign in or create an account to continue.
-              </p>
+        <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+          <div className="p-6">
+            <DialogHeader>
+              <h2 className="text-2xl font-bold text-center">Welcome to Firefighter Exam Prep</h2>
+              <p className="text-center text-gray-500 mt-2">Sign in to access the full exam</p>
+            </DialogHeader>
+            
+            <form onSubmit={handleSignIn} className="mt-6 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email address</Label>
+                <div className="relative">
+                  <Input 
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Your email address"
+                    className="pl-10"
+                    required
+                  />
+                  <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password">Your Password</Label>
+                <div className="relative">
+                  <Input 
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Your password"
+                    className="pl-10"
+                    required
+                  />
+                  <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                </div>
+              </div>
+              
+              <Button 
+                type="submit"
+                className="w-full bg-fire-600 hover:bg-fire-700 text-white font-medium py-3"
+                disabled={authLoading}
+              >
+                {authLoading ? 'Signing in...' : 'Sign in'}
+              </Button>
+            </form>
+            
+            <div className="mt-6 text-center space-y-2">
+              <a href="#" className="text-fire-600 hover:underline text-sm">
+                Forgot your password?
+              </a>
+              <div className="text-sm text-gray-500">
+                Don't have an account? <button 
+                  onClick={() => handleAuthPrompt('signup')}
+                  className="text-fire-600 hover:underline font-medium"
+                >
+                  Sign up
+                </button>
+              </div>
+              <div className="pt-4 border-t mt-4">
+                <Button 
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => handleAuthPrompt('cancel')}
+                >
+                  Try Demo (5 Questions)
+                </Button>
+              </div>
             </div>
           </div>
-          <DialogFooter className="sm:justify-center sm:space-x-4 sm:flex-row">
-            <Button 
-              variant="secondary"
-              onClick={() => handleAuthPrompt('cancel')}
-            >
-              Try Demo (5 Questions)
-            </Button>
-            <Button
-              className="bg-fire-600 hover:bg-fire-700 text-white" 
-              onClick={() => handleAuthPrompt('signin')}
-            >
-              Sign In
-            </Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
 

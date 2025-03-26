@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -149,6 +148,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } else {
         navigate('/subscription');
       }
+
+      return data;
     } catch (error: any) {
       console.error('Error signing in:', error);
       toast({
@@ -157,6 +158,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         variant: "destructive",
         duration: 5000,
       });
+      throw error;
     } finally {
       setLoading(false);
     }
