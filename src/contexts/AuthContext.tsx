@@ -101,7 +101,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           return;
         }
         
-        navigate('/dashboard');
+        // Redirect to subscription page instead of dashboard
+        navigate('/subscription');
       }
     } catch (error: any) {
       console.error('Error signing up:', error);
@@ -129,7 +130,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (error) throw error;
       
       console.log("Sign in successful:", data);
-      navigate('/dashboard');
+      
+      // Check if user has a subscription before redirecting to dashboard
+      const { data: paymentData, error: paymentError } = await supabase
+        .from('payments')
+        .select('*')
+        .eq('user_id', data.user.id)
+        .eq('payment_status', 'succeeded')
+        .maybeSingle();
+      
+      if (paymentError && paymentError.code !== 'PGRST116') {
+        console.error("Error checking payment status:", paymentError);
+      }
+      
+      // If user has payment, redirect to dashboard, otherwise to subscription
+      if (paymentData) {
+        navigate('/dashboard');
+      } else {
+        navigate('/subscription');
+      }
     } catch (error: any) {
       console.error('Error signing in:', error);
       toast({

@@ -34,6 +34,7 @@ const Dashboard = () => {
   const [username, setUsername] = useState<string>('');
   const [examAttempts, setExamAttempts] = useState<ExamAttempt[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasSubscription, setHasSubscription] = useState(false);
   
   useEffect(() => {
     // Check if user is authenticated
@@ -42,10 +43,37 @@ const Dashboard = () => {
       return;
     }
 
-    // Fetch user profile and exam attempts
+    // Fetch user profile, exam attempts, and subscription status
     const fetchUserData = async () => {
       try {
         setIsLoading(true);
+        
+        // Check if user has a valid subscription
+        const { data: paymentData, error: paymentError } = await supabase
+          .from('payments')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('payment_status', 'succeeded')
+          .maybeSingle();
+        
+        if (paymentError && paymentError.code !== 'PGRST116') {
+          console.error("Error checking payment status:", paymentError);
+          throw paymentError;
+        }
+        
+        // If no subscription, redirect to subscription page
+        if (!paymentData) {
+          setHasSubscription(false);
+          toast({
+            title: "Subscription Required",
+            description: "Please subscribe to access the study materials.",
+            duration: 4000,
+          });
+          navigate('/subscription');
+          return;
+        }
+        
+        setHasSubscription(true);
         
         // Fetch user profile
         const { data: profileData, error: profileError } = await supabase
@@ -132,6 +160,24 @@ const Dashboard = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fire-600"></div>
+      </div>
+    );
+  }
+
+  // If user doesn't have a subscription, they should be redirected already
+  if (!hasSubscription) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center p-8">
+          <h2 className="text-2xl font-bold text-navy-900 mb-4">Subscription Required</h2>
+          <p className="text-navy-700 mb-6">You need to subscribe to access the study materials.</p>
+          <button 
+            onClick={() => navigate('/subscription')}
+            className="btn-primary"
+          >
+            Subscribe Now
+          </button>
+        </div>
       </div>
     );
   }

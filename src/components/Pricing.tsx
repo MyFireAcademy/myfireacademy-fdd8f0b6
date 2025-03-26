@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { createCheckoutSession } from '@/utils/stripe';
+import { supabase } from '@/integrations/supabase/client';
 
 const Pricing = () => {
   const { ref, inView } = useInView({
@@ -32,6 +33,30 @@ const Pricing = () => {
     }
     
     try {
+      // Check if user already has a subscription
+      const { data, error } = await supabase
+        .from('payments')
+        .select('*')
+        .eq('user_id', user?.id)
+        .eq('payment_status', 'succeeded')
+        .maybeSingle();
+      
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error checking subscription:', error);
+        throw error;
+      }
+      
+      // If user already has a subscription, redirect to dashboard
+      if (data) {
+        toast({
+          title: "Already Subscribed",
+          description: "You already have access to the study materials.",
+          duration: 3000,
+        });
+        navigate('/dashboard');
+        return;
+      }
+      
       // Show loading state
       toast({
         title: "Preparing checkout",
@@ -39,13 +64,10 @@ const Pricing = () => {
         duration: 3000,
       });
       
-      // Create checkout session
-      const url = await createCheckoutSession(user?.id);
-      
-      // Redirect to Stripe Checkout
-      window.location.href = url;
+      // Redirect to subscription page
+      navigate('/subscription');
     } catch (error) {
-      console.error('Error creating checkout session:', error);
+      console.error('Error checking subscription status:', error);
       toast({
         title: "Checkout Error",
         description: "There was a problem setting up the checkout. Please try again.",

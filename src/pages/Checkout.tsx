@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { createCheckoutSession } from '@/utils/stripe';
+import { supabase } from '@/integrations/supabase/client';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -19,12 +20,49 @@ const Checkout = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showAuthDialog, setShowAuthDialog] = useState(false);
 
+  // Define success and cancel URLs
+  const successUrl = `${window.location.origin}/dashboard?payment_success=true`;
+  const cancelUrl = `${window.location.origin}/checkout?payment_canceled=true`;
+
   useEffect(() => {
     // Show auth dialog if user is not authenticated
     if (!isAuthenticated()) {
       setShowAuthDialog(true);
+    } else {
+      // Check if user already has a subscription
+      const checkSubscription = async () => {
+        if (!user) return;
+        
+        try {
+          const { data, error } = await supabase
+            .from('payments')
+            .select('*')
+            .eq('user_id', user.id)
+            .eq('payment_status', 'succeeded')
+            .maybeSingle();
+          
+          if (error && error.code !== 'PGRST116') {
+            console.error('Error checking subscription:', error);
+            return;
+          }
+          
+          // If user already has a subscription, redirect to dashboard
+          if (data) {
+            toast({
+              title: "Already Subscribed",
+              description: "You already have access to the study materials.",
+              duration: 3000,
+            });
+            navigate('/dashboard');
+          }
+        } catch (error) {
+          console.error('Error checking subscription status:', error);
+        }
+      };
+      
+      checkSubscription();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user, navigate, toast]);
 
   // Check if the user has been redirected back from Stripe with payment information
   useEffect(() => {
@@ -136,10 +174,6 @@ const Checkout = () => {
       setIsLoading(false);
     }
   };
-
-  // Define success and cancel URLs
-  const successUrl = `${window.location.origin}/dashboard?payment_success=true`;
-  const cancelUrl = `${window.location.origin}/checkout?payment_canceled=true`;
 
   return (
     <div className="min-h-screen bg-gray-50">

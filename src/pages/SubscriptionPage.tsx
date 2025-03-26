@@ -1,0 +1,192 @@
+
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, Check, Lock } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { createCheckoutSession } from '@/utils/stripe';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { supabase } from '@/integrations/supabase/client';
+
+const SubscriptionPage = () => {
+  const { user, loading } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasSubscription, setHasSubscription] = useState(false);
+
+  // Check if user already has a subscription
+  useEffect(() => {
+    const checkSubscription = async () => {
+      if (!user) return;
+      
+      try {
+        // Check if user has a payment record
+        const { data, error } = await supabase
+          .from('payments')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('payment_status', 'succeeded')
+          .single();
+        
+        if (error && error.code !== 'PGRST116') {
+          console.error('Error checking subscription:', error);
+          return;
+        }
+        
+        // If user has a payment, they have access
+        if (data) {
+          setHasSubscription(true);
+          // Redirect to dashboard if already subscribed
+          navigate('/dashboard');
+        }
+      } catch (error) {
+        console.error('Error checking subscription status:', error);
+      }
+    };
+    
+    checkSubscription();
+  }, [user, navigate]);
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/sign-in');
+    }
+  }, [user, loading, navigate]);
+
+  const handlePurchase = async () => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to continue.",
+        duration: 3000,
+      });
+      navigate('/sign-in');
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    try {
+      toast({
+        title: "Preparing checkout",
+        description: "Please wait while we redirect you to the payment page...",
+        duration: 3000,
+      });
+      
+      // Create checkout session
+      const url = await createCheckoutSession(user.id);
+      
+      // Redirect to Stripe Checkout
+      window.location.href = url;
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      toast({
+        title: "Checkout Error",
+        description: "There was a problem setting up the checkout. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+      setIsLoading(false);
+    }
+  };
+
+  if (loading || hasSubscription) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fire-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      <main className="pt-28 pb-16">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h1 className="text-3xl md:text-4xl font-bold text-navy-900 mb-4">
+              Welcome to MyFireAcademy!
+            </h1>
+            <p className="text-xl text-navy-700 max-w-2xl mx-auto">
+              Complete your registration to access the full NFPA 1001 certification study materials
+            </p>
+          </div>
+          
+          <div className="max-w-lg mx-auto">
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+              <div className="bg-fire-600 text-white p-6 text-center">
+                <h2 className="text-2xl font-bold mb-2">NFPA 1001 Level I & II Study Guide</h2>
+                <div className="flex justify-center items-baseline my-4">
+                  <span className="text-3xl font-semibold">$47.00</span>
+                  <span className="ml-2 text-white/70 line-through">$79.99</span>
+                </div>
+              </div>
+              
+              <div className="p-6 space-y-4">
+                <p className="text-navy-800 font-medium text-center">
+                  Your account has been created successfully! One more step to gain full access:
+                </p>
+                
+                <div className="space-y-3 mt-4">
+                  <div className="flex items-center">
+                    <Check className="text-fire-600 mr-3 flex-shrink-0" size={20} />
+                    <span className="text-navy-800">Complete question database</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Check className="text-fire-600 mr-3 flex-shrink-0" size={20} />
+                    <span className="text-navy-800">Detailed explanations</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Check className="text-fire-600 mr-3 flex-shrink-0" size={20} />
+                    <span className="text-navy-800">Practice exams</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Check className="text-fire-600 mr-3 flex-shrink-0" size={20} />
+                    <span className="text-navy-800">Digital access forever</span>
+                  </div>
+                </div>
+                
+                <button 
+                  onClick={handlePurchase}
+                  className="btn-primary w-full mt-6 group"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <span className="flex items-center justify-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Processing...
+                    </span>
+                  ) : (
+                    <span className="flex items-center">
+                      Complete Your Purchase
+                      <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
+                    </span>
+                  )}
+                </button>
+                
+                <div className="text-center text-sm text-navy-600 mt-4">
+                  <p className="flex justify-center space-x-3 flex-wrap">
+                    <span>100% Money-Back Guarantee</span>
+                    <span>•</span>
+                    <span>Secure Payment</span>
+                    <span>•</span>
+                    <span>Instant Digital Access</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default SubscriptionPage;

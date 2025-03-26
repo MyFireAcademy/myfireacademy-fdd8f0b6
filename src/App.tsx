@@ -19,6 +19,7 @@ import FAQ from "./pages/FAQ";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import RefundPolicy from "./pages/RefundPolicy";
+import SubscriptionPage from "./pages/SubscriptionPage";
 import StripeProvider from "./providers/StripeProvider";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/profile-setup" element={<ProfileSetup />} />
               <Route path="/sign-in" element={<SignIn />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/subscription" element={<SubscriptionPage />} />
               <Route path="/new-to-firefighting" element={<NewToFirefighting />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
