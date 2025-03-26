@@ -6,7 +6,7 @@ const SUCCESS_URL = `${window.location.origin}/dashboard?payment_success=true`;
 const CANCEL_URL = `${window.location.origin}/checkout?payment_canceled=true`;
 
 // Your Stripe product ID
-const PRODUCT_ID = 'prod_S0kBCt5bzNnIPt';
+const PRODUCT_ID = 'prod_S0oLfcn1F5kZ64';
 
 /**
  * Creates a Stripe checkout session using Supabase Edge Function
