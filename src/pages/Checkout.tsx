@@ -27,8 +27,8 @@ const Checkout = () => {
 
   // Function to handle opening the embedded Stripe form
   const handlePayWithCard = () => {
-    // Using the publishable key from the StripeProvider
-    window.showStripePaymentForm("pk_test_51O5XyOKqzGq23456TcTjBzFJ60UQn7eE7eo8CEHlYtg0OCaOcMieDLNLN2nkgkE8IUXH5EoPK12gRs1uEjnWu9Pu0093IFXbLZ");
+    // Using the provided live key
+    window.showStripePaymentForm("pk_live_51R6i9NBpZN4MXkQMRvpsxvyBUhzHYoSD5fCcrH8hvyetTUqDGJGvIhsSXJFZgWshm8nCe2dMhGThDGPct1O0rI7x00adig3fwi");
     
     toast({
       title: "Payment Form Opened",

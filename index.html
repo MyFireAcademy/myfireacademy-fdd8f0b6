@@ -53,7 +53,8 @@
         
         // Initialize Stripe only if not already done
         if (!stripeInstance) {
-          stripeInstance = Stripe(publishableKey || "pk_test_51O5XyOKqzGq23456TcTjBzFJ60UQn7eE7eo8CEHlYtg0OCaOcMieDLNLN2nkgkE8IUXH5EoPK12gRs1uEjnWu9Pu0093IFXbLZ");
+          // Use the provided publishable key
+          stripeInstance = Stripe(publishableKey || "pk_live_51R6i9NBpZN4MXkQMRvpsxvyBUhzHYoSD5fCcrH8hvyetTUqDGJGvIhsSXJFZgWshm8nCe2dMhGThDGPct1O0rI7x00adig3fwi");
           const elements = stripeInstance.elements();
           cardElement = elements.create("card");
           cardElement.mount("#card-element");
@@ -69,55 +70,39 @@
           submitButton.textContent = "Processing...";
           submitButton.disabled = true;
           
-          const { paymentMethod, error } = await stripeInstance.createPaymentMethod({
-            type: "card",
-            card: cardElement,
-          });
-          
-          if (error) {
-            document.getElementById("card-errors").textContent = error.message;
-            submitButton.textContent = originalButtonText;
-            submitButton.disabled = false;
-          } else {
-            // Send paymentMethod.id to your application
-            // This is where you'd typically make an API call to your server
+          try {
+            const { paymentMethod, error } = await stripeInstance.createPaymentMethod({
+              type: "card",
+              card: cardElement,
+            });
             
-            // For demo purposes, we'll simulate a successful payment
-            setTimeout(() => {
-              // Hide the payment form
-              container.style.display = 'none';
-              
-              // Navigate to the success page
-              window.location.href = `${window.location.origin}/profile-setup`;
-              
-              // Reset the button state (though it won't be visible anymore)
+            if (error) {
+              document.getElementById("card-errors").textContent = error.message;
               submitButton.textContent = originalButtonText;
               submitButton.disabled = false;
-            }, 1000);
-            
-            // In a real implementation, you would do something like:
-            /*
-            fetch("/api/charge", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ payment_method_id: paymentMethod.id })
-            })
-            .then(response => response.json())
-            .then(data => {
-              if (data.success) {
+            } else {
+              // Send paymentMethod.id to your application
+              // This is where you'd typically make an API call to your server
+              console.log("Payment method created successfully:", paymentMethod.id);
+              
+              // For demo purposes, we'll simulate a successful payment
+              setTimeout(() => {
+                // Hide the payment form
+                container.style.display = 'none';
+                
+                // Navigate to the success page
                 window.location.href = `${window.location.origin}/profile-setup`;
-              } else {
-                document.getElementById("card-errors").textContent = "Payment failed. Please try again.";
+                
+                // Reset the button state (though it won't be visible anymore)
                 submitButton.textContent = originalButtonText;
                 submitButton.disabled = false;
-              }
-            })
-            .catch(err => {
-              document.getElementById("card-errors").textContent = "An error occurred. Please try again.";
-              submitButton.textContent = originalButtonText;
-              submitButton.disabled = false;
-            });
-            */
+              }, 1000);
+            }
+          } catch (e) {
+            console.error("Error processing payment:", e);
+            document.getElementById("card-errors").textContent = "An unexpected error occurred. Please try again.";
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
           }
         });
       };
