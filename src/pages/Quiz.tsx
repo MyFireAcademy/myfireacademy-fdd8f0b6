@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, CheckCircle, ShieldAlert, Mail, Lock } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -63,7 +64,7 @@ const Quiz = ({
   const questions = isDemo 
     ? allQuestions.slice(0, 5) 
     : isFull && !isAuthenticated() 
-      ? allQuestions.slice(0, 5) // Show only 5 questions to unauthenticated users even if they try to access full quiz
+      ? allQuestions.slice(0, 5) // Show only 5 questions to unauthenticated users even if they try to access full exam
       : allQuestions;
   
   const hasQuestions = questions && questions.length > 0;
@@ -109,8 +110,8 @@ const Quiz = ({
       
       if (currentLevel === 'level2' && (!levelIIQuizData || levelIIQuizData.length === 0)) {
         toast({
-          title: "Level II Quiz Not Available",
-          description: "The Level II quiz is currently being updated. Please try Level I.",
+          title: "Level II Exam Not Available",
+          description: "The Level II exam is currently being updated. Please try Level I.",
           variant: "destructive",
         });
         setCurrentLevel('level1');
@@ -126,8 +127,8 @@ const Quiz = ({
       
       if (level === 'level2' && (!levelIIQuizData || levelIIQuizData.length === 0)) {
         toast({
-          title: "Level II Quiz Not Available",
-          description: "The Level II quiz is currently being updated. Please try Level I.",
+          title: "Level II Exam Not Available",
+          description: "The Level II exam is currently being updated. Please try Level I.",
           variant: "destructive",
         });
         setCurrentLevel('level1');
@@ -137,7 +138,7 @@ const Quiz = ({
     if (state.isDemo) {
       setIsDemo(true);
       toast({
-        title: "Quiz Demo Mode",
+        title: "Exam Demo Mode",
         description: "You're trying our 2025 Exam Prep with 5 questions from each level.",
         duration: 5000,
       });
@@ -209,7 +210,7 @@ const Quiz = ({
       if (currentLevel === 'level1') {
         setQuizComplete(prev => ({ ...prev, level1: true }));
         toast({
-          title: "Level I Quiz Completed!",
+          title: "Level I Exam Completed!",
           description: `Your score: ${score.level1}/${questions.length}`,
         });
         
@@ -221,7 +222,7 @@ const Quiz = ({
       } else {
         setQuizComplete(prev => ({ ...prev, level2: true }));
         toast({
-          title: "Level II Quiz Completed!",
+          title: "Level II Exam Completed!",
           description: `Your score: ${score.level2}/${questions.length}`,
         });
         
@@ -242,13 +243,13 @@ const Quiz = ({
     setCurrentLevel(level);
   };
 
-  const handleFinishQuiz = () => {
+  const handleFinishExam = () => {
     if (isDemo || (!isAuthenticated() && isFull)) {
       setShowUpgradeDialog(true);
     } else {
       toast({
-        title: "Quiz Completed!",
-        description: "You've completed the quiz. Your final score is displayed.",
+        title: "Exam Completed!",
+        description: "You've completed the exam. Your final score is displayed.",
         duration: 5000,
       });
       
@@ -287,9 +288,9 @@ const Quiz = ({
       <div className="min-h-screen bg-gray-50 pt-20 pb-16 px-4">
         <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-scale-in">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-navy-900 mb-4">Quiz Not Available</h1>
+            <h1 className="text-3xl font-bold text-navy-900 mb-4">Exam Not Available</h1>
             <p className="text-navy-700 mb-6">
-              The quiz for {currentLevel === 'level1' ? 'Level I' : 'Level II'} is currently being updated.
+              The exam for {currentLevel === 'level1' ? 'Level I' : 'Level II'} is currently being updated.
               Please check back later or try another level.
             </p>
             <button 
@@ -313,7 +314,7 @@ const Quiz = ({
               <CheckCircle className="text-green-500 w-20 h-20" />
             </div>
             <h1 className="text-3xl font-bold text-navy-900 mb-4">
-              {isDemo ? "2025 Exam Prep Completed!" : "Quiz Completed!"}
+              {isDemo ? "2025 Exam Prep Completed!" : "Exam Completed!"}
             </h1>
             
             <div className="bg-gray-50 p-6 rounded-lg mb-8">
@@ -355,7 +356,7 @@ const Quiz = ({
             )}
             
             <button 
-              onClick={handleFinishQuiz}
+              onClick={handleFinishExam}
               className="btn-primary w-full"
             >
               {isDemo ? "See Next Steps" : "Return to Dashboard"}
