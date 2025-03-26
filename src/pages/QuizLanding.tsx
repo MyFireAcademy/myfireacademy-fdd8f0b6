@@ -1,10 +1,10 @@
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Book, BookOpen, ArrowRight, Clock } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { checkUserSubscription } from '@/utils/paymentVerification';
+import { checkUserSubscription, checkPaymentFromUrl } from '@/utils/paymentVerification';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -20,10 +20,46 @@ interface QuizCard {
 
 const QuizLanding = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const { toast } = useToast();
   const [hasSubscription, setHasSubscription] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [paymentJustCompleted, setPaymentJustCompleted] = useState(false);
+
+  // Check for payment success from URL parameters
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    
+    const checkPaymentStatus = async () => {
+      if (searchParams.has('payment_success') || 
+          searchParams.has('session_id') || 
+          searchParams.has('payment_intent')) {
+        
+        setIsLoading(true);
+        
+        // Verify the payment
+        const isPaymentVerified = await checkPaymentFromUrl(searchParams, user?.id);
+        
+        if (isPaymentVerified) {
+          setPaymentJustCompleted(true);
+          setHasSubscription(true);
+          
+          toast({
+            title: "Payment Successful",
+            description: "Thank you for your purchase! You now have full access to all study materials.",
+            duration: 5000,
+          });
+        }
+        
+        setIsLoading(false);
+      }
+    };
+    
+    if (user) {
+      checkPaymentStatus();
+    }
+  }, [user, location.search, toast]);
 
   useEffect(() => {
     const checkSubscription = async () => {
@@ -136,7 +172,20 @@ const QuizLanding = () => {
             </p>
           </div>
 
-          {!hasSubscription && (
+          {paymentJustCompleted && (
+            <div className="bg-green-50 border border-green-200 rounded-xl p-6 mb-10 shadow-sm">
+              <div className="flex flex-col md:flex-row justify-between items-center">
+                <div>
+                  <h2 className="text-xl font-semibold text-green-800 mb-2">Payment Successful!</h2>
+                  <p className="text-navy-700 mb-4 md:mb-0">
+                    Thank you for your purchase. You now have full access to all study materials.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {!hasSubscription && !paymentJustCompleted && (
             <div className="bg-gradient-to-r from-fire-50 to-amber-50 border border-fire-100 rounded-xl p-6 mb-10 shadow-sm">
               <div className="flex flex-col md:flex-row justify-between items-center">
                 <div>
@@ -181,6 +230,11 @@ const QuizLanding = () => {
                     {quiz.isDemo && (
                       <span className="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">
                         Free
+                      </span>
+                    )}
+                    {hasSubscription && !quiz.isDemo && (
+                      <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                        Premium
                       </span>
                     )}
                   </div>
