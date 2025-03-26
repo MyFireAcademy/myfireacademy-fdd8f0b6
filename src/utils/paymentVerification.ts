@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 // This function will check if there's a successful payment for a given payment ID
 export const verifyPaymentSuccess = async (paymentId: string): Promise<boolean> => {
   try {
+    // Query the payments table to check if the payment was successful
     const { data, error } = await supabase
       .from("payments")
       .select("payment_status")
@@ -15,6 +16,7 @@ export const verifyPaymentSuccess = async (paymentId: string): Promise<boolean> 
       return false;
     }
 
+    // Return true if payment status is "succeeded"
     return data.payment_status === "succeeded";
   } catch (error) {
     console.error("Payment verification error:", error);
