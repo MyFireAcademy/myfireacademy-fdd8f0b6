@@ -9,7 +9,7 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto text-center">
           {/* Certification Badge */}
           <div className="inline-block mb-6 animate-fade-in">
-            <span className="chip">
+            <span className="chip bg-navy-100 text-navy-800 font-medium px-4 py-1.5 rounded-full border-2 border-fire-500 shadow-sm ring-2 ring-fire-200">
               NFPA 1001 Level I & II Certification
             </span>
           </div>
