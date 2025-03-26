@@ -1,14 +1,8 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User, ChevronDown } from 'lucide-react';
+import { Menu, X, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,16 +28,6 @@ const Navbar = () => {
   const handleSignOutClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     await signOut();
-    setIsMenuOpen(false);
-  };
-
-  const handleStartQuizClick = (level: 'level1' | 'level2') => {
-    navigate('/quiz', { 
-      state: { 
-        level,
-        isFull: true 
-      } 
-    });
     setIsMenuOpen(false);
   };
 
@@ -81,21 +65,6 @@ const Navbar = () => {
                   <User size={18} className="mr-1" />
                   Dashboard
                 </Link>
-                
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="text-navy-800 hover:text-fire-600 transition-colors font-medium inline-flex items-center">
-                    <span>Exams</span>
-                    <ChevronDown size={16} className="ml-1" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="bg-white">
-                    <DropdownMenuItem onClick={() => handleStartQuizClick('level1')}>
-                      Level I Exam
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleStartQuizClick('level2')}>
-                      Level II Exam
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
                 
                 <button 
                   onClick={handleSignOutClick} 
@@ -166,22 +135,6 @@ const Navbar = () => {
                     <User size={18} className="mr-2" />
                     Dashboard
                   </Link>
-                  
-                  <div className="py-2">
-                    <div className="font-medium text-navy-800 mb-2">Exams:</div>
-                    <button 
-                      onClick={() => handleStartQuizClick('level1')}
-                      className="w-full text-left pl-4 py-2 text-navy-800 hover:text-fire-600 transition-colors"
-                    >
-                      Level I Exam
-                    </button>
-                    <button 
-                      onClick={() => handleStartQuizClick('level2')}
-                      className="w-full text-left pl-4 py-2 text-navy-800 hover:text-fire-600 transition-colors"
-                    >
-                      Level II Exam
-                    </button>
-                  </div>
                   
                   <button 
                     onClick={handleSignOutClick}
