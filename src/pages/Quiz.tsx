@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from 'react';
-import { ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle, ShieldAlert } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { levelIQuizData, levelIIQuizData, Question } from '@/lib/quiz-data';
 import { useToast } from '@/hooks/use-toast';
@@ -20,7 +21,9 @@ const Quiz = () => {
   const location = useLocation();
   const state = location.state as LocationState || {};
   
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const [currentLevel, setCurrentLevel] = useState<QuizLevel>(state.level || 'level1');
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -31,18 +34,43 @@ const Quiz = () => {
   const [isFull, setIsFull] = useState(state.isFull || false);
   const [isDemo, setIsDemo] = useState(state.isDemo || false);
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
 
   const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
   
+  // Check if user is authenticated for full quiz access
+  useEffect(() => {
+    if (isFull && !isDemo && !isAuthenticated()) {
+      setShowAuthDialog(true);
+    }
+  }, [isFull, isDemo, isAuthenticated]);
+  
   const questions = isDemo 
     ? allQuestions.slice(0, 5) 
-    : allQuestions;
+    : isFull && !isAuthenticated() 
+      ? allQuestions.slice(0, 5) // Show only 5 questions to unauthenticated users even if they try to access full quiz
+      : allQuestions;
   
   const hasQuestions = questions && questions.length > 0;
   
   const currentQuizData = hasQuestions && currentQuestion < questions.length ? questions[currentQuestion] : null;
+
+  // Redirect to sign-in if user tries to access auth-protected content
+  const handleAuthPrompt = (action: 'signin' | 'cancel') => {
+    setShowAuthDialog(false);
+    if (action === 'signin') {
+      navigate('/sign-in');
+    } else {
+      // If user cancels auth, set to demo mode
+      setIsDemo(true);
+      setIsFull(false);
+      toast({
+        title: "Demo Mode Activated",
+        description: "You'll see 5 sample questions. Sign in to access the full exam.",
+        duration: 5000,
+      });
+    }
+  };
 
   useEffect(() => {
     if (currentLevel) {
@@ -186,7 +214,7 @@ const Quiz = () => {
   };
 
   const handleFinishQuiz = () => {
-    if (isDemo) {
+    if (isDemo || (!isAuthenticated() && isFull)) {
       setShowUpgradeDialog(true);
     } else {
       toast({
@@ -205,7 +233,16 @@ const Quiz = () => {
     setShowUpgradeDialog(false);
     
     if (wantsToUpgrade) {
-      navigate('/checkout');
+      if (!isAuthenticated()) {
+        navigate('/sign-in');
+        toast({
+          title: "Please Sign In First",
+          description: "Create an account or sign in to access the full exam.",
+          duration: 5000,
+        });
+      } else {
+        navigate('/checkout');
+      }
     } else {
       navigate('/#testimonials');
     }
@@ -462,6 +499,71 @@ const Quiz = () => {
           </div>
         </div>
       </div>
+
+      {/* Authentication Required Dialog */}
+      <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl text-center">Authentication Required</DialogTitle>
+            <DialogDescription className="text-center">
+              You need to sign in to access the full 200-question exam.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4 flex justify-center">
+            <div className="text-center">
+              <ShieldAlert className="h-16 w-16 text-fire-500 mx-auto mb-4" />
+              <p className="text-navy-700">
+                The full exam is only available to authenticated users. Please sign in or create an account to continue.
+              </p>
+            </div>
+          </div>
+          <DialogFooter className="sm:justify-center sm:space-x-4 sm:flex-row">
+            <Button 
+              variant="secondary"
+              onClick={() => handleAuthPrompt('cancel')}
+            >
+              Try Demo (5 Questions)
+            </Button>
+            <Button
+              className="bg-fire-600 hover:bg-fire-700 text-white" 
+              onClick={() => handleAuthPrompt('signin')}
+            >
+              Sign In
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Upgrade Dialog */}
+      <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl text-center">Ready to Pass Your Exam?</DialogTitle>
+            <DialogDescription className="text-center">
+              Would you like to unlock the full 2025 Exam Prep with 200 practice questions?
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-center text-navy-700">
+              Get complete access to both Level I and Level II certification exam questions with detailed explanations.
+            </p>
+          </div>
+          <DialogFooter className="sm:justify-center sm:space-x-4 sm:flex-row">
+            <Button 
+              variant="secondary"
+              onClick={() => handleUpgradeResponse(false)}
+            >
+              Not now
+            </Button>
+            <Button
+              className="bg-fire-600 hover:bg-fire-700 text-white" 
+              onClick={() => handleUpgradeResponse(true)}
+            >
+              Yes, get full access
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

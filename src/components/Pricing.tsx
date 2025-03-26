@@ -1,7 +1,9 @@
+
 import { Check, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Pricing = () => {
   const { ref, inView } = useInView({
@@ -10,6 +12,8 @@ const Pricing = () => {
   });
   
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { isAuthenticated } = useAuth();
   
   const handlePurchase = (e: React.MouseEvent) => {
     e.preventDefault();
