@@ -40,7 +40,7 @@ const Hero = () => {
               state={{ isDemo: true }}
               className="btn-secondary bg-navy-100 hover:bg-navy-200"
             >
-              Sample Exam Questions
+              Sample Test Questions
             </Link>
           </div>
         </div>
