@@ -146,7 +146,7 @@ const Checkout = () => {
                 </p>
                 
                 <a 
-                  href="https://buy.stripe.com/3cs28p96hfrOf9CdQR" 
+                  href="https://buy.stripe.com/9AQ14l4Q11AY6D67su" 
                   className="btn-primary w-full flex items-center justify-center"
                   target="_blank"
                   rel="noopener noreferrer"
