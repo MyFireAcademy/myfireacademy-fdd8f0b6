@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight, Check } from 'lucide-react';
@@ -35,18 +34,12 @@ const SubscriptionPage = () => {
         if (isPaymentVerified) {
           toast({
             title: "Payment Successful",
-            description: "Thank you for your purchase! Redirecting to the quiz page...",
+            description: "Thank you for your purchase! Redirecting to your dashboard...",
             duration: 3000,
           });
           
-          // Redirect to quiz page instead of dashboard
-          navigate('/quiz', { 
-            replace: true,
-            state: { 
-              level: 'level1',
-              isFull: true
-            }
-          });
+          // Redirect to dashboard instead of the quiz
+          navigate('/dashboard', { replace: true });
         } else {
           toast({
             title: "Payment Verification",
@@ -152,15 +145,10 @@ const SubscriptionPage = () => {
           <h2 className="text-2xl font-bold text-navy-900">You already have a subscription</h2>
           <p className="mt-2 mb-4 text-navy-700">You have full access to all study materials.</p>
           <button 
-            onClick={() => navigate('/quiz', { 
-              state: { 
-                level: 'level1',
-                isFull: true
-              }
-            })}
+            onClick={() => navigate('/dashboard')}
             className="btn-primary"
           >
-            Go to Quiz
+            Go to Dashboard
           </button>
         </div>
       </div>
