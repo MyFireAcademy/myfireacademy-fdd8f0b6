@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { createCheckoutSession } from '@/utils/stripe';
 
 const Pricing = () => {
   const { ref, inView } = useInView({
@@ -13,9 +14,9 @@ const Pricing = () => {
   
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   
-  const handlePurchase = (e: React.MouseEvent) => {
+  const handlePurchase = async (e: React.MouseEvent) => {
     e.preventDefault();
     
     if (!isAuthenticated()) {
@@ -30,7 +31,28 @@ const Pricing = () => {
       return;
     }
     
-    navigate('/checkout');
+    try {
+      // Show loading state
+      toast({
+        title: "Preparing checkout",
+        description: "Please wait while we redirect you to the payment page...",
+        duration: 3000,
+      });
+      
+      // Create checkout session
+      const url = await createCheckoutSession(user?.id);
+      
+      // Redirect to Stripe Checkout
+      window.location.href = url;
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      toast({
+        title: "Checkout Error",
+        description: "There was a problem setting up the checkout. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
   };
 
   return (

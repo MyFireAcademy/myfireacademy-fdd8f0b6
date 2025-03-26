@@ -1,14 +1,14 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Lock, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { checkPaymentFromUrl } from '@/utils/paymentVerification';
+import { verifyPayment } from '@/utils/stripe';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/contexts/AuthContext';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { createCheckoutSession } from '@/utils/stripe';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -17,10 +17,6 @@ const Checkout = () => {
   const { user, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showAuthDialog, setShowAuthDialog] = useState(false);
-  
-  // Get the current URL for the success redirect
-  const successUrl = `${window.location.origin}/profile-setup`;
-  const cancelUrl = `${window.location.origin}/checkout`;
 
   useEffect(() => {
     // Show auth dialog if user is not authenticated
@@ -32,55 +28,68 @@ const Checkout = () => {
   // Check if the user has been redirected back from Stripe with payment information
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const isRedirectedFromPayment = searchParams.has('payment_intent') || 
-                                    searchParams.has('redirect_status');
     
-    console.log("URL Search Params:", Object.fromEntries(searchParams.entries()));
-    console.log("Is redirected from payment:", isRedirectedFromPayment);
+    // Check if payment was successful
+    if (searchParams.has('payment_success')) {
+      toast({
+        title: "Payment Successful",
+        description: "Your purchase was completed successfully.",
+        duration: 3000,
+      });
+      
+      // If user is already logged in, go to dashboard
+      if (user) {
+        navigate('/dashboard');
+      }
+    }
     
-    if (isRedirectedFromPayment) {
+    // Check if payment was canceled
+    if (searchParams.has('payment_canceled')) {
+      toast({
+        title: "Payment Canceled",
+        description: "Your purchase was not completed. You can try again when you're ready.",
+        duration: 3000,
+      });
+    }
+    
+    // Check for Stripe session ID
+    const sessionId = searchParams.get('session_id');
+    if (sessionId) {
       setIsLoading(true);
       
-      const checkPayment = async () => {
-        try {
-          const isSuccessful = await checkPaymentFromUrl(searchParams);
-          console.log("Payment verification result:", isSuccessful);
-          
-          if (isSuccessful) {
+      // Verify the payment
+      verifyPayment(sessionId)
+        .then(success => {
+          if (success) {
             toast({
-              title: "Payment Successful",
+              title: "Payment Verified",
               description: "Your purchase was completed successfully.",
               duration: 3000,
             });
             
-            // If user is already logged in, go to dashboard, otherwise go to profile setup
-            if (user) {
-              navigate('/dashboard');
-            } else {
-              navigate('/profile-setup');
-            }
+            // Redirect to dashboard
+            navigate('/dashboard');
           } else {
             toast({
-              title: "Payment Verification Issue",
-              description: "We couldn't verify your payment. If you believe this is an error, please contact support.",
+              title: "Payment Verification Failed",
+              description: "We couldn't verify your payment. Please contact support if you believe this is an error.",
               variant: "destructive",
               duration: 5000,
             });
           }
-        } catch (error) {
-          console.error("Error during payment verification:", error);
+        })
+        .catch(error => {
+          console.error("Error verifying payment:", error);
           toast({
-            title: "Error Checking Payment",
+            title: "Error",
             description: "An unexpected error occurred. Please contact support.",
             variant: "destructive",
             duration: 5000,
           });
-        } finally {
+        })
+        .finally(() => {
           setIsLoading(false);
-        }
-      };
-      
-      checkPayment();
+        });
     }
   }, [location.search, navigate, toast, user]);
 
@@ -93,6 +102,37 @@ const Checkout = () => {
       navigate('/profile-setup');
     } else {
       navigate('/');
+    }
+  };
+
+  const handleProceedToCheckout = async () => {
+    if (!isAuthenticated()) {
+      setShowAuthDialog(true);
+      return;
+    }
+    
+    try {
+      setIsLoading(true);
+      
+      // Show loading toast
+      toast({
+        title: "Preparing checkout",
+        description: "Please wait while we redirect you to the payment page...",
+        duration: 3000,
+      });
+      
+      // Create checkout session and redirect
+      const url = await createCheckoutSession(user?.id);
+      window.location.href = url;
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      toast({
+        title: "Checkout Error",
+        description: "There was a problem setting up the checkout. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+      setIsLoading(false);
     }
   };
 
