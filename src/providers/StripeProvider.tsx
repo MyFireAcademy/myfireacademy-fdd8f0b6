@@ -3,8 +3,8 @@ import { ReactNode } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
-// Using the provided live publishable key
-const stripePromise = loadStripe('pk_live_51R6i9NBpZN4MXkQMRvpsxvyBUhzHYoSD5fCcrH8hvyetTUqDGJGvIhsSXJFZgWshm8nCe2dMhGThDGPct1O0rI7x00adig3fwi');
+// Replace with your own publishable key
+const stripePromise = loadStripe('pk_test_51O5XyOKqzGq23456TcTjBzFJ60UQn7eE7eo8CEHlYtg0OCaOcMieDLNLN2nkgkE8IUXH5EoPK12gRs1uEjnWu9Pu0093IFXbLZ');
 
 interface StripeProviderProps {
   children: ReactNode;

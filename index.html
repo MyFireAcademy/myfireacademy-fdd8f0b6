@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,32 +15,10 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-    
-    <!-- Stripe JS -->
-    <script src="https://js.stripe.com/v3/"></script>
   </head>
 
   <body>
     <div id="root"></div>
-    
-    <!-- Stripe Payment Form (Hidden by default, will be shown via JavaScript) -->
-    <div id="stripe-payment-container" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
-      <div style="background: white; padding: 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-width: 500px; width: 90%; position: relative;">
-        <button id="stripe-form-close" style="position: absolute; top: 12px; right: 12px; background: transparent; border: none; cursor: pointer; font-size: 20px; line-height: 1;">&times;</button>
-        <h2 style="margin: 0 0 20px; font-size: 20px; color: #333;">Pay with Credit Card</h2>
-        <form id="payment-form">
-          <div id="card-element" style="margin-bottom: 24px; border: 1px solid #e2e8f0; padding: 10px; border-radius: 4px;">
-            <!-- Stripe will insert the credit card input field here -->
-          </div>
-          <button type="submit" style="background: #e72e2e; color: white; border: none; padding: 12px 16px; border-radius: 4px; font-weight: 500; cursor: pointer; width: 100%; font-size: 16px;">Pay $47.00</button>
-          <p id="card-errors" style="color: red; margin-top: 8px; min-height: 20px;"></p>
-          <div style="margin-top: 16px; text-align: center; font-size: 14px; color: #64748b;">
-            Your card details are securely processed by Stripe
-          </div>
-        </form>
-      </div>
-    </div>
-    
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
