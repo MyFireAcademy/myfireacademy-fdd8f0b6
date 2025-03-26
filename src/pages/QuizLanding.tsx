@@ -120,7 +120,7 @@ const QuizLanding = () => {
   ];
 
   const handleStartQuiz = (quiz: QuizCard) => {
-    // For demo quizzes or if the user has a subscription, allow starting the quiz directly
+    // Always navigate to the quiz page if user has paid or it's a demo quiz
     if (quiz.isDemo || hasSubscription || paymentJustCompleted) {
       navigate('/quiz', { 
         state: { 
