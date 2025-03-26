@@ -72,19 +72,17 @@ const Dashboard = () => {
         setIsLoading(true);
         
         const hasValidSubscription = await checkUserSubscription(user.id);
+        setHasSubscription(hasValidSubscription);
         
         if (!hasValidSubscription) {
-          setHasSubscription(false);
           toast({
             title: "Subscription Required",
             description: "Please subscribe to access the study materials.",
             duration: 4000,
           });
-          navigate('/subscription');
+          navigate('/subscription', { replace: true });
           return;
         }
-        
-        setHasSubscription(true);
         
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')

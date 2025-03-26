@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight, Check } from 'lucide-react';
@@ -38,8 +39,9 @@ const SubscriptionPage = () => {
             duration: 3000,
           });
           
-          // Redirect to dashboard instead of the quiz
+          // Always redirect to dashboard immediately after successful payment
           navigate('/dashboard', { replace: true });
+          return;
         } else {
           toast({
             title: "Payment Verification",
@@ -72,7 +74,9 @@ const SubscriptionPage = () => {
             description: "You already have access to the study materials.",
             duration: 3000,
           });
-          navigate('/dashboard');
+          // Immediately redirect to dashboard if they have a subscription
+          navigate('/dashboard', { replace: true });
+          return;
         }
       } catch (error) {
         console.error('Error checking subscription status:', error);

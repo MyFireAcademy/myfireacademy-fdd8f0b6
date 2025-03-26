@@ -79,7 +79,8 @@ const Checkout = () => {
           duration: 3000,
         });
         
-        navigate('/dashboard');
+        navigate('/dashboard', { replace: true });
+        return;
       } else if (searchParams.has('payment_canceled')) {
         toast({
           title: "Payment Canceled",
