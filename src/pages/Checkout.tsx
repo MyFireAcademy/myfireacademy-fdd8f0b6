@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Lock, Check, CreditCard } from 'lucide-react';
@@ -145,7 +146,7 @@ const Checkout = () => {
                 </p>
                 
                 <a 
-                  href="https://buy.stripe.com/4gw9ARbepgvS5z2fYY" 
+                  href="https://buy.stripe.com/3cs28p96hfrOf9CdQR" 
                   className="btn-primary w-full flex items-center justify-center"
                   target="_blank"
                   rel="noopener noreferrer"
