@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Lock, User } from 'lucide-react';
@@ -136,6 +137,10 @@ const Checkout = () => {
     }
   };
 
+  // Define success and cancel URLs
+  const successUrl = `${window.location.origin}/dashboard?payment_success=true`;
+  const cancelUrl = `${window.location.origin}/checkout?payment_canceled=true`;
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -194,14 +199,20 @@ const Checkout = () => {
                         Click the button below to proceed to our secure payment page to complete your purchase.
                       </p>
                       
-                      <a 
-                        href={`https://buy.stripe.com/9AQ14l4Q11AY6D67su?success_url=${encodeURIComponent(successUrl)}&cancel_url=${encodeURIComponent(cancelUrl)}`}
+                      <button 
+                        onClick={handleProceedToCheckout}
                         className="btn-primary w-full flex items-center justify-center"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        disabled={isLoading}
                       >
-                        Pay Now $47.00
-                      </a>
+                        {isLoading ? (
+                          <>
+                            <span className="animate-spin h-4 w-4 mr-2 border-b-2 border-white rounded-full"></span>
+                            Processing...
+                          </>
+                        ) : (
+                          <>Pay Now $47.00</>
+                        )}
+                      </button>
                     </>
                   ) : (
                     <div className="text-center py-4">

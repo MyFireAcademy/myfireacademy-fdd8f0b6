@@ -16,11 +16,6 @@ smtp_port = 54325
 pop3_port = 54326
 [auth]
 enabled = true
-port = 9999
-[realtime]
-enabled = false
 [storage]
 enabled = true
 file_size_limit = "50MiB"
-[edge_functions]
-enabled = true
