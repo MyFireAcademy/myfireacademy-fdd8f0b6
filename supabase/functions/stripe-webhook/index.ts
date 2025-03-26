@@ -50,6 +50,7 @@ serve(async (req) => {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object;
+        console.log("Checkout session completed:", session);
         
         // Store the payment information in our database
         const { error } = await supabase.from("payments").insert({
@@ -71,20 +72,43 @@ serve(async (req) => {
       }
       case "payment_intent.succeeded": {
         const paymentIntent = event.data.object;
+        console.log("Payment intent succeeded:", paymentIntent.id);
         
-        // Update or insert payment record
-        const { error } = await supabase
+        // First check if a record already exists
+        const { data: existingData } = await supabase
           .from("payments")
-          .update({ payment_status: "succeeded" })
+          .select("*")
           .eq("stripe_payment_id", paymentIntent.id);
+          
+        if (existingData && existingData.length > 0) {
+          // Update existing record
+          const { error } = await supabase
+            .from("payments")
+            .update({ payment_status: "succeeded" })
+            .eq("stripe_payment_id", paymentIntent.id);
 
-        if (error) {
-          console.error("Error updating payment record:", error);
+          if (error) {
+            console.error("Error updating payment record:", error);
+          }
+        } else {
+          // Create a new record
+          const { error } = await supabase.from("payments").insert({
+            stripe_payment_id: paymentIntent.id,
+            stripe_customer_id: paymentIntent.customer,
+            amount: paymentIntent.amount / 100,
+            currency: paymentIntent.currency,
+            payment_status: "succeeded",
+          });
+
+          if (error) {
+            console.error("Error inserting payment record:", error);
+          }
         }
         break;
       }
       case "payment_intent.payment_failed": {
         const paymentIntent = event.data.object;
+        console.log("Payment intent failed:", paymentIntent.id);
         
         // Update payment record to failed
         const { error } = await supabase

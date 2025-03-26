@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
 // This function will check if there's a successful payment for a given payment ID
@@ -27,10 +26,21 @@ export const verifyPaymentSuccess = async (paymentId: string): Promise<boolean> 
 // Check if payment was successful using URL params from Stripe redirect
 export const checkPaymentFromUrl = async (searchParams: URLSearchParams) => {
   const paymentIntent = searchParams.get("payment_intent");
+  const redirectStatus = searchParams.get("redirect_status");
   
-  if (!paymentIntent) {
+  console.log("Payment Intent:", paymentIntent);
+  console.log("Redirect Status:", redirectStatus);
+  
+  // Check if we have a payment_intent OR if redirect_status is "succeeded"
+  if (!paymentIntent && redirectStatus !== "succeeded") {
     return false;
   }
   
-  return await verifyPaymentSuccess(paymentIntent);
+  // If we have a redirect_status of "succeeded", we can directly return true
+  if (redirectStatus === "succeeded") {
+    return true;
+  }
+  
+  // Otherwise check the database
+  return await verifyPaymentSuccess(paymentIntent as string);
 };

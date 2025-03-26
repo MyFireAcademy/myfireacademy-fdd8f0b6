@@ -23,30 +23,45 @@ const Checkout = () => {
     const isRedirectedFromPayment = searchParams.has('payment_intent') || 
                                     searchParams.has('redirect_status');
     
+    console.log("URL Search Params:", Object.fromEntries(searchParams.entries()));
+    console.log("Is redirected from payment:", isRedirectedFromPayment);
+    
     if (isRedirectedFromPayment) {
       setIsLoading(true);
       
       const checkPayment = async () => {
-        const isSuccessful = await checkPaymentFromUrl(searchParams);
-        
-        if (isSuccessful) {
-          toast({
-            title: "Payment Successful",
-            description: "Your purchase was completed successfully.",
-            duration: 3000,
-          });
+        try {
+          const isSuccessful = await checkPaymentFromUrl(searchParams);
+          console.log("Payment verification result:", isSuccessful);
           
-          // Redirect to profile setup
-          navigate('/profile-setup');
-        } else {
+          if (isSuccessful) {
+            toast({
+              title: "Payment Successful",
+              description: "Your purchase was completed successfully.",
+              duration: 3000,
+            });
+            
+            // Redirect to profile setup
+            navigate('/profile-setup');
+          } else {
+            toast({
+              title: "Payment Verification Issue",
+              description: "We couldn't verify your payment. If you believe this is an error, please contact support.",
+              variant: "destructive",
+              duration: 5000,
+            });
+          }
+        } catch (error) {
+          console.error("Error during payment verification:", error);
           toast({
-            title: "Payment Verification Issue",
-            description: "We couldn't verify your payment. If you believe this is an error, please contact support.",
+            title: "Error Checking Payment",
+            description: "An unexpected error occurred. Please contact support.",
             variant: "destructive",
             duration: 5000,
           });
+        } finally {
+          setIsLoading(false);
         }
-        setIsLoading(false);
       };
       
       checkPayment();
