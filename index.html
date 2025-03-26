@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,12 +16,117 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    
+    <!-- Stripe JS -->
+    <script src="https://js.stripe.com/v3/"></script>
   </head>
 
   <body>
     <div id="root"></div>
+    
+    <!-- Stripe Payment Form (Hidden by default, will be shown via JavaScript) -->
+    <div id="stripe-payment-container" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000; max-width: 500px; width: 90%;">
+      <h2>Pay with Credit Card</h2>
+      <form id="payment-form">
+        <div id="card-element" style="margin-bottom: 24px;">
+          <!-- Stripe will insert the credit card input field here -->
+        </div>
+        <button type="submit" style="background: #e72e2e; color: white; border: none; padding: 10px 16px; border-radius: 4px; font-weight: 500; cursor: pointer; width: 100%;">Pay Now</button>
+        <p id="card-errors" style="color: red; margin-top: 8px;"></p>
+      </form>
+    </div>
+    
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Stripe Payment Handling Script -->
+    <script>
+      // This will be initialized when needed
+      let stripeInstance = null;
+      let cardElement = null;
+      
+      // Function to show the payment form
+      window.showStripePaymentForm = function(publishableKey) {
+        const container = document.getElementById('stripe-payment-container');
+        container.style.display = 'block';
+        
+        // Initialize Stripe only if not already done
+        if (!stripeInstance) {
+          stripeInstance = Stripe(publishableKey || "pk_test_51O5XyOKqzGq23456TcTjBzFJ60UQn7eE7eo8CEHlYtg0OCaOcMieDLNLN2nkgkE8IUXH5EoPK12gRs1uEjnWu9Pu0093IFXbLZ");
+          const elements = stripeInstance.elements();
+          cardElement = elements.create("card");
+          cardElement.mount("#card-element");
+        }
+        
+        const form = document.getElementById("payment-form");
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          
+          // Show processing state
+          const submitButton = form.querySelector('button[type="submit"]');
+          const originalButtonText = submitButton.textContent;
+          submitButton.textContent = "Processing...";
+          submitButton.disabled = true;
+          
+          const { paymentMethod, error } = await stripeInstance.createPaymentMethod({
+            type: "card",
+            card: cardElement,
+          });
+          
+          if (error) {
+            document.getElementById("card-errors").textContent = error.message;
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
+          } else {
+            // Send paymentMethod.id to your application
+            // This is where you'd typically make an API call to your server
+            
+            // For demo purposes, we'll simulate a successful payment
+            setTimeout(() => {
+              // Hide the payment form
+              container.style.display = 'none';
+              
+              // Navigate to the success page
+              window.location.href = `${window.location.origin}/profile-setup`;
+              
+              // Reset the button state (though it won't be visible anymore)
+              submitButton.textContent = originalButtonText;
+              submitButton.disabled = false;
+            }, 1000);
+            
+            // In a real implementation, you would do something like:
+            /*
+            fetch("/api/charge", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ payment_method_id: paymentMethod.id })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                window.location.href = `${window.location.origin}/profile-setup`;
+              } else {
+                document.getElementById("card-errors").textContent = "Payment failed. Please try again.";
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+              }
+            })
+            .catch(err => {
+              document.getElementById("card-errors").textContent = "An error occurred. Please try again.";
+              submitButton.textContent = originalButtonText;
+              submitButton.disabled = false;
+            });
+            */
+          }
+        });
+      };
+      
+      // Function to hide the payment form
+      window.hideStripePaymentForm = function() {
+        const container = document.getElementById('stripe-payment-container');
+        container.style.display = 'none';
+      };
+    </script>
   </body>
 </html>

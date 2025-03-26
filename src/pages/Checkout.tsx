@@ -1,9 +1,17 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Lock } from 'lucide-react';
+import { ArrowLeft, Lock, CreditCard } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+
+declare global {
+  interface Window {
+    showStripePaymentForm: (publishableKey?: string) => void;
+    hideStripePaymentForm: () => void;
+  }
+}
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -16,6 +24,17 @@ const Checkout = () => {
   
   // Construct the full Stripe checkout URL
   const stripeCheckoutUrl = `https://buy.stripe.com/9AQ14l4Q11AY6D67su?success_url=${successUrl}&cancel_url=${cancelUrl}`;
+
+  // Function to handle opening the embedded Stripe form
+  const handlePayWithCard = () => {
+    // Using the publishable key from the StripeProvider
+    window.showStripePaymentForm("pk_test_51O5XyOKqzGq23456TcTjBzFJ60UQn7eE7eo8CEHlYtg0OCaOcMieDLNLN2nkgkE8IUXH5EoPK12gRs1uEjnWu9Pu0093IFXbLZ");
+    
+    toast({
+      title: "Payment Form Opened",
+      description: "Please enter your credit card details to complete the purchase.",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -63,17 +82,29 @@ const Checkout = () => {
               <div className="bg-white rounded-xl shadow-sm p-6">
                 <h2 className="text-xl font-semibold text-navy-900 mb-6">Complete Your Purchase</h2>
                 <p className="text-navy-700 mb-6">
-                  Click the button below to proceed to our secure payment page to complete your purchase.
+                  Choose your preferred payment method below to complete your purchase.
                 </p>
                 
-                <a 
-                  href={stripeCheckoutUrl}
-                  className="btn-primary w-full flex items-center justify-center"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Pay Now $47.00
-                </a>
+                <div className="flex flex-col space-y-4">
+                  {/* Credit Card Payment Button */}
+                  <button 
+                    onClick={handlePayWithCard}
+                    className="btn-primary w-full flex items-center justify-center"
+                  >
+                    <CreditCard size={18} className="mr-2" />
+                    Pay with Card $47.00
+                  </button>
+                  
+                  {/* External Stripe Checkout Button */}
+                  <a 
+                    href={stripeCheckoutUrl}
+                    className="btn-secondary w-full flex items-center justify-center"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Pay with Stripe Checkout $47.00
+                  </a>
+                </div>
                 
                 <div className="mt-6 text-center text-sm text-navy-600">
                   <p>100% Money-Back Guarantee • Secure Payment • Instant Access</p>
