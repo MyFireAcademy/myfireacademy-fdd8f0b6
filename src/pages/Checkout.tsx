@@ -1,27 +1,46 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, CreditCard, Lock, Check } from 'lucide-react';
+import { ArrowLeft, Lock, Check, CreditCard } from 'lucide-react';
+import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import StripeCardElement from '@/components/stripe/CardElement';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [cardNumber, setCardNumber] = useState('');
+  const stripe = useStripe();
+  const elements = useElements();
+  
   const [cardName, setCardName] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
-  const [cvv, setCvv] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [cardError, setCardError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleCardChange = (event: any) => {
+    setCardError(event.error ? event.error.message : '');
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!stripe || !elements) {
+      // Stripe.js has not loaded yet
+      return;
+    }
+    
     setIsProcessing(true);
-
-    // Simulate payment processing
-    setTimeout(() => {
+    
+    try {
+      // In a real implementation, you would create a payment intent on your server
+      // and return the client secret to the client
+      
+      // For demo purposes, we'll simulate a successful payment after a short delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       setIsProcessing(false);
       setIsComplete(true);
       
@@ -35,32 +54,15 @@ const Checkout = () => {
       setTimeout(() => {
         navigate('/profile-setup');
       }, 2000);
-    }, 1500);
-  };
-
-  const formatCardNumber = (value: string) => {
-    const val = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    const matches = val.match(/\d{4,16}/g);
-    const match = matches && matches[0] || '';
-    const parts = [];
-
-    for (let i = 0, len = match.length; i < len; i += 4) {
-      parts.push(match.substring(i, i + 4));
+    } catch (error) {
+      setIsProcessing(false);
+      toast({
+        title: "Payment Failed",
+        description: "There was an issue processing your payment. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
     }
-
-    if (parts.length) {
-      return parts.join(' ');
-    } else {
-      return value;
-    }
-  };
-
-  const formatExpiryDate = (value: string) => {
-    const val = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    if (val.length > 2) {
-      return `${val.substring(0, 2)}/${val.substring(2, 4)}`;
-    }
-    return val;
   };
 
   if (isComplete) {
@@ -158,58 +160,21 @@ const Checkout = () => {
                         required
                       />
                     </div>
+                    
                     <div>
-                      <label htmlFor="cardNumber" className="block text-sm font-medium text-navy-700 mb-1">
-                        Card Number
+                      <label htmlFor="card-element" className="block text-sm font-medium text-navy-700 mb-1">
+                        Card Details
                       </label>
-                      <input
-                        id="cardNumber"
-                        type="text"
-                        value={cardNumber}
-                        onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-fire-500 focus:border-fire-500 outline-none transition-colors"
-                        placeholder="1234 5678 9012 3456"
-                        maxLength={19}
-                        required
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="expiryDate" className="block text-sm font-medium text-navy-700 mb-1">
-                          Expiry Date
-                        </label>
-                        <input
-                          id="expiryDate"
-                          type="text"
-                          value={expiryDate}
-                          onChange={(e) => setExpiryDate(formatExpiryDate(e.target.value))}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-fire-500 focus:border-fire-500 outline-none transition-colors"
-                          placeholder="MM/YY"
-                          maxLength={5}
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="cvv" className="block text-sm font-medium text-navy-700 mb-1">
-                          CVV
-                        </label>
-                        <input
-                          id="cvv"
-                          type="text"
-                          value={cvv}
-                          onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').substring(0, 3))}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-fire-500 focus:border-fire-500 outline-none transition-colors"
-                          placeholder="123"
-                          maxLength={3}
-                          required
-                        />
-                      </div>
+                      <StripeCardElement onChange={handleCardChange} />
+                      {cardError && (
+                        <p className="text-sm text-red-600 mt-1">{cardError}</p>
+                      )}
                     </div>
                   </div>
                   <button
                     type="submit"
                     className="btn-primary w-full mt-6"
-                    disabled={isProcessing}
+                    disabled={!stripe || isProcessing}
                   >
                     {isProcessing ? (
                       <span className="flex items-center justify-center">
