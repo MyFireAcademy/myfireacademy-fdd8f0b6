@@ -25,13 +25,16 @@ const Checkout = () => {
   const [password, setPassword] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
+  // Define success and cancel URLs
   const successUrl = `${window.location.origin}/quiz?payment_success=true`;
   const cancelUrl = `${window.location.origin}/checkout?payment_canceled=true`;
 
   useEffect(() => {
+    // Show auth dialog if user is not authenticated
     if (!isAuthenticated()) {
       setShowAuthDialog(true);
     } else {
+      // Check if user already has a subscription
       const checkSubscription = async () => {
         if (!user) return;
         
@@ -48,13 +51,19 @@ const Checkout = () => {
             return;
           }
           
+          // If user already has a subscription, redirect to quiz page
           if (data) {
             toast({
               title: "Already Subscribed",
               description: "You already have access to the study materials.",
               duration: 3000,
             });
-            navigate('/dashboard');
+            navigate('/quiz', { 
+              state: { 
+                level: 'level1',
+                isFull: true
+              }
+            });
           }
         } catch (error) {
           console.error('Error checking subscription status:', error);
@@ -65,22 +74,29 @@ const Checkout = () => {
     }
   }, [isAuthenticated, user, navigate, toast]);
 
+  // Check if the user has been redirected back from Stripe with payment information
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const checkStripePayment = async () => {
       setIsLoading(true);
       
+      // Check if payment was successful using the utility function
       const isPaymentSuccessful = await checkPaymentFromUrl(searchParams, user?.id);
       
       if (isPaymentSuccessful) {
         toast({
           title: "Payment Successful",
-          description: "Your purchase was completed successfully. Redirecting to dashboard...",
+          description: "Your purchase was completed successfully. Redirecting to quiz...",
           duration: 3000,
         });
         
-        navigate('/dashboard', { replace: true });
-        return;
+        // Redirect to quiz page
+        navigate('/quiz', { 
+          state: { 
+            level: 'level1',
+            isFull: true
+          }
+        });
       } else if (searchParams.has('payment_canceled')) {
         toast({
           title: "Payment Canceled",
@@ -139,12 +155,14 @@ const Checkout = () => {
     try {
       setIsLoading(true);
       
+      // Show loading toast
       toast({
         title: "Preparing checkout",
         description: "Please wait while we redirect you to the payment page...",
         duration: 3000,
       });
       
+      // Create checkout session and redirect
       const url = await createCheckoutSession(user?.id);
       window.location.href = url;
     } catch (error) {
@@ -179,6 +197,7 @@ const Checkout = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+              {/* Order Summary */}
               <div className="md:col-span-2 bg-white rounded-xl shadow-sm p-6">
                 <h2 className="text-lg font-semibold text-navy-900 mb-4">Order Summary</h2>
                 <div className="border-b border-gray-200 pb-4 mb-4">
@@ -205,6 +224,7 @@ const Checkout = () => {
                 </div>
               </div>
 
+              {/* Payment Section */}
               <div className="md:col-span-3">
                 <div className="bg-white rounded-xl shadow-sm p-6">
                   <h2 className="text-xl font-semibold text-navy-900 mb-6">Complete Your Purchase</h2>
@@ -265,6 +285,7 @@ const Checkout = () => {
       </main>
       <Footer />
 
+      {/* Authentication Dialog */}
       <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
         <DialogContent className="sm:max-w-md p-0 overflow-hidden">
           <div className="p-6">

@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { checkPaymentFromUrl, checkUserSubscription } from '@/utils/paymentVerification';
 
-interface ExamMetadata {
+interface QuizMetadata {
   id: string;
   title: string;
   description: string;
@@ -31,11 +31,11 @@ const Dashboard = () => {
   const location = useLocation();
   const { toast } = useToast();
   const { user, signOut } = useAuth();
+  const [activeTab, setActiveTab] = useState<'level1' | 'level2'>('level1');
   const [username, setUsername] = useState<string>('');
   const [examAttempts, setExamAttempts] = useState<ExamAttempt[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasSubscription, setHasSubscription] = useState(false);
-  const [isNewPurchase, setIsNewPurchase] = useState(false);
   
   useEffect(() => {
     if (!user) {
@@ -52,7 +52,6 @@ const Dashboard = () => {
         const isPaymentVerified = await checkPaymentFromUrl(searchParams, user.id);
         
         if (isPaymentVerified) {
-          setIsNewPurchase(true);
           toast({
             title: "Payment Verified",
             description: "Thank you for your purchase! You now have full access to the study materials.",
@@ -72,17 +71,19 @@ const Dashboard = () => {
         setIsLoading(true);
         
         const hasValidSubscription = await checkUserSubscription(user.id);
-        setHasSubscription(hasValidSubscription);
         
         if (!hasValidSubscription) {
+          setHasSubscription(false);
           toast({
             title: "Subscription Required",
             description: "Please subscribe to access the study materials.",
             duration: 4000,
           });
-          navigate('/subscription', { replace: true });
+          navigate('/subscription');
           return;
         }
+        
+        setHasSubscription(true);
         
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
@@ -126,7 +127,7 @@ const Dashboard = () => {
     fetchUserData();
   }, [user, navigate, toast, location.search]);
   
-  const exams: ExamMetadata[] = [
+  const quizzes: QuizMetadata[] = [
     {
       id: 'nfpa-1001-level1-full',
       title: 'NFPA 1001 Firefighter I',
@@ -147,13 +148,13 @@ const Dashboard = () => {
     }
   ];
 
-  const handleStartExam = (examId: string) => {
-    const level = examId.includes('level1') ? 'level1' : 'level2';
-    navigate('/quiz', { state: { examId, level, isFull: true } });
+  const handleStartQuiz = (quizId: string) => {
+    const level = quizId.includes('level1') ? 'level1' : 'level2';
+    navigate('/quiz', { state: { quizId, level, isFull: true } });
     
     toast({
-      title: "Starting Full Exam",
-      description: "The 100-question exam is loading...",
+      title: "Starting Full Quiz",
+      description: "The 100-question quiz is loading...",
       duration: 3000,
     });
   };
@@ -195,9 +196,9 @@ const Dashboard = () => {
           <div className="bg-fire-600 text-white rounded-2xl p-8 mb-10 shadow-xl">
             <div className="flex flex-col md:flex-row md:items-center justify-between">
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome back, {username}!</h1>
+                <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome, {username}!</h1>
                 <p className="mb-6 md:mb-0 text-white/90">
-                  Select an exam below to begin or resume your certification preparation.
+                  Your purchase includes full access to both Level I and Level II certification exams with 100 questions each.
                 </p>
               </div>
               <button
@@ -211,40 +212,62 @@ const Dashboard = () => {
           </div>
 
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-10">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-navy-900">Available Certification Exams</h2>
-              <p className="text-navy-700 mt-1">Select an exam to begin or resume your assessment</p>
+            <div className="flex border-b">
+              <button
+                onClick={() => setActiveTab('level1')}
+                className={`flex-1 py-4 text-center font-medium transition-all duration-200 ${
+                  activeTab === 'level1' 
+                    ? 'text-fire-600 border-b-2 border-fire-600' 
+                    : 'text-navy-600 hover:text-fire-600'
+                }`}
+              >
+                Level I Certification
+              </button>
+              <button
+                onClick={() => setActiveTab('level2')}
+                className={`flex-1 py-4 text-center font-medium transition-all duration-200 ${
+                  activeTab === 'level2' 
+                    ? 'text-fire-600 border-b-2 border-fire-600' 
+                    : 'text-navy-600 hover:text-fire-600'
+                }`}
+              >
+                Level II Certification
+              </button>
             </div>
             
             <div className="p-6">
-              {exams.map(exam => (
-                <div key={exam.id} className="mb-6 last:mb-0">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 rounded-xl p-5 hover:bg-gray-100 transition-colors">
-                    <div className="flex-1">
-                      <div className="flex items-center mb-2">
-                        <BookOpen className="text-fire-600 mr-2" size={20} />
-                        <h3 className="text-xl font-semibold text-navy-900">{exam.title}</h3>
+              {quizzes
+                .filter(quiz => 
+                  activeTab === 'level1' ? quiz.level === 'I' : quiz.level === 'II'
+                )
+                .map(quiz => (
+                  <div key={quiz.id} className="mb-6 last:mb-0">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between bg-gray-50 rounded-xl p-5 hover:bg-gray-100 transition-colors">
+                      <div className="flex-1">
+                        <div className="flex items-center mb-2">
+                          <BookOpen className="text-fire-600 mr-2" size={20} />
+                          <h3 className="text-xl font-semibold text-navy-900">{quiz.title}</h3>
+                        </div>
+                        <p className="text-navy-700 mb-4 md:mb-0">{quiz.description}</p>
+                        <div className="flex flex-wrap gap-4 mt-2 mb-4 md:mb-0">
+                          <span className="inline-flex items-center text-sm text-navy-600">
+                            <span className="font-medium mr-1">{quiz.questionCount}</span> Questions
+                          </span>
+                          <span className="inline-flex items-center text-sm text-navy-600">
+                            <span className="font-medium mr-1">{quiz.estimatedTime}</span> Estimated Time
+                          </span>
+                        </div>
                       </div>
-                      <p className="text-navy-700 mb-4 md:mb-0">{exam.description}</p>
-                      <div className="flex flex-wrap gap-4 mt-2 mb-4 md:mb-0">
-                        <span className="inline-flex items-center text-sm text-navy-600">
-                          <span className="font-medium mr-1">{exam.questionCount}</span> Questions
-                        </span>
-                        <span className="inline-flex items-center text-sm text-navy-600">
-                          <span className="font-medium mr-1">{exam.estimatedTime}</span> Estimated Time
-                        </span>
-                      </div>
+                      <button 
+                        onClick={() => handleStartQuiz(quiz.id)}
+                        className="btn-primary group self-start md:self-center"
+                      >
+                        Start Quiz
+                        <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
+                      </button>
                     </div>
-                    <button 
-                      onClick={() => handleStartExam(exam.id)}
-                      className="btn-primary group self-start md:self-center"
-                    >
-                      Start Exam
-                      <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
-                    </button>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
 
