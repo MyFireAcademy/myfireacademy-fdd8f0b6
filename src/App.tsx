@@ -20,6 +20,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import RefundPolicy from "./pages/RefundPolicy";
 import SubscriptionPage from "./pages/SubscriptionPage";
+import QuizWithNavbar from "./pages/QuizWithNavbar";
 import StripeProvider from "./providers/StripeProvider";
 
 const queryClient = new QueryClient();
@@ -34,7 +35,7 @@ const App = () => (
           <AuthProvider>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/quiz" element={<Quiz />} />
+              <Route path="/quiz" element={<QuizWithNavbar />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/checkout" element={<Checkout />} />
