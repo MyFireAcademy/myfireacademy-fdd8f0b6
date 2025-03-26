@@ -1,4 +1,5 @@
 
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -22,40 +23,43 @@ import RefundPolicy from "./pages/RefundPolicy";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import StripeProvider from "./providers/StripeProvider";
 
+// Create a new QueryClient instance outside of the component
 const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <StripeProvider>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/quiz" element={<Quiz />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:slug" element={<BlogPost />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/profile-setup" element={<ProfileSetup />} />
-                <Route path="/sign-in" element={<SignIn />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/subscription" element={<SubscriptionPage />} />
-                <Route path="/new-to-firefighting" element={<NewToFirefighting />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/terms-of-service" element={<TermsOfService />} />
-                <Route path="/refund-policy" element={<RefundPolicy />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </StripeProvider>
-          </TooltipProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AuthProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <StripeProvider>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/quiz" element={<Quiz />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPost />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/profile-setup" element={<ProfileSetup />} />
+                  <Route path="/sign-in" element={<SignIn />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/subscription" element={<SubscriptionPage />} />
+                  <Route path="/new-to-firefighting" element={<NewToFirefighting />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/terms-of-service" element={<TermsOfService />} />
+                  <Route path="/refund-policy" element={<RefundPolicy />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </StripeProvider>
+            </TooltipProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </React.StrictMode>
   );
 };
 
