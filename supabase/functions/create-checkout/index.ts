@@ -40,7 +40,7 @@ serve(async (req) => {
 
     // Create the checkout session with the default price
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
+      payment_method_types: ["card", "google_pay", "apple_pay"], // Add apple_pay here
       line_items: [
         {
           price: product.default_price as string,
