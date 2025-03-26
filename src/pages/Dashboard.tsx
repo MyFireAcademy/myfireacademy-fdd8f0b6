@@ -151,34 +151,11 @@ const Dashboard = () => {
 
   const handleStartExam = (quizId: string) => {
     const level = quizId.includes('level1') ? 'level1' : 'level2';
-    navigate('/quiz', { 
-      state: { 
-        quizId, 
-        level, 
-        isFull: true 
-      } 
-    });
+    navigate('/quiz', { state: { quizId, level, isFull: true } });
     
     toast({
       title: "Starting Full Exam",
       description: "The 100-question exam is loading...",
-      duration: 3000,
-    });
-  };
-
-  const handleResumeExam = (quizId: string) => {
-    const level = quizId.includes('level1') ? 'level1' : 'level2';
-    navigate('/quiz', { 
-      state: { 
-        quizId, 
-        level, 
-        isFull: true 
-      } 
-    });
-    
-    toast({
-      title: "Resuming Exam",
-      description: "Returning to your exam...",
       duration: 3000,
     });
   };
@@ -280,31 +257,6 @@ const Dashboard = () => {
                   </div>
                 </div>
               ))}
-
-              <div className="mt-8 border-t pt-8">
-                <h3 className="text-lg font-semibold text-navy-800 mb-4">Return to Your Exam</h3>
-                <div className="bg-blue-50 rounded-xl p-5 border border-blue-100">
-                  <p className="text-navy-700 mb-4">
-                    You can always return to your exam in progress. Pick up where you left off:
-                  </p>
-                  <div className="flex flex-wrap gap-4">
-                    <button 
-                      onClick={() => handleResumeExam('nfpa-1001-level1-full')}
-                      className="btn-secondary group"
-                    >
-                      Resume Level I Exam
-                      <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
-                    </button>
-                    <button 
-                      onClick={() => handleResumeExam('nfpa-1001-level2-full')}
-                      className="btn-secondary group"
-                    >
-                      Resume Level II Exam
-                      <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
