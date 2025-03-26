@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Quiz from "./pages/Quiz";
+import QuizLanding from "./pages/QuizLanding";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Checkout from "./pages/Checkout";
@@ -39,6 +40,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/quiz" element={<Quiz />} />
+                  <Route path="/quizzes" element={<QuizLanding />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/checkout" element={<Checkout />} />

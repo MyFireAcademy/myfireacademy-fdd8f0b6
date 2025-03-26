@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight, Check } from 'lucide-react';
@@ -34,12 +35,12 @@ const SubscriptionPage = () => {
         if (isPaymentVerified) {
           toast({
             title: "Payment Successful",
-            description: "Thank you for your purchase! Redirecting to your dashboard...",
+            description: "Thank you for your purchase! Redirecting to quizzes...",
             duration: 3000,
           });
           
-          // Redirect to dashboard instead of the quiz
-          navigate('/dashboard', { replace: true });
+          // Redirect to quiz landing page instead of the quiz
+          navigate('/quizzes', { replace: true });
         } else {
           toast({
             title: "Payment Verification",

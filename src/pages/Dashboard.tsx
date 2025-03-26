@@ -160,6 +160,10 @@ const Dashboard = () => {
     });
   };
 
+  const handleViewAllQuizzes = () => {
+    navigate('/quizzes');
+  };
+
   const handleSignOut = async () => {
     await signOut();
   };
@@ -223,9 +227,18 @@ const Dashboard = () => {
           )}
 
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-10">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-navy-900">Available Certification Exams</h2>
-              <p className="text-navy-700 mt-1">Select an exam to begin your assessment</p>
+            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+              <div>
+                <h2 className="text-xl font-semibold text-navy-900">Available Certification Exams</h2>
+                <p className="text-navy-700 mt-1">Select an exam to begin your assessment</p>
+              </div>
+              <button 
+                onClick={handleViewAllQuizzes}
+                className="btn-secondary flex items-center"
+              >
+                <BookOpen size={16} className="mr-2" />
+                View All Quizzes
+              </button>
             </div>
             
             <div className="p-6">

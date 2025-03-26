@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User } from 'lucide-react';
+import { Menu, X, User, BookOpen } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar = () => {
@@ -54,6 +54,10 @@ const Navbar = () => {
             </Link>
             <Link to="/new-to-firefighting" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               New To Firefighting
+            </Link>
+            <Link to="/quizzes" className="text-navy-800 hover:text-fire-600 transition-colors font-medium flex items-center">
+              <BookOpen size={18} className="mr-1" />
+              Practice Tests
             </Link>
             <Link to="/blog" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               Blog
@@ -116,6 +120,14 @@ const Navbar = () => {
                 className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium"
               >
                 New To Firefighting
+              </Link>
+              <Link 
+                to="/quizzes" 
+                onClick={() => setIsMenuOpen(false)}
+                className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium flex items-center"
+              >
+                <BookOpen size={18} className="mr-2" />
+                Practice Tests
               </Link>
               <Link 
                 to="/blog" 
