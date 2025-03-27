@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, User, BookOpen } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -9,6 +9,10 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const location = useLocation();
+  
+  const isQuizPage = location.pathname === '/quiz';
+  const extraSpacingClass = isQuizPage ? 'mb-16' : '';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,7 +39,7 @@ const Navbar = () => {
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-apple ${
         isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'
-      }`}
+      } ${extraSpacingClass}`}
     >
       <div className="container mx-auto px-6">
         <nav className="flex items-center justify-between">
