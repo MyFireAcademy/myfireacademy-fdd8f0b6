@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, User, BookOpen } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { checkUserSubscription } from '@/utils/paymentVerification';
+import { checkUserSubscription, clearSubscriptionCache } from '@/utils/paymentVerification';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -25,19 +25,22 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Check subscription status when user changes
+  // Check subscription status when user changes or location changes (for payment callbacks)
   useEffect(() => {
     const checkSubscription = async () => {
       if (user) {
+        // Clear the subscription cache to force a fresh check
+        clearSubscriptionCache(user.id);
         const userHasSubscription = await checkUserSubscription(user.id);
         setHasSubscription(userHasSubscription);
+        console.log('Navbar - User subscription status:', userHasSubscription);
       } else {
         setHasSubscription(false);
       }
     };
     
     checkSubscription();
-  }, [user]);
+  }, [user, location.pathname]); // Re-check when location changes (which happens after payment)
 
   const handleBuyNowClick = (e: React.MouseEvent) => {
     e.preventDefault();

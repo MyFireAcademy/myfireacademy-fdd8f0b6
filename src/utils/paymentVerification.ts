@@ -15,6 +15,11 @@ const CACHE_EXPIRATION = 5 * 60 * 1000;
  */
 export const checkPaymentFromUrl = async (searchParams: URLSearchParams, userId?: string): Promise<boolean> => {
   try {
+    // Clear cache for this user to ensure fresh verification
+    if (userId) {
+      clearSubscriptionCache(userId);
+    }
+    
     // Check for session_id first (direct from Stripe)
     const sessionId = searchParams.get('session_id');
     if (sessionId) {
@@ -32,7 +37,7 @@ export const checkPaymentFromUrl = async (searchParams: URLSearchParams, userId?
     if (paymentSuccess === 'true') {
       if (userId) {
         // Verify the user has a subscription in the database
-        return await checkUserSubscription(userId);
+        return await checkUserSubscription(userId, true);
       }
       // For demo or testing, allow access with payment_success
       return true;
@@ -48,16 +53,19 @@ export const checkPaymentFromUrl = async (searchParams: URLSearchParams, userId?
 /**
  * Check if a user has an active subscription
  * @param userId User ID to check
+ * @param forceFresh Force a fresh check bypassing cache
  * @returns Boolean indicating if the user has an active subscription
  */
-export const checkUserSubscription = async (userId: string): Promise<boolean> => {
+export const checkUserSubscription = async (userId: string, forceFresh = false): Promise<boolean> => {
   if (!userId) return false;
   
-  // Check cache first
-  const cacheEntry = subscriptionCache.get(userId);
-  if (cacheEntry && (Date.now() - cacheEntry.timestamp < CACHE_EXPIRATION)) {
-    console.log("Using cached subscription status for user:", userId);
-    return cacheEntry.hasSubscription;
+  // Check cache first unless forceFresh is true
+  if (!forceFresh) {
+    const cacheEntry = subscriptionCache.get(userId);
+    if (cacheEntry && (Date.now() - cacheEntry.timestamp < CACHE_EXPIRATION)) {
+      console.log("Using cached subscription status for user:", userId);
+      return cacheEntry.hasSubscription;
+    }
   }
   
   console.log("Checking subscription for user:", userId);
