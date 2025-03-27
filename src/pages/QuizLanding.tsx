@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Book, BookOpen, ArrowRight, Clock } from 'lucide-react';
@@ -120,18 +119,14 @@ const QuizLanding = () => {
   ];
 
   const handleStartQuiz = (quiz: QuizCard) => {
-    // Always navigate to the quiz intro page if user has paid or it's a demo quiz
+    // Always navigate to the quiz page if user has paid or it's a demo quiz
     if (quiz.isDemo || hasSubscription || paymentJustCompleted) {
-      navigate('/quiz-intro', { 
+      navigate('/quiz', { 
         state: { 
           quizId: quiz.id,
           level: quiz.level,
           isFull: !quiz.isDemo,
-          isDemo: quiz.isDemo,
-          title: quiz.title,
-          description: quiz.description,
-          questions: quiz.questions,
-          time: quiz.time
+          isDemo: quiz.isDemo
         } 
       });
       return;
