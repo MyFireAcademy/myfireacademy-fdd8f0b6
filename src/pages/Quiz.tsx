@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, CheckCircle, ShieldAlert, Mail, Lock } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -9,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { checkPaymentFromUrl, checkUserSubscription } from '@/utils/paymentVerification';
+import { checkPaymentFromUrl } from '@/utils/paymentVerification';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -30,7 +31,7 @@ const Quiz = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentLevel, setCurrentLevel] = useState<QuizLevel>(
     searchParams.get('level') as QuizLevel || state.level || 'level1'
   );
@@ -49,14 +50,13 @@ const Quiz = () => {
   const [password, setPassword] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
   const [paymentVerified, setPaymentVerified] = useState(false);
-  const [hasAccess, setHasAccess] = useState(false);
 
   const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
   
   // Define the questions variable based on the demo mode and auth status
   const questions = isDemo 
     ? allQuestions.slice(0, 5) 
-    : (isFull && !isAuthenticated() && !paymentVerified)
+    : isFull && !isAuthenticated() && !paymentVerified
       ? allQuestions.slice(0, 5) // Show only 5 questions to unauthenticated users even if they try to access full quiz
       : allQuestions;
   
@@ -96,64 +96,33 @@ const Quiz = () => {
   };
   
   useEffect(() => {
-    const checkAccess = async () => {
-      setIsLoading(true);
-      
-      // Check for payment success from URL parameters first
+    const verifyPayment = async () => {
       if (searchParams.has('payment_success') && user) {
+        setIsLoading(true);
+        
         try {
           const isPaymentVerified = await checkPaymentFromUrl(searchParams, user.id);
           
           if (isPaymentVerified) {
             setPaymentVerified(true);
             setIsFull(true);
-            setHasAccess(true);
             
             toast({
               title: "Payment Successful",
               description: "Thank you for your purchase! You now have full access to all study materials.",
               duration: 5000,
             });
-            
-            setIsLoading(false);
-            return;
           }
         } catch (error) {
-          console.error('Error verifying payment from URL:', error);
+          console.error('Error verifying payment:', error);
+        } finally {
+          setIsLoading(false);
         }
       }
-      
-      // If not from payment success URL, check if user has subscription
-      if (user) {
-        try {
-          const hasSubscription = await checkUserSubscription(user.id);
-          
-          if (hasSubscription) {
-            setHasAccess(true);
-            setIsFull(true);
-          } else {
-            // User is logged in but doesn't have a subscription
-            setHasAccess(false);
-            setIsDemo(true);
-            setIsFull(false);
-          }
-        } catch (error) {
-          console.error('Error checking subscription:', error);
-          setHasAccess(false);
-          setIsDemo(true);
-        }
-      } else {
-        // No user logged in, default to demo mode
-        setHasAccess(false);
-        setIsDemo(true);
-        setIsFull(false);
-      }
-      
-      setIsLoading(false);
     };
     
-    checkAccess();
-  }, [user, searchParams, toast]);
+    verifyPayment();
+  }, [searchParams, user, toast]);
   
   useEffect(() => {
     if (isFull && !isDemo && !isAuthenticated() && !paymentVerified) {
@@ -337,10 +306,6 @@ const Quiz = () => {
     }
   };
 
-  const handlePurchaseAccess = () => {
-    navigate('/subscription');
-  };
-
   const shouldShowFinalResults = isFull ? 
     (currentLevel === 'level1' && quizComplete.level1) || 
     (currentLevel === 'level2' && quizComplete.level2) : 
@@ -358,59 +323,24 @@ const Quiz = () => {
     );
   }
 
-  if (!hasAccess && !isDemo) {
+  if (!hasQuestions && !shouldShowFinalResults) {
     return (
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <div className="flex-grow py-16 px-4">
           <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-scale-in">
             <div className="text-center mb-8">
-              <div className="flex justify-center mb-6">
-                <ShieldAlert className="text-fire-600 w-20 h-20" />
-              </div>
-              <h1 className="text-3xl font-bold text-navy-900 mb-4">Full Access Required</h1>
+              <h1 className="text-3xl font-bold text-navy-900 mb-4">Quiz Not Available</h1>
               <p className="text-navy-700 mb-6">
-                You need to purchase access to the full 2025 Exam Prep materials.
-                Get access to 200+ practice questions for both Level I and Level II certification exams.
+                The quiz for {currentLevel === 'level1' ? 'Level I' : 'Level II'} is currently being updated.
+                Please check back later or try another level.
               </p>
-              
-              <div className="bg-gray-50 p-6 rounded-lg mb-8">
-                <h3 className="font-medium text-lg text-navy-800 mb-4">What You'll Get:</h3>
-                <ul className="text-left space-y-2">
-                  <li className="flex items-start">
-                    <CheckCircle className="text-green-500 mr-2 flex-shrink-0 mt-1" size={16} />
-                    <span>Complete question database for Level I & II</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="text-green-500 mr-2 flex-shrink-0 mt-1" size={16} />
-                    <span>Detailed explanations for all questions</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="text-green-500 mr-2 flex-shrink-0 mt-1" size={16} />
-                    <span>Simulated exam environment</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="text-green-500 mr-2 flex-shrink-0 mt-1" size={16} />
-                    <span>Track your progress and performance</span>
-                  </li>
-                </ul>
-              </div>
-              
-              <div className="space-y-4">
-                <button 
-                  onClick={handlePurchaseAccess}
-                  className="btn-primary w-full"
-                >
-                  Get Full Access
-                </button>
-                
-                <button 
-                  onClick={() => setIsDemo(true)}
-                  className="btn-secondary w-full"
-                >
-                  Try Demo (5 Questions)
-                </button>
-              </div>
+              <button 
+                onClick={() => navigate('/dashboard')}
+                className="btn-primary w-full"
+              >
+                Return to Dashboard
+              </button>
             </div>
           </div>
         </div>
