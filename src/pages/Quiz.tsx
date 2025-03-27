@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, CheckCircle, ShieldAlert, Mail, Lock } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -26,7 +27,7 @@ const Quiz = () => {
   const state = location.state as LocationState || {};
   const searchParams = new URLSearchParams(location.search);
   
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, signIn } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -50,6 +51,19 @@ const Quiz = () => {
   const [password, setPassword] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
   const [paymentVerified, setPaymentVerified] = useState(false);
+
+  // Define questions and hasQuestions early to avoid reference errors
+  const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
+  
+  const questions = isDemo 
+    ? allQuestions.slice(0, 5) 
+    : isFull && !isAuthenticated() && !paymentVerified
+      ? allQuestions.slice(0, 5) // Show only 5 questions to unauthenticated users even if they try to access full quiz
+      : allQuestions;
+  
+  const hasQuestions = questions && questions.length > 0;
+  
+  const currentQuizData = hasQuestions && currentQuestion < questions.length ? questions[currentQuestion] : null;
 
   useEffect(() => {
     const checkAccess = async () => {
@@ -404,18 +418,6 @@ const Quiz = () => {
       </div>
     );
   }
-
-  const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
-  
-  const questions = isDemo 
-    ? allQuestions.slice(0, 5) 
-    : isFull && !isAuthenticated() && !paymentVerified
-      ? allQuestions.slice(0, 5) // Show only 5 questions to unauthenticated users even if they try to access full quiz
-      : allQuestions;
-  
-  const hasQuestions = questions && questions.length > 0;
-  
-  const currentQuizData = hasQuestions && currentQuestion < questions.length ? questions[currentQuestion] : null;
   
   return (
     <div className="flex flex-col min-h-screen">
