@@ -55,7 +55,7 @@ const Navbar = () => {
             <Link to="/new-to-firefighting" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               New To Firefighting
             </Link>
-            <Link to="/quizzes" className="text-navy-800 hover:text-fire-600 transition-colors font-medium flex items-center">
+            <Link to="/quiz" className="text-navy-800 hover:text-fire-600 transition-colors font-medium flex items-center">
               <BookOpen size={18} className="mr-1" />
               Practice Tests
             </Link>
@@ -122,7 +122,7 @@ const Navbar = () => {
                 New To Firefighting
               </Link>
               <Link 
-                to="/quizzes" 
+                to="/quiz" 
                 onClick={() => setIsMenuOpen(false)}
                 className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium flex items-center"
               >

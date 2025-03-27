@@ -161,7 +161,7 @@ const Dashboard = () => {
   };
 
   const handleViewAllQuizzes = () => {
-    navigate('/quizzes');
+    navigate('/quiz');
   };
 
   const handleSignOut = async () => {
@@ -237,7 +237,7 @@ const Dashboard = () => {
                 className="btn-secondary flex items-center"
               >
                 <BookOpen size={16} className="mr-2" />
-                View All Quizzes
+                View Quiz Options
               </button>
             </div>
             

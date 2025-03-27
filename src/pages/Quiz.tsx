@@ -50,6 +50,47 @@ const Quiz = () => {
 
   const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
   
+  const questions = isDemo 
+    ? allQuestions.slice(0, 5) 
+    : isFull && !isAuthenticated() && !paymentVerified
+      ? allQuestions.slice(0, 5) // Show only 5 questions to unauthenticated users even if they try to access full quiz
+      : allQuestions;
+  
+  const hasQuestions = questions && questions.length > 0;
+  
+  const currentQuizData = hasQuestions && currentQuestion < questions.length ? questions[currentQuestion] : null;
+  
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    
+    try {
+      await signIn(email, password);
+      setShowAuthDialog(false);
+    } catch (error) {
+      console.error('Sign in error:', error);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleAuthPrompt = (action: 'signin' | 'signup' | 'cancel') => {
+    setShowAuthDialog(false);
+    if (action === 'signin') {
+      navigate('/sign-in');
+    } else if (action === 'signup') {
+      navigate('/profile-setup');
+    } else {
+      setIsDemo(true);
+      setIsFull(false);
+      toast({
+        title: "Demo Mode Activated",
+        description: "You'll see 5 sample questions. Sign in to access the full exam.",
+        duration: 5000,
+      });
+    }
+  };
+  
   useEffect(() => {
     const verifyPayment = async () => {
       if (searchParams.has('payment_success') && user) {
@@ -266,6 +307,14 @@ const Quiz = () => {
     (currentLevel === 'level2' && quizComplete.level2) : 
     (quizComplete.level1 && quizComplete.level2);
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fire-600"></div>
+      </div>
+    );
+  }
+
   if (!hasQuestions && !shouldShowFinalResults) {
     return (
       <div className="min-h-screen bg-gray-50 pt-20 pb-16 px-4">
@@ -383,6 +432,17 @@ const Quiz = () => {
   return (
     <div className="min-h-screen bg-gray-50 pt-20 pb-16 px-4">
       <div className="max-w-3xl mx-auto">
+        {!user && !isDemo && (
+          <div className="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+            <div className="p-4 flex items-center justify-between">
+              <p className="text-navy-700">Sign in to save your progress and access all questions.</p>
+              <Button onClick={() => setShowAuthDialog(true)} className="bg-fire-600 hover:bg-fire-700 text-white">
+                Sign In
+              </Button>
+            </div>
+          </div>
+        )}
+        
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden animate-fade-in">
           <div className="bg-fire-600 text-white p-6">
             <div className="flex justify-between items-center">
@@ -513,7 +573,6 @@ const Quiz = () => {
         </div>
       </div>
 
-      {/* Authentication Required Dialog */}
       <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
         <DialogContent className="sm:max-w-md p-0 overflow-hidden">
           <div className="p-6">
@@ -590,7 +649,6 @@ const Quiz = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Upgrade Dialog */}
       <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
