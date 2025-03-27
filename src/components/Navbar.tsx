@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, User, BookOpen } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { checkUserSubscription } from '@/utils/paymentVerification';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hasSubscription, setHasSubscription] = useState(false);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const location = useLocation();
@@ -22,6 +24,20 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Check subscription status when user changes
+  useEffect(() => {
+    const checkSubscription = async () => {
+      if (user) {
+        const userHasSubscription = await checkUserSubscription(user.id);
+        setHasSubscription(userHasSubscription);
+      } else {
+        setHasSubscription(false);
+      }
+    };
+    
+    checkSubscription();
+  }, [user]);
 
   const handleBuyNowClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -59,10 +75,15 @@ const Navbar = () => {
             <Link to="/new-to-firefighting" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               New To Firefighting
             </Link>
-            <Link to="/quiz" className="text-navy-800 hover:text-fire-600 transition-colors font-medium flex items-center">
-              <BookOpen size={18} className="mr-1" />
-              Practice Tests
-            </Link>
+            
+            {/* Only show Practice Tests link if user has subscription */}
+            {hasSubscription && (
+              <Link to="/quiz" className="text-navy-800 hover:text-fire-600 transition-colors font-medium flex items-center">
+                <BookOpen size={18} className="mr-1" />
+                Practice Tests
+              </Link>
+            )}
+            
             <Link to="/blog" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               Blog
             </Link>
@@ -125,14 +146,19 @@ const Navbar = () => {
               >
                 New To Firefighting
               </Link>
-              <Link 
-                to="/quiz" 
-                onClick={() => setIsMenuOpen(false)}
-                className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium flex items-center"
-              >
-                <BookOpen size={18} className="mr-2" />
-                Practice Tests
-              </Link>
+              
+              {/* Only show Practice Tests link if user has subscription */}
+              {hasSubscription && (
+                <Link 
+                  to="/quiz" 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium flex items-center"
+                >
+                  <BookOpen size={18} className="mr-2" />
+                  Practice Tests
+                </Link>
+              )}
+              
               <Link 
                 to="/blog" 
                 onClick={() => setIsMenuOpen(false)}

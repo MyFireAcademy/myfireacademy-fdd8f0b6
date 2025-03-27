@@ -22,9 +22,47 @@ import TermsOfService from "./pages/TermsOfService";
 import RefundPolicy from "./pages/RefundPolicy";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import StripeProvider from "./providers/StripeProvider";
+import { checkUserSubscription } from "@/utils/paymentVerification";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Create a new QueryClient instance outside of the component
 const queryClient = new QueryClient();
+
+// Protected route component that checks for subscription
+const ProtectedQuizRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+  const [hasAccess, setHasAccess] = React.useState<boolean | null>(null);
+  
+  React.useEffect(() => {
+    const checkAccess = async () => {
+      if (!user) {
+        setHasAccess(false);
+        return;
+      }
+      
+      const hasSubscription = await checkUserSubscription(user.id);
+      setHasAccess(hasSubscription);
+    };
+    
+    if (!loading) {
+      checkAccess();
+    }
+  }, [user, loading]);
+  
+  if (loading || hasAccess === null) {
+    // Show loading state
+    return <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fire-600"></div>
+    </div>;
+  }
+  
+  if (!hasAccess) {
+    // Redirect to subscription page
+    return <Navigate to="/subscription" replace />;
+  }
+  
+  return <>{children}</>;
+};
 
 const App = () => {
   return (
@@ -38,8 +76,12 @@ const App = () => {
               <StripeProvider>
                 <Routes>
                   <Route path="/" element={<Index />} />
-                  {/* Quiz page is now protected by the component's own auth check */}
-                  <Route path="/quiz" element={<Quiz />} />
+                  {/* Protected Quiz route */}
+                  <Route path="/quiz" element={
+                    <ProtectedQuizRoute>
+                      <Quiz />
+                    </ProtectedQuizRoute>
+                  } />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/checkout" element={<Checkout />} />
