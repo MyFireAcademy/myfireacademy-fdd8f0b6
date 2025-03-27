@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Quiz from "./pages/Quiz";
@@ -38,6 +38,7 @@ const App = () => {
               <StripeProvider>
                 <Routes>
                   <Route path="/" element={<Index />} />
+                  {/* Quiz page is now protected by the component's own auth check */}
                   <Route path="/quiz" element={<Quiz />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />

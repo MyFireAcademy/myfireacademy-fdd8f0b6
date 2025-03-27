@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, CheckCircle, ShieldAlert, Mail, Lock } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -10,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { checkPaymentFromUrl } from '@/utils/paymentVerification';
+import { checkPaymentFromUrl, checkUserSubscription } from '@/utils/paymentVerification';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -27,11 +26,12 @@ const Quiz = () => {
   const state = location.state as LocationState || {};
   const searchParams = new URLSearchParams(location.search);
   
-  const { user, isAuthenticated, signIn } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasPayment, setHasPayment] = useState(false);
   const [currentLevel, setCurrentLevel] = useState<QuizLevel>(
     searchParams.get('level') as QuizLevel || state.level || 'level1'
   );
@@ -51,19 +51,57 @@ const Quiz = () => {
   const [authLoading, setAuthLoading] = useState(false);
   const [paymentVerified, setPaymentVerified] = useState(false);
 
-  const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
-  
-  // Define the questions variable based on the demo mode and auth status
-  const questions = isDemo 
-    ? allQuestions.slice(0, 5) 
-    : isFull && !isAuthenticated() && !paymentVerified
-      ? allQuestions.slice(0, 5) // Show only 5 questions to unauthenticated users even if they try to access full quiz
-      : allQuestions;
-  
-  const hasQuestions = questions && questions.length > 0;
-  
-  const currentQuizData = hasQuestions && currentQuestion < questions.length ? questions[currentQuestion] : null;
-  
+  useEffect(() => {
+    const checkAccess = async () => {
+      setIsLoading(true);
+      
+      if (searchParams.has('payment_success') && user) {
+        try {
+          const isPaymentVerified = await checkPaymentFromUrl(searchParams, user.id);
+          
+          if (isPaymentVerified) {
+            setPaymentVerified(true);
+            setHasPayment(true);
+            setIsFull(true);
+            
+            toast({
+              title: "Payment Successful",
+              description: "Thank you for your purchase! You now have full access to all study materials.",
+              duration: 5000,
+            });
+          } else {
+            navigate('/subscription');
+          }
+        } catch (error) {
+          console.error('Error verifying payment:', error);
+          navigate('/subscription');
+        }
+      } 
+      else if (user) {
+        try {
+          const hasSubscription = await checkUserSubscription(user.id);
+          
+          if (hasSubscription) {
+            setHasPayment(true);
+            setPaymentVerified(true);
+            setIsFull(true);
+          } else {
+            navigate('/subscription');
+          }
+        } catch (error) {
+          console.error('Error checking subscription:', error);
+          navigate('/subscription');
+        }
+      } else if (!isAuthenticated()) {
+        navigate('/sign-in', { state: { returnUrl: '/quiz' } });
+      }
+      
+      setIsLoading(false);
+    };
+    
+    checkAccess();
+  }, [user, searchParams, navigate, toast, isAuthenticated]);
+
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthLoading(true);
@@ -94,84 +132,6 @@ const Quiz = () => {
       });
     }
   };
-  
-  useEffect(() => {
-    const verifyPayment = async () => {
-      if (searchParams.has('payment_success') && user) {
-        setIsLoading(true);
-        
-        try {
-          const isPaymentVerified = await checkPaymentFromUrl(searchParams, user.id);
-          
-          if (isPaymentVerified) {
-            setPaymentVerified(true);
-            setIsFull(true);
-            
-            toast({
-              title: "Payment Successful",
-              description: "Thank you for your purchase! You now have full access to all study materials.",
-              duration: 5000,
-            });
-          }
-        } catch (error) {
-          console.error('Error verifying payment:', error);
-        } finally {
-          setIsLoading(false);
-        }
-      }
-    };
-    
-    verifyPayment();
-  }, [searchParams, user, toast]);
-  
-  useEffect(() => {
-    if (isFull && !isDemo && !isAuthenticated() && !paymentVerified) {
-      setShowAuthDialog(true);
-    }
-  }, [isFull, isDemo, isAuthenticated, paymentVerified]);
-  
-  useEffect(() => {
-    if (currentLevel) {
-      setCurrentQuestion(0);
-      setSelectedOption(null);
-      setShowExplanation(false);
-      
-      if (currentLevel === 'level2' && (!levelIIQuizData || levelIIQuizData.length === 0)) {
-        toast({
-          title: "Level II Quiz Not Available",
-          description: "The Level II quiz is currently being updated. Please try Level I.",
-          variant: "destructive",
-        });
-        setCurrentLevel('level1');
-      }
-    }
-  }, [currentLevel, toast]);
-
-  useEffect(() => {
-    if (state.quizId) {
-      const level = state.quizId.includes('level1') ? 'level1' : 'level2';
-      setCurrentLevel(level);
-      setIsFull(state.isFull || false);
-      
-      if (level === 'level2' && (!levelIIQuizData || levelIIQuizData.length === 0)) {
-        toast({
-          title: "Level II Quiz Not Available",
-          description: "The Level II quiz is currently being updated. Please try Level I.",
-          variant: "destructive",
-        });
-        setCurrentLevel('level1');
-      }
-    }
-    
-    if (state.isDemo) {
-      setIsDemo(true);
-      toast({
-        title: "Quiz Demo Mode",
-        description: "You're trying our 2025 Exam Prep with 5 questions from each level.",
-        duration: 5000,
-      });
-    }
-  }, [state, toast]);
 
   const handleOptionSelect = (optionIndex: number) => {
     if (showExplanation) return;
@@ -445,6 +405,18 @@ const Quiz = () => {
     );
   }
 
+  const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
+  
+  const questions = isDemo 
+    ? allQuestions.slice(0, 5) 
+    : isFull && !isAuthenticated() && !paymentVerified
+      ? allQuestions.slice(0, 5) // Show only 5 questions to unauthenticated users even if they try to access full quiz
+      : allQuestions;
+  
+  const hasQuestions = questions && questions.length > 0;
+  
+  const currentQuizData = hasQuestions && currentQuestion < questions.length ? questions[currentQuestion] : null;
+  
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
