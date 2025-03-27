@@ -1,8 +1,8 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-// Success and cancel URLs
-const SUCCESS_URL = `${window.location.origin}/quizzes?payment_success=true`;
+// Success and cancel URLs - Updated to redirect directly to quiz
+const SUCCESS_URL = `${window.location.origin}/quiz?payment_success=true&level=level1&isFull=true`;
 const CANCEL_URL = `${window.location.origin}/checkout?payment_canceled=true`;
 
 // Your Stripe product ID

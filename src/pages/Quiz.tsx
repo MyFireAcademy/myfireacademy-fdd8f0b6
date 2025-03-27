@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { checkPaymentFromUrl } from '@/utils/paymentVerification';
 
 type QuizLevel = 'level1' | 'level2';
 type LocationState = {
@@ -21,74 +22,69 @@ type LocationState = {
 const Quiz = () => {
   const location = useLocation();
   const state = location.state as LocationState || {};
+  const searchParams = new URLSearchParams(location.search);
   
   const { user, isAuthenticated, signIn } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [currentLevel, setCurrentLevel] = useState<QuizLevel>(state.level || 'level1');
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentLevel, setCurrentLevel] = useState<QuizLevel>(
+    searchParams.get('level') as QuizLevel || state.level || 'level1'
+  );
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState({ level1: 0, level2: 0 });
   const [quizComplete, setQuizComplete] = useState({ level1: false, level2: false });
-  const [isFull, setIsFull] = useState(state.isFull || false);
+  const [isFull, setIsFull] = useState(
+    searchParams.get('isFull') === 'true' || state.isFull || false
+  );
   const [isDemo, setIsDemo] = useState(state.isDemo || false);
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
+  const [paymentVerified, setPaymentVerified] = useState(false);
 
   const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
   
   useEffect(() => {
-    if (isFull && !isDemo && !isAuthenticated()) {
+    const verifyPayment = async () => {
+      if (searchParams.has('payment_success') && user) {
+        setIsLoading(true);
+        
+        try {
+          const isPaymentVerified = await checkPaymentFromUrl(searchParams, user.id);
+          
+          if (isPaymentVerified) {
+            setPaymentVerified(true);
+            setIsFull(true);
+            
+            toast({
+              title: "Payment Successful",
+              description: "Thank you for your purchase! You now have full access to all study materials.",
+              duration: 5000,
+            });
+          }
+        } catch (error) {
+          console.error('Error verifying payment:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+    
+    verifyPayment();
+  }, [searchParams, user, toast]);
+  
+  useEffect(() => {
+    if (isFull && !isDemo && !isAuthenticated() && !paymentVerified) {
       setShowAuthDialog(true);
     }
-  }, [isFull, isDemo, isAuthenticated]);
+  }, [isFull, isDemo, isAuthenticated, paymentVerified]);
   
-  const questions = isDemo 
-    ? allQuestions.slice(0, 5) 
-    : isFull && !isAuthenticated() 
-      ? allQuestions.slice(0, 5) // Show only 5 questions to unauthenticated users even if they try to access full quiz
-      : allQuestions;
-  
-  const hasQuestions = questions && questions.length > 0;
-  
-  const currentQuizData = hasQuestions && currentQuestion < questions.length ? questions[currentQuestion] : null;
-
-  const handleSignIn = async (e) => {
-    e.preventDefault();
-    setAuthLoading(true);
-    
-    try {
-      await signIn(email, password);
-      setShowAuthDialog(false);
-    } catch (error) {
-      console.error('Sign in error:', error);
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
-  const handleAuthPrompt = (action: 'signin' | 'signup' | 'cancel') => {
-    setShowAuthDialog(false);
-    if (action === 'signin') {
-      navigate('/sign-in');
-    } else if (action === 'signup') {
-      navigate('/profile-setup');
-    } else {
-      setIsDemo(true);
-      setIsFull(false);
-      toast({
-        title: "Demo Mode Activated",
-        description: "You'll see 5 sample questions. Sign in to access the full exam.",
-        duration: 5000,
-      });
-    }
-  };
-
   useEffect(() => {
     if (currentLevel) {
       setCurrentQuestion(0);
