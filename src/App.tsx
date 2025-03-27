@@ -22,7 +22,7 @@ import TermsOfService from "./pages/TermsOfService";
 import RefundPolicy from "./pages/RefundPolicy";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import StripeProvider from "./providers/StripeProvider";
-import { checkUserSubscription } from "@/utils/paymentVerification";
+import { checkUserSubscription, clearSubscriptionCache } from "@/utils/paymentVerification";
 import { useAuth } from "@/contexts/AuthContext";
 
 // Create a new QueryClient instance outside of the component
@@ -40,8 +40,11 @@ const ProtectedQuizRoute = ({ children }: { children: React.ReactNode }) => {
         return;
       }
       
-      const hasSubscription = await checkUserSubscription(user.id);
+      // Always clear cache for fresh check
+      clearSubscriptionCache(user.id);
+      const hasSubscription = await checkUserSubscription(user.id, true);
       setHasAccess(hasSubscription);
+      console.log("Protected route - subscription status:", hasSubscription);
     };
     
     if (!loading) {
