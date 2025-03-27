@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, CheckCircle, ShieldAlert, Mail, Lock } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -50,6 +51,7 @@ const Quiz = () => {
 
   const allQuestions = currentLevel === 'level1' ? levelIQuizData : levelIIQuizData;
   
+  // Define the questions variable based on the demo mode and auth status
   const questions = isDemo 
     ? allQuestions.slice(0, 5) 
     : isFull && !isAuthenticated() && !paymentVerified
