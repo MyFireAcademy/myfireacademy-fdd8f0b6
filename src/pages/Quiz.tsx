@@ -1,7 +1,5 @@
-
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { ShieldAlert } from 'lucide-react';
 import QuizLayout from '@/components/quiz/QuizLayout';
 import QuizHeader from '@/components/quiz/QuizHeader';
 import QuizQuestion from '@/components/quiz/QuizQuestion';
@@ -55,7 +53,7 @@ const Quiz = () => {
   });
 
   if (isLoading) {
-    return <QuizLayout isLoading />;
+    return <QuizLayout isLoading={true} />;
   }
 
   if (!hasQuestions && !shouldShowFinalResults) {

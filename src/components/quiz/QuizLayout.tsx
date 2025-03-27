@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 interface QuizLayoutProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   isLoading?: boolean;
 }
 
