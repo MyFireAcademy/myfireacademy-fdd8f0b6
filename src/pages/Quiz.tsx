@@ -11,6 +11,8 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { checkPaymentFromUrl } from '@/utils/paymentVerification';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 type QuizLevel = 'level1' | 'level2';
 type LocationState = {
@@ -311,92 +313,359 @@ const Quiz = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fire-600"></div>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <div className="flex-grow flex items-center justify-center py-16">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fire-600"></div>
+        </div>
+        <Footer />
       </div>
     );
   }
 
   if (!hasQuestions && !shouldShowFinalResults) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-20 pb-16 px-4">
-        <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-scale-in">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-navy-900 mb-4">Quiz Not Available</h1>
-            <p className="text-navy-700 mb-6">
-              The quiz for {currentLevel === 'level1' ? 'Level I' : 'Level II'} is currently being updated.
-              Please check back later or try another level.
-            </p>
-            <button 
-              onClick={() => navigate('/dashboard')}
-              className="btn-primary w-full"
-            >
-              Return to Dashboard
-            </button>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <div className="flex-grow py-16 px-4">
+          <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-scale-in">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-navy-900 mb-4">Quiz Not Available</h1>
+              <p className="text-navy-700 mb-6">
+                The quiz for {currentLevel === 'level1' ? 'Level I' : 'Level II'} is currently being updated.
+                Please check back later or try another level.
+              </p>
+              <button 
+                onClick={() => navigate('/dashboard')}
+                className="btn-primary w-full"
+              >
+                Return to Dashboard
+              </button>
+            </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
 
   if (shouldShowFinalResults) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-20 pb-16 px-4">
-        <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-scale-in">
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-6">
-              <CheckCircle className="text-green-500 w-20 h-20" />
-            </div>
-            <h1 className="text-3xl font-bold text-navy-900 mb-4">
-              {isDemo ? "2025 Exam Prep Completed!" : "Quiz Completed!"}
-            </h1>
-            
-            <div className="bg-gray-50 p-6 rounded-lg mb-8">
-              <h3 className="font-semibold mb-4 text-lg">Your Results:</h3>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <div className="flex-grow py-16 px-4">
+          <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-scale-in">
+            <div className="text-center mb-8">
+              <div className="flex justify-center mb-6">
+                <CheckCircle className="text-green-500 w-20 h-20" />
+              </div>
+              <h1 className="text-3xl font-bold text-navy-900 mb-4">
+                {isDemo ? "2025 Exam Prep Completed!" : "Quiz Completed!"}
+              </h1>
               
-              {isFull ? (
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <p className="text-navy-800 font-medium">
-                    {currentLevel === 'level1' ? 'Level I' : 'Level II'}
-                  </p>
-                  <p className="text-4xl font-bold text-fire-600 mt-2">
-                    {currentLevel === 'level1' ? score.level1 : score.level2}/
-                    {questions.length}
-                  </p>
-                  <p className="text-navy-600 mt-2">
-                    {(currentLevel === 'level1' ? (score.level1 / questions.length) * 100 : (score.level2 / questions.length) * 100).toFixed(1)}% Correct
-                  </p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-white p-4 rounded-lg shadow-sm">
-                    <p className="text-navy-800 font-medium">Level I</p>
-                    <p className="text-2xl font-bold text-fire-600">{score.level1}/{isDemo ? 5 : levelIQuizData.length}</p>
-                    <p className="text-sm text-navy-600">{(score.level1 / (isDemo ? 5 : levelIQuizData.length) * 100).toFixed(1)}%</p>
+              <div className="bg-gray-50 p-6 rounded-lg mb-8">
+                <h3 className="font-semibold mb-4 text-lg">Your Results:</h3>
+                
+                {isFull ? (
+                  <div className="bg-white p-6 rounded-lg shadow-sm">
+                    <p className="text-navy-800 font-medium">
+                      {currentLevel === 'level1' ? 'Level I' : 'Level II'}
+                    </p>
+                    <p className="text-4xl font-bold text-fire-600 mt-2">
+                      {currentLevel === 'level1' ? score.level1 : score.level2}/
+                      {questions.length}
+                    </p>
+                    <p className="text-navy-600 mt-2">
+                      {(currentLevel === 'level1' ? (score.level1 / questions.length) * 100 : (score.level2 / questions.length) * 100).toFixed(1)}% Correct
+                    </p>
                   </div>
-                  <div className="bg-white p-4 rounded-lg shadow-sm">
-                    <p className="text-navy-800 font-medium">Level II</p>
-                    <p className="text-2xl font-bold text-fire-600">{score.level2}/{isDemo ? 5 : levelIIQuizData.length}</p>
-                    <p className="text-sm text-navy-600">{(score.level2 / (isDemo ? 5 : levelIIQuizData.length) * 100).toFixed(1)}%</p>
+                ) : (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white p-4 rounded-lg shadow-sm">
+                      <p className="text-navy-800 font-medium">Level I</p>
+                      <p className="text-2xl font-bold text-fire-600">{score.level1}/{isDemo ? 5 : levelIQuizData.length}</p>
+                      <p className="text-sm text-navy-600">{(score.level1 / (isDemo ? 5 : levelIQuizData.length) * 100).toFixed(1)}%</p>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg shadow-sm">
+                      <p className="text-navy-800 font-medium">Level II</p>
+                      <p className="text-2xl font-bold text-fire-600">{score.level2}/{isDemo ? 5 : levelIIQuizData.length}</p>
+                      <p className="text-sm text-navy-600">{(score.level2 / (isDemo ? 5 : levelIIQuizData.length) * 100).toFixed(1)}%</p>
+                    </div>
                   </div>
-                </div>
+                )}
+              </div>
+              
+              {isDemo && (
+                <p className="text-navy-700 mb-6">
+                  This was just a sample of our comprehensive 2025 Exam Prep. Get access to all 200 questions with the full package.
+                </p>
               )}
+              
+              <button 
+                onClick={handleFinishQuiz}
+                className="btn-primary w-full"
+              >
+                {isDemo ? "See Next Steps" : "Return to Dashboard"}
+              </button>
+            </div>
+          </div>
+
+          <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle className="text-xl text-center">Ready to Pass Your Exam?</DialogTitle>
+                <DialogDescription className="text-center">
+                  Would you like to unlock the full 2025 Exam Prep with 200 practice questions?
+                </DialogDescription>
+              </DialogHeader>
+              <div className="py-4">
+                <p className="text-center text-navy-700">
+                  Get complete access to both Level I and Level II certification exam questions with detailed explanations.
+                </p>
+              </div>
+              <DialogFooter className="sm:justify-center sm:space-x-4 sm:flex-row">
+                <Button 
+                  variant="secondary"
+                  onClick={() => handleUpgradeResponse(false)}
+                >
+                  Not now
+                </Button>
+                <Button
+                  className="bg-fire-600 hover:bg-fire-700 text-white" 
+                  onClick={() => handleUpgradeResponse(true)}
+                >
+                  Yes, get full access
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <div className="flex-grow bg-gray-50 py-16 px-4">
+        <div className="max-w-3xl mx-auto">
+          {!user && !isDemo && (
+            <div className="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+              <div className="p-4 flex items-center justify-between">
+                <p className="text-navy-700">Sign in to save your progress and access all questions.</p>
+                <Button onClick={() => setShowAuthDialog(true)} className="bg-fire-600 hover:bg-fire-700 text-white">
+                  Sign In
+                </Button>
+              </div>
+            </div>
+          )}
+          
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden animate-fade-in">
+            <div className="bg-fire-600 text-white p-6">
+              <div className="flex justify-between items-center">
+                <h1 className="text-xl font-bold">
+                  {isDemo ? "2025 EXAM PREP: " : ""}
+                  NFPA 1001 {currentLevel === 'level1' ? 'Level I' : 'Level II'} Exam Questions
+                </h1>
+                <div className="text-sm bg-white/20 px-3 py-1 rounded-full">
+                  Question {currentQuestion + 1} of {questions.length}
+                </div>
+              </div>
+              
+              <div className="w-full bg-white/20 h-2 rounded-full mt-4 overflow-hidden">
+                <div 
+                  className="bg-white h-full transition-all duration-300 ease-apple"
+                  style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+                ></div>
+              </div>
             </div>
             
-            {isDemo && (
-              <p className="text-navy-700 mb-6">
-                This was just a sample of our comprehensive 2025 Exam Prep. Get access to all 200 questions with the full package.
-              </p>
-            )}
+            <div className="flex border-b">
+              <button
+                onClick={() => handleChangeLevel('level1')}
+                className={`flex-1 py-3 text-center font-medium transition-all duration-200 ${
+                  currentLevel === 'level1' 
+                    ? 'text-fire-600 border-b-2 border-fire-600' 
+                    : 'text-navy-600 hover:text-fire-600'
+                }`}
+              >
+                Level I {quizComplete.level1 && <CheckCircle className="inline-block ml-2" size={16} />}
+              </button>
+              <button
+                onClick={() => handleChangeLevel('level2')}
+                className={`flex-1 py-3 text-center font-medium transition-all duration-200 ${
+                  currentLevel === 'level2' 
+                    ? 'text-fire-600 border-b-2 border-fire-600' 
+                    : 'text-navy-600 hover:text-fire-600'
+                }`}
+              >
+                Level II {quizComplete.level2 && <CheckCircle className="inline-block ml-2" size={16} />}
+              </button>
+            </div>
             
-            <button 
-              onClick={handleFinishQuiz}
-              className="btn-primary w-full"
-            >
-              {isDemo ? "See Next Steps" : "Return to Dashboard"}
-            </button>
+            <div className="p-6 md:p-8">
+              {currentQuizData && (
+                <>
+                  <h2 className="text-xl font-semibold text-navy-900 mb-6">
+                    {currentQuizData.question}
+                  </h2>
+                  
+                  <div className="space-y-3 mb-8">
+                    {currentQuizData.options.map((option, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleOptionSelect(index)}
+                        className={`w-full text-left p-4 rounded-lg border ${
+                          selectedOption === index
+                            ? index === currentQuizData.correctAnswer && showExplanation
+                              ? 'bg-green-50 border-green-500'
+                              : selectedOption !== currentQuizData.correctAnswer && showExplanation
+                              ? 'bg-red-50 border-red-500'
+                              : 'bg-fire-50 border-fire-500'
+                            : index === currentQuizData.correctAnswer && showExplanation
+                            ? 'bg-green-50 border-green-500'
+                            : 'border-gray-200 hover:border-fire-300 hover:bg-fire-50'
+                        } transition-all duration-200`}
+                        disabled={showExplanation}
+                      >
+                        <div className="flex items-start">
+                          <div className={`w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center mr-3 ${
+                            selectedOption === index
+                              ? index === currentQuizData.correctAnswer && showExplanation
+                                ? 'bg-green-500 text-white'
+                                : selectedOption !== currentQuizData.correctAnswer && showExplanation
+                                ? 'bg-red-500 text-white'
+                                : 'bg-fire-500 text-white'
+                              : index === currentQuizData.correctAnswer && showExplanation
+                              ? 'bg-green-500 text-white'
+                              : 'border border-gray-300 text-gray-500'
+                          }`}>
+                            {String.fromCharCode(65 + index)}
+                          </div>
+                          <span className="pt-0.5">{option}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {showExplanation && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 animate-fade-in">
+                      <h3 className="font-semibold text-navy-800 mb-2">Explanation:</h3>
+                      <p className="text-navy-700">{currentQuizData.explanation}</p>
+                    </div>
+                  )}
+                </>
+              )}
+              
+              <div className="flex justify-between mt-8">
+                <button
+                  onClick={handlePrevQuestion}
+                  className={`btn-secondary flex items-center ${
+                    currentQuestion === 0 ? 'invisible' : ''
+                  }`}
+                >
+                  <ArrowLeft size={18} className="mr-2" />
+                  Previous
+                </button>
+                
+                {!showExplanation ? (
+                  <button
+                    onClick={handleCheckAnswer}
+                    className="btn-primary"
+                    disabled={selectedOption === null}
+                  >
+                    Check Answer
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleNextQuestion}
+                    className="btn-primary flex items-center"
+                  >
+                    {currentQuestion < questions.length - 1 ? 'Next' : 'Finish'}
+                    <ArrowRight size={18} className="ml-2" />
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
+
+        <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
+          <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+            <div className="p-6">
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-bold text-center">Welcome to Firefighter Exam Prep</DialogTitle>
+                <DialogDescription className="text-center text-gray-500 mt-2">Sign in to access the full exam</DialogDescription>
+              </DialogHeader>
+              
+              <form onSubmit={handleSignIn} className="mt-6 space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email address</Label>
+                  <div className="relative">
+                    <Input 
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Your email address"
+                      className="pl-10"
+                      required
+                    />
+                    <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="password">Your Password</Label>
+                  <div className="relative">
+                    <Input 
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Your password"
+                      className="pl-10"
+                      required
+                    />
+                    <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                  </div>
+                </div>
+                
+                <Button 
+                  type="submit"
+                  className="w-full bg-fire-600 hover:bg-fire-700 text-white font-medium py-3"
+                  disabled={authLoading}
+                >
+                  {authLoading ? 'Signing in...' : 'Sign in'}
+                </Button>
+              </form>
+              
+              <div className="mt-6 text-center space-y-2">
+                <a href="#" className="text-fire-600 hover:underline text-sm">
+                  Forgot your password?
+                </a>
+                <div className="text-sm text-gray-500">
+                  Don't have an account? <button 
+                    onClick={() => handleAuthPrompt('signup')}
+                    className="text-fire-600 hover:underline font-medium"
+                  >
+                    Sign up
+                  </button>
+                </div>
+                <div className="pt-4 border-t mt-4">
+                  <Button 
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => handleAuthPrompt('cancel')}
+                  >
+                    Try Demo (5 Questions)
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
           <DialogContent className="sm:max-w-md">
@@ -428,258 +697,7 @@ const Quiz = () => {
           </DialogContent>
         </Dialog>
       </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-50 pt-20 pb-16 px-4">
-      <div className="max-w-3xl mx-auto">
-        {!user && !isDemo && (
-          <div className="bg-white rounded-xl shadow-md overflow-hidden mb-6">
-            <div className="p-4 flex items-center justify-between">
-              <p className="text-navy-700">Sign in to save your progress and access all questions.</p>
-              <Button onClick={() => setShowAuthDialog(true)} className="bg-fire-600 hover:bg-fire-700 text-white">
-                Sign In
-              </Button>
-            </div>
-          </div>
-        )}
-        
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden animate-fade-in">
-          <div className="bg-fire-600 text-white p-6">
-            <div className="flex justify-between items-center">
-              <h1 className="text-xl font-bold">
-                {isDemo ? "2025 EXAM PREP: " : ""}
-                NFPA 1001 {currentLevel === 'level1' ? 'Level I' : 'Level II'} Exam Questions
-              </h1>
-              <div className="text-sm bg-white/20 px-3 py-1 rounded-full">
-                Question {currentQuestion + 1} of {questions.length}
-              </div>
-            </div>
-            
-            <div className="w-full bg-white/20 h-2 rounded-full mt-4 overflow-hidden">
-              <div 
-                className="bg-white h-full transition-all duration-300 ease-apple"
-                style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
-              ></div>
-            </div>
-          </div>
-          
-          <div className="flex border-b">
-            <button
-              onClick={() => handleChangeLevel('level1')}
-              className={`flex-1 py-3 text-center font-medium transition-all duration-200 ${
-                currentLevel === 'level1' 
-                  ? 'text-fire-600 border-b-2 border-fire-600' 
-                  : 'text-navy-600 hover:text-fire-600'
-              }`}
-            >
-              Level I {quizComplete.level1 && <CheckCircle className="inline-block ml-2" size={16} />}
-            </button>
-            <button
-              onClick={() => handleChangeLevel('level2')}
-              className={`flex-1 py-3 text-center font-medium transition-all duration-200 ${
-                currentLevel === 'level2' 
-                  ? 'text-fire-600 border-b-2 border-fire-600' 
-                  : 'text-navy-600 hover:text-fire-600'
-              }`}
-            >
-              Level II {quizComplete.level2 && <CheckCircle className="inline-block ml-2" size={16} />}
-            </button>
-          </div>
-          
-          <div className="p-6 md:p-8">
-            {currentQuizData && (
-              <>
-                <h2 className="text-xl font-semibold text-navy-900 mb-6">
-                  {currentQuizData.question}
-                </h2>
-                
-                <div className="space-y-3 mb-8">
-                  {currentQuizData.options.map((option, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleOptionSelect(index)}
-                      className={`w-full text-left p-4 rounded-lg border ${
-                        selectedOption === index
-                          ? index === currentQuizData.correctAnswer && showExplanation
-                            ? 'bg-green-50 border-green-500'
-                            : selectedOption !== currentQuizData.correctAnswer && showExplanation
-                            ? 'bg-red-50 border-red-500'
-                            : 'bg-fire-50 border-fire-500'
-                          : index === currentQuizData.correctAnswer && showExplanation
-                          ? 'bg-green-50 border-green-500'
-                          : 'border-gray-200 hover:border-fire-300 hover:bg-fire-50'
-                      } transition-all duration-200`}
-                      disabled={showExplanation}
-                    >
-                      <div className="flex items-start">
-                        <div className={`w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center mr-3 ${
-                          selectedOption === index
-                            ? index === currentQuizData.correctAnswer && showExplanation
-                              ? 'bg-green-500 text-white'
-                              : selectedOption !== currentQuizData.correctAnswer && showExplanation
-                              ? 'bg-red-500 text-white'
-                              : 'bg-fire-500 text-white'
-                            : index === currentQuizData.correctAnswer && showExplanation
-                            ? 'bg-green-500 text-white'
-                            : 'border border-gray-300 text-gray-500'
-                        }`}>
-                          {String.fromCharCode(65 + index)}
-                        </div>
-                        <span className="pt-0.5">{option}</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-                
-                {showExplanation && (
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 animate-fade-in">
-                    <h3 className="font-semibold text-navy-800 mb-2">Explanation:</h3>
-                    <p className="text-navy-700">{currentQuizData.explanation}</p>
-                  </div>
-                )}
-              </>
-            )}
-            
-            <div className="flex justify-between mt-8">
-              <button
-                onClick={handlePrevQuestion}
-                className={`btn-secondary flex items-center ${
-                  currentQuestion === 0 ? 'invisible' : ''
-                }`}
-              >
-                <ArrowLeft size={18} className="mr-2" />
-                Previous
-              </button>
-              
-              {!showExplanation ? (
-                <button
-                  onClick={handleCheckAnswer}
-                  className="btn-primary"
-                  disabled={selectedOption === null}
-                >
-                  Check Answer
-                </button>
-              ) : (
-                <button
-                  onClick={handleNextQuestion}
-                  className="btn-primary flex items-center"
-                >
-                  {currentQuestion < questions.length - 1 ? 'Next' : 'Finish'}
-                  <ArrowRight size={18} className="ml-2" />
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
-        <DialogContent className="sm:max-w-md p-0 overflow-hidden">
-          <div className="p-6">
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-center">Welcome to Firefighter Exam Prep</DialogTitle>
-              <DialogDescription className="text-center text-gray-500 mt-2">Sign in to access the full exam</DialogDescription>
-            </DialogHeader>
-            
-            <form onSubmit={handleSignIn} className="mt-6 space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email address</Label>
-                <div className="relative">
-                  <Input 
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email address"
-                    className="pl-10"
-                    required
-                  />
-                  <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="password">Your Password</Label>
-                <div className="relative">
-                  <Input 
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Your password"
-                    className="pl-10"
-                    required
-                  />
-                  <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                </div>
-              </div>
-              
-              <Button 
-                type="submit"
-                className="w-full bg-fire-600 hover:bg-fire-700 text-white font-medium py-3"
-                disabled={authLoading}
-              >
-                {authLoading ? 'Signing in...' : 'Sign in'}
-              </Button>
-            </form>
-            
-            <div className="mt-6 text-center space-y-2">
-              <a href="#" className="text-fire-600 hover:underline text-sm">
-                Forgot your password?
-              </a>
-              <div className="text-sm text-gray-500">
-                Don't have an account? <button 
-                  onClick={() => handleAuthPrompt('signup')}
-                  className="text-fire-600 hover:underline font-medium"
-                >
-                  Sign up
-                </button>
-              </div>
-              <div className="pt-4 border-t mt-4">
-                <Button 
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => handleAuthPrompt('cancel')}
-                >
-                  Try Demo (5 Questions)
-                </Button>
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-xl text-center">Ready to Pass Your Exam?</DialogTitle>
-            <DialogDescription className="text-center">
-              Would you like to unlock the full 2025 Exam Prep with 200 practice questions?
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            <p className="text-center text-navy-700">
-              Get complete access to both Level I and Level II certification exam questions with detailed explanations.
-            </p>
-          </div>
-          <DialogFooter className="sm:justify-center sm:space-x-4 sm:flex-row">
-            <Button 
-              variant="secondary"
-              onClick={() => handleUpgradeResponse(false)}
-            >
-              Not now
-            </Button>
-            <Button
-              className="bg-fire-600 hover:bg-fire-700 text-white" 
-              onClick={() => handleUpgradeResponse(true)}
-            >
-              Yes, get full access
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <Footer />
     </div>
   );
 };
