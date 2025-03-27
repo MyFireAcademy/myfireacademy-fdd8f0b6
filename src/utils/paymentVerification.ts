@@ -86,13 +86,13 @@ export const checkUserSubscription = async (userId: string): Promise<boolean> =>
     if (!hasSubscription) {
       // This is a non-destructive fallback for testing purposes
       // Remove this in production or when payment system is fully implemented
-      const { data: demoData, error: demoError } = await supabase
+      const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select('email')
+        .select('username')
         .eq('id', userId)
         .maybeSingle();
       
-      if (!demoError && demoData?.email?.includes('test')) {
+      if (!profileError && profileData?.username && profileData.username.includes('test')) {
         console.log("Creating demo access for test account:", userId);
         subscriptionCache.set(userId, { hasSubscription: true, timestamp: Date.now() });
         return true;
