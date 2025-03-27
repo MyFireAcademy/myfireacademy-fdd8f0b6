@@ -44,6 +44,9 @@ export const createCheckoutSession = async (userId?: string): Promise<string> =>
   }
 };
 
+// Cached payment verification results to prevent redundant API calls
+const verificationCache = new Map<string, boolean>();
+
 /**
  * Verifies a payment was successful using Supabase Edge Function
  * @param sessionId The Stripe checkout session ID
@@ -51,6 +54,12 @@ export const createCheckoutSession = async (userId?: string): Promise<string> =>
  * @returns Boolean indicating if payment was successful
  */
 export const verifyPayment = async (sessionId: string, userId?: string): Promise<boolean> => {
+  // Check cache first
+  const cacheKey = `session_${sessionId}_${userId || 'anon'}`;
+  if (verificationCache.has(cacheKey)) {
+    return verificationCache.get(cacheKey) as boolean;
+  }
+
   try {
     console.log("Verifying payment for session:", sessionId);
     
@@ -63,13 +72,19 @@ export const verifyPayment = async (sessionId: string, userId?: string): Promise
 
     if (error) {
       console.error('Error verifying payment:', error);
+      verificationCache.set(cacheKey, false);
       return false;
     }
 
+    const result = data?.success === true;
     console.log("Payment verification result:", data);
-    return data?.success === true;
+    
+    // Cache the result
+    verificationCache.set(cacheKey, result);
+    return result;
   } catch (error) {
     console.error('Error in verifyPayment:', error);
+    verificationCache.set(cacheKey, false);
     return false;
   }
 };
@@ -81,6 +96,12 @@ export const verifyPayment = async (sessionId: string, userId?: string): Promise
  * @returns Boolean indicating if payment was successful
  */
 export const verifyPaymentIntent = async (paymentIntentId: string, userId?: string): Promise<boolean> => {
+  // Check cache first
+  const cacheKey = `intent_${paymentIntentId}_${userId || 'anon'}`;
+  if (verificationCache.has(cacheKey)) {
+    return verificationCache.get(cacheKey) as boolean;
+  }
+
   try {
     console.log("Verifying payment intent:", paymentIntentId);
     
@@ -93,13 +114,19 @@ export const verifyPaymentIntent = async (paymentIntentId: string, userId?: stri
 
     if (error) {
       console.error('Error verifying payment intent:', error);
+      verificationCache.set(cacheKey, false);
       return false;
     }
 
+    const result = data?.success === true;
     console.log("Payment intent verification result:", data);
-    return data?.success === true;
+    
+    // Cache the result
+    verificationCache.set(cacheKey, result);
+    return result;
   } catch (error) {
     console.error('Error in verifyPaymentIntent:', error);
+    verificationCache.set(cacheKey, false);
     return false;
   }
 };

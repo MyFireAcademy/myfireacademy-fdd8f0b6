@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import QuizLayout from '@/components/quiz/QuizLayout';
 import QuizHeader from '@/components/quiz/QuizHeader';
@@ -8,6 +9,7 @@ import AuthDialog from '@/components/quiz/AuthDialog';
 import UpgradeDialog from '@/components/quiz/UpgradeDialog';
 import { useQuiz } from '@/hooks/useQuiz';
 import { useAuth } from '@/contexts/AuthContext';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Quiz = () => {
   const location = useLocation();
@@ -31,7 +33,6 @@ const Quiz = () => {
     isDemo,
     showUpgradeDialog,
     showAuthDialog,
-    questions,
     hasQuestions,
     currentQuizData,
     shouldShowFinalResults,
@@ -45,7 +46,8 @@ const Quiz = () => {
     handleFinishQuiz,
     handleUpgradeResponse,
     levelIQuestionsLength,
-    levelIIQuestionsLength
+    levelIIQuestionsLength,
+    questions
   } = useQuiz({
     initialLevel,
     initialIsFull,
@@ -53,7 +55,18 @@ const Quiz = () => {
   });
 
   if (isLoading) {
-    return <QuizLayout isLoading={true} />;
+    return (
+      <QuizLayout isLoading>
+        <div className="max-w-3xl mx-auto space-y-6">
+          <Skeleton className="h-20 w-full rounded-xl" />
+          <Skeleton className="h-64 w-full rounded-xl" />
+          <div className="flex justify-between">
+            <Skeleton className="h-12 w-28 rounded-lg" />
+            <Skeleton className="h-12 w-28 rounded-lg" />
+          </div>
+        </div>
+      </QuizLayout>
+    );
   }
 
   if (!hasQuestions && !shouldShowFinalResults) {

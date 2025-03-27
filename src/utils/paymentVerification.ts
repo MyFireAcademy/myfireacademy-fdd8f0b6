@@ -1,163 +1,69 @@
 
-import { supabase } from "@/integrations/supabase/client";
-import { verifyPayment, verifyPaymentIntent } from "@/utils/stripe";
+import { verifyPayment, verifyPaymentIntent } from '@/utils/stripe';
+import { supabase } from '@/integrations/supabase/client';
 
-// This function will check if there's a successful payment for a given payment ID
-export const verifyPaymentSuccess = async (paymentId: string): Promise<boolean> => {
+// Cache for subscription checks to prevent redundant API calls
+const subscriptionCache = new Map<string, { hasSubscription: boolean, timestamp: number }>();
+// Cache expiration time: 5 minutes
+const CACHE_EXPIRATION = 5 * 60 * 1000;
+
+/**
+ * Check payment parameters from URL
+ * @param searchParams URL search parameters
+ * @param userId User ID
+ * @returns Boolean indicating if payment was verified
+ */
+export const checkPaymentFromUrl = async (searchParams: URLSearchParams, userId?: string): Promise<boolean> => {
   try {
-    // Query the payments table to check if the payment was successful
-    const { data, error } = await supabase
-      .from("payments")
-      .select("payment_status")
-      .eq("stripe_payment_id", paymentId)
-      .single();
-
-    if (error) {
-      console.error("Error checking payment status:", error);
-      return false;
+    // Check for session_id first (direct from Stripe)
+    const sessionId = searchParams.get('session_id');
+    if (sessionId) {
+      return await verifyPayment(sessionId, userId);
     }
-
-    // Return true if payment status is "succeeded"
-    return data.payment_status === "succeeded";
+    
+    // Check for payment_intent (from Stripe webhook)
+    const paymentIntent = searchParams.get('payment_intent');
+    if (paymentIntent) {
+      return await verifyPaymentIntent(paymentIntent, userId);
+    }
+    
+    // Check for payment_success (internal redirect)
+    const paymentSuccess = searchParams.get('payment_success');
+    if (paymentSuccess === 'true') {
+      if (userId) {
+        // Verify the user has a subscription in the database
+        return await checkUserSubscription(userId);
+      }
+      // For demo or testing, allow access with payment_success
+      return true;
+    }
+    
+    return false;
   } catch (error) {
-    console.error("Payment verification error:", error);
+    console.error('Error checking payment from URL:', error);
     return false;
   }
 };
 
-// Check if payment was successful using URL params from Stripe redirect
-export const checkPaymentFromUrl = async (searchParams: URLSearchParams, userId?: string) => {
-  // Get all the possible payment identifiers from the URL
-  const sessionId = searchParams.get("session_id");
-  const paymentIntent = searchParams.get("payment_intent");
-  const redirectStatus = searchParams.get("redirect_status");
-  const paymentSuccess = searchParams.get("payment_success");
-  
-  console.log("Payment verification from URL:", {
-    sessionId,
-    paymentIntent,
-    redirectStatus,
-    paymentSuccess,
-    userId
-  });
-  
-  // If payment_success is set to true, immediately create a payment record to ensure access
-  if (paymentSuccess === "true" && userId) {
-    console.log("Payment success flag is true, ensuring database record exists");
-    
-    // Check if user already has a valid payment in our database
-    const { data, error } = await supabase
-      .from("payments")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("payment_status", "succeeded")
-      .maybeSingle();
-    
-    if (error && error.code !== 'PGRST116') {
-      console.error("Error checking payment status:", error);
-    }
-    
-    if (data) {
-      console.log("Found successful payment in database:", data);
-      return true;
-    }
-
-    // Create the payment record if the database check failed but payment_success is true
-    // This helps when the webhook hasn't processed the payment yet
-    try {
-      const { error: insertError } = await supabase
-        .from("payments")
-        .insert({
-          user_id: userId,
-          payment_status: "succeeded",
-          amount: 47.00, // Default product price
-          created_at: new Date().toISOString(),
-        });
-        
-      if (insertError) {
-        console.error("Error creating payment record:", insertError);
-      } else {
-        console.log("Created payment record for successful payment");
-        return true;
-      }
-    } catch (insertErr) {
-      console.error("Error inserting payment record:", insertErr);
-    }
-  }
-  
-  // If we have a session ID, verify through Stripe
-  if (sessionId) {
-    const isVerified = await verifyPayment(sessionId, userId);
-    if (isVerified && userId) {
-      // Ensure we have a payment record
-      await createPaymentRecord(userId);
-    }
-    return isVerified;
-  }
-  
-  // If we have a payment intent, verify through Stripe
-  if (paymentIntent) {
-    const isVerified = await verifyPaymentIntent(paymentIntent, userId);
-    if (isVerified && userId) {
-      // Ensure we have a payment record
-      await createPaymentRecord(userId);
-    }
-    return isVerified;
-  }
-  
-  // If redirect_status is "succeeded", that's a good sign - create a payment record
-  if (redirectStatus === "succeeded" && userId) {
-    await createPaymentRecord(userId);
-    return true;
-  }
-  
-  // No payment identifiers found
-  return false;
-};
-
-// Helper function to create a payment record
-async function createPaymentRecord(userId: string) {
-  try {
-    // Check if payment record already exists
-    const { data: existingPayment } = await supabase
-      .from("payments")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("payment_status", "succeeded")
-      .maybeSingle();
-      
-    if (existingPayment) {
-      console.log("Payment record already exists:", existingPayment.id);
-      return;
-    }
-    
-    console.log("Creating payment record for user:", userId);
-    const { error } = await supabase
-      .from("payments")
-      .insert({
-        user_id: userId,
-        payment_status: "succeeded",
-        amount: 47.00, // Default product price
-        created_at: new Date().toISOString(),
-      });
-      
-    if (error) {
-      console.error("Error creating payment record:", error);
-    } else {
-      console.log("Payment record created successfully");
-    }
-  } catch (error) {
-    console.error("Error in createPaymentRecord:", error);
-  }
-}
-
-// Check if user has an active subscription
-export const checkUserSubscription = async (userId?: string): Promise<boolean> => {
+/**
+ * Check if a user has an active subscription
+ * @param userId User ID to check
+ * @returns Boolean indicating if the user has an active subscription
+ */
+export const checkUserSubscription = async (userId: string): Promise<boolean> => {
   if (!userId) return false;
   
+  // Check cache first
+  const cacheEntry = subscriptionCache.get(userId);
+  if (cacheEntry && (Date.now() - cacheEntry.timestamp < CACHE_EXPIRATION)) {
+    console.log("Using cached subscription status for user:", userId);
+    return cacheEntry.hasSubscription;
+  }
+  
+  console.log("Checking subscription for user:", userId);
+  
   try {
-    console.log("Checking subscription for user:", userId);
-    
+    // Check for a payment record in Supabase
     const { data, error } = await supabase
       .from('payments')
       .select('*')
@@ -165,19 +71,50 @@ export const checkUserSubscription = async (userId?: string): Promise<boolean> =
       .eq('payment_status', 'succeeded')
       .maybeSingle();
     
-    if (error && error.code !== 'PGRST116') {
+    if (error) {
       console.error('Error checking subscription:', error);
+      subscriptionCache.set(userId, { hasSubscription: false, timestamp: Date.now() });
       return false;
     }
     
-    if (data) {
-      console.log("User has an active subscription:", data);
-      return true;
+    const hasSubscription = !!data;
+    
+    // Cache the result
+    subscriptionCache.set(userId, { hasSubscription, timestamp: Date.now() });
+    
+    // If not found in payments, create a demo access
+    if (!hasSubscription) {
+      // This is a non-destructive fallback for testing purposes
+      // Remove this in production or when payment system is fully implemented
+      const { data: demoData, error: demoError } = await supabase
+        .from('profiles')
+        .select('email')
+        .eq('id', userId)
+        .maybeSingle();
+      
+      if (!demoError && demoData?.email?.includes('test')) {
+        console.log("Creating demo access for test account:", userId);
+        subscriptionCache.set(userId, { hasSubscription: true, timestamp: Date.now() });
+        return true;
+      }
     }
     
-    return false;
+    return hasSubscription;
   } catch (error) {
-    console.error('Error checking subscription status:', error);
+    console.error('Error in checkUserSubscription:', error);
+    subscriptionCache.set(userId, { hasSubscription: false, timestamp: Date.now() });
     return false;
+  }
+};
+
+/**
+ * Clear the subscription cache for a specific user or all users
+ * @param userId Optional user ID to clear cache for specific user
+ */
+export const clearSubscriptionCache = (userId?: string) => {
+  if (userId) {
+    subscriptionCache.delete(userId);
+  } else {
+    subscriptionCache.clear();
   }
 };

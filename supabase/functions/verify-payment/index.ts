@@ -1,3 +1,4 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { Stripe } from "https://esm.sh/stripe@14.19.0?target=deno";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
@@ -19,6 +20,10 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Cache for payment verifications to reduce Stripe API calls
+const verificationCache = new Map();
+const CACHE_EXPIRY = 15 * 60 * 1000; // 15 minutes in milliseconds
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
@@ -35,6 +40,66 @@ serve(async (req) => {
       throw new Error("No session ID or payment intent provided");
     }
 
+    // Generate cache key based on request params
+    const cacheKey = session_id ? `session_${session_id}` : `intent_${payment_intent}`;
+    
+    // Check cache first
+    const cachedResult = verificationCache.get(cacheKey);
+    if (cachedResult && (Date.now() - cachedResult.timestamp < CACHE_EXPIRY)) {
+      console.log(`Using cached verification result for ${cacheKey}`);
+      
+      // If we have a user ID and the payment was successful, ensure the user has a record
+      if (cachedResult.isPaid && user_id) {
+        // Run this in the background to not block the response
+        const ensurePaymentRecord = async () => {
+          try {
+            // Check if payment already exists
+            const { data: existingPayment } = await supabase
+              .from("payments")
+              .select("*")
+              .eq("user_id", user_id)
+              .eq("payment_status", "succeeded")
+              .maybeSingle();
+              
+            if (!existingPayment) {
+              // Create payment record if it doesn't exist
+              const paymentData = {
+                user_id,
+                stripe_session_id: session_id || null,
+                stripe_payment_id: payment_intent || cachedResult.sessionData?.payment_intent || null,
+                amount: cachedResult.sessionData?.amount_total ? cachedResult.sessionData.amount_total / 100 : 47.00,
+                payment_status: "succeeded",
+                created_at: new Date().toISOString(),
+              };
+              
+              await supabase.from("payments").insert(paymentData);
+              console.log("Background process: Payment record created for user", user_id);
+            }
+          } catch (error) {
+            console.error("Background process: Error ensuring payment record:", error);
+          }
+        };
+        
+        // Use waitUntil to run in background without blocking response
+        Deno.env.get("DENO_DEPLOYMENT_ID") && EdgeRuntime.waitUntil(ensurePaymentRecord());
+      }
+      
+      return new Response(
+        JSON.stringify({ 
+          success: cachedResult.isPaid,
+          payment_status: cachedResult.sessionData?.payment_status || (cachedResult.isPaid ? "succeeded" : "failed"),
+          cached: true
+        }),
+        {
+          status: 200,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+    
     console.log(`Verifying payment for ${session_id ? 'session: ' + session_id : 'payment_intent: ' + payment_intent}`);
     
     let isPaid = false;
@@ -81,6 +146,13 @@ serve(async (req) => {
         isPaid = true;
       }
     }
+    
+    // Store result in cache
+    verificationCache.set(cacheKey, {
+      isPaid,
+      sessionData,
+      timestamp: Date.now()
+    });
     
     // If payment is verified and we have a user ID, store it
     if (isPaid && user_id) {

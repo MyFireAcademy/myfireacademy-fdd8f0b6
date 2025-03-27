@@ -13,7 +13,7 @@ const QuizLayout: React.FC<QuizLayoutProps> = ({ children, isLoading = false }) 
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <div className="flex-grow bg-gray-50 py-16 px-4">
-        {isLoading ? (
+        {isLoading && !children ? (
           <div className="flex items-center justify-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fire-600"></div>
           </div>
