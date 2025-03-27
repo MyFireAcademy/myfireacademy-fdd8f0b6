@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Book, BookOpen, ArrowRight, Clock } from 'lucide-react';
@@ -211,9 +210,7 @@ const QuizLanding = () => {
             {quizzes.map((quiz) => (
               <div 
                 key={quiz.id}
-                className={`bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden ${
-                  (hasSubscription || paymentJustCompleted || quiz.isDemo) ? 'cursor-pointer' : 'opacity-70'
-                }`}
+                className={`bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden cursor-pointer`}
                 onClick={() => handleStartQuiz(quiz)}
               >
                 <div className={`p-1 ${quiz.level === 'level1' ? 'bg-blue-500' : 'bg-red-500'}`}></div>
