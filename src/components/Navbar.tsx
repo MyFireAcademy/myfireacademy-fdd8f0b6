@@ -12,7 +12,7 @@ const Navbar = () => {
   const location = useLocation();
   
   const isQuizPage = location.pathname === '/quiz';
-  const extraSpacingClass = isQuizPage ? 'mb-16' : '';
+  const extraSpacingClass = isQuizPage ? 'mb-28' : '';
 
   useEffect(() => {
     const handleScroll = () => {
