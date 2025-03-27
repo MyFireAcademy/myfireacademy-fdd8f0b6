@@ -41,90 +41,115 @@ export const checkPaymentFromUrl = async (searchParams: URLSearchParams, userId?
     userId
   });
   
-  // If payment_success is set to true, we can verify from our database
-  if (paymentSuccess === "true") {
-    if (userId) {
-      // Check if user has a valid payment in our database
-      const { data, error } = await supabase
+  // If payment_success is set to true, immediately create a payment record to ensure access
+  if (paymentSuccess === "true" && userId) {
+    console.log("Payment success flag is true, ensuring database record exists");
+    
+    // Check if user already has a valid payment in our database
+    const { data, error } = await supabase
+      .from("payments")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("payment_status", "succeeded")
+      .maybeSingle();
+    
+    if (error && error.code !== 'PGRST116') {
+      console.error("Error checking payment status:", error);
+    }
+    
+    if (data) {
+      console.log("Found successful payment in database:", data);
+      return true;
+    }
+
+    // Create the payment record if the database check failed but payment_success is true
+    // This helps when the webhook hasn't processed the payment yet
+    try {
+      const { error: insertError } = await supabase
         .from("payments")
-        .select("*")
-        .eq("user_id", userId)
-        .eq("payment_status", "succeeded")
-        .maybeSingle();
-      
-      if (error && error.code !== 'PGRST116') {
-        console.error("Error checking payment status:", error);
-        return false;
-      }
-      
-      if (data) {
-        console.log("Found successful payment in database:", data);
+        .insert({
+          user_id: userId,
+          payment_status: "succeeded",
+          amount: 47.00, // Default product price
+          created_at: new Date().toISOString(),
+        });
+        
+      if (insertError) {
+        console.error("Error creating payment record:", insertError);
+      } else {
+        console.log("Created payment record for successful payment");
         return true;
       }
-
-      // Create the payment record if the database check failed but payment_success is true
-      // This helps when the webhook hasn't processed the payment yet
-      try {
-        const { error: insertError } = await supabase
-          .from("payments")
-          .insert({
-            user_id: userId,
-            payment_status: "succeeded",
-            amount: 47.00, // Default product price
-            created_at: new Date().toISOString(),
-          });
-          
-        if (insertError) {
-          console.error("Error creating payment record:", insertError);
-        } else {
-          console.log("Created payment record for successful payment");
-          return true;
-        }
-      } catch (insertErr) {
-        console.error("Error inserting payment record:", insertErr);
-      }
+    } catch (insertErr) {
+      console.error("Error inserting payment record:", insertErr);
     }
   }
   
   // If we have a session ID, verify through Stripe
   if (sessionId) {
-    return await verifyPayment(sessionId, userId);
+    const isVerified = await verifyPayment(sessionId, userId);
+    if (isVerified && userId) {
+      // Ensure we have a payment record
+      await createPaymentRecord(userId);
+    }
+    return isVerified;
   }
   
   // If we have a payment intent, verify through Stripe
   if (paymentIntent) {
-    return await verifyPaymentIntent(paymentIntent, userId);
+    const isVerified = await verifyPaymentIntent(paymentIntent, userId);
+    if (isVerified && userId) {
+      // Ensure we have a payment record
+      await createPaymentRecord(userId);
+    }
+    return isVerified;
   }
   
-  // If redirect_status is "succeeded", that's a good sign
-  if (redirectStatus === "succeeded") {
-    // Create a payment record if we don't have one yet
-    if (userId) {
-      try {
-        const { error: insertError } = await supabase
-          .from("payments")
-          .insert({
-            user_id: userId,
-            payment_status: "succeeded",
-            amount: 47.00, // Default product price
-            created_at: new Date().toISOString(),
-          });
-          
-        if (insertError) {
-          console.error("Error creating payment record:", insertError);
-        } else {
-          console.log("Created payment record for successful payment");
-        }
-      } catch (insertErr) {
-        console.error("Error inserting payment record:", insertErr);
-      }
-    }
+  // If redirect_status is "succeeded", that's a good sign - create a payment record
+  if (redirectStatus === "succeeded" && userId) {
+    await createPaymentRecord(userId);
     return true;
   }
   
   // No payment identifiers found
   return false;
 };
+
+// Helper function to create a payment record
+async function createPaymentRecord(userId: string) {
+  try {
+    // Check if payment record already exists
+    const { data: existingPayment } = await supabase
+      .from("payments")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("payment_status", "succeeded")
+      .maybeSingle();
+      
+    if (existingPayment) {
+      console.log("Payment record already exists:", existingPayment.id);
+      return;
+    }
+    
+    console.log("Creating payment record for user:", userId);
+    const { error } = await supabase
+      .from("payments")
+      .insert({
+        user_id: userId,
+        payment_status: "succeeded",
+        amount: 47.00, // Default product price
+        created_at: new Date().toISOString(),
+      });
+      
+    if (error) {
+      console.error("Error creating payment record:", error);
+    } else {
+      console.log("Payment record created successfully");
+    }
+  } catch (error) {
+    console.error("Error in createPaymentRecord:", error);
+  }
+}
 
 // Check if user has an active subscription
 export const checkUserSubscription = async (userId?: string): Promise<boolean> => {

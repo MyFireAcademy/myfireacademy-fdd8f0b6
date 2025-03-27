@@ -1,7 +1,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-// Success and cancel URLs - Updated to redirect directly to quiz
+// Success and cancel URLs - Updated to redirect directly to quiz with full access
 const SUCCESS_URL = `${window.location.origin}/quiz?payment_success=true&level=level1&isFull=true`;
 const CANCEL_URL = `${window.location.origin}/checkout?payment_canceled=true`;
 

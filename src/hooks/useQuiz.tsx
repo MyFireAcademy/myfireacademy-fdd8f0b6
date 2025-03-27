@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { levelIQuizData, levelIIQuizData, Question } from '@/lib/quiz-data';
@@ -63,54 +62,50 @@ export const useQuiz = ({
     (quizComplete.level1 && quizComplete.level2);
 
   // Check user access
-  useEffect(() => {
-    const checkAccess = async () => {
-      setIsLoading(true);
-      
-      if (searchParams.has('payment_success') && user) {
-        try {
-          const isPaymentVerified = await checkPaymentFromUrl(searchParams, user.id);
-          
-          if (isPaymentVerified) {
-            setPaymentVerified(true);
-            setHasPayment(true);
-            setIsFull(true);
-            
-            toast({
-              title: "Payment Successful",
-              description: "Thank you for your purchase! You now have full access to all study materials.",
-              duration: 5000,
-            });
-          } else {
-            navigate('/subscription');
-          }
-        } catch (error) {
-          console.error('Error verifying payment:', error);
-          navigate('/subscription');
-        }
-      } 
-      else if (user) {
-        try {
-          const hasSubscription = await checkUserSubscription(user.id);
-          
-          if (hasSubscription) {
-            setHasPayment(true);
-            setPaymentVerified(true);
-            setIsFull(true);
-          } else {
-            navigate('/subscription');
-          }
-        } catch (error) {
-          console.error('Error checking subscription:', error);
-          navigate('/subscription');
-        }
-      } else if (!isAuthenticated()) {
-        navigate('/sign-in', { state: { returnUrl: '/quiz' } });
-      }
-      
-      setIsLoading(false);
-    };
+  const checkAccess = async () => {
+    setIsLoading(true);
     
+    if (searchParams.has('payment_success') && user) {
+      try {
+        const isPaymentVerified = await checkPaymentFromUrl(searchParams, user.id);
+        
+        if (isPaymentVerified) {
+          setPaymentVerified(true);
+          setHasPayment(true);
+          setIsFull(true);
+          
+          toast({
+            title: "Payment Successful",
+            description: "Thank you for your purchase! You now have full access to all study materials.",
+            duration: 5000,
+          });
+        }
+      } catch (error) {
+        console.error('Error verifying payment:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    } 
+    else if (user) {
+      try {
+        const hasSubscription = await checkUserSubscription(user.id);
+        
+        if (hasSubscription) {
+          setHasPayment(true);
+          setPaymentVerified(true);
+          setIsFull(true);
+        }
+      } catch (error) {
+        console.error('Error checking subscription:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     checkAccess();
   }, [user, searchParams, navigate, toast, isAuthenticated]);
 
