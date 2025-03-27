@@ -61,6 +61,28 @@ export const checkPaymentFromUrl = async (searchParams: URLSearchParams, userId?
         console.log("Found successful payment in database:", data);
         return true;
       }
+
+      // Create the payment record if the database check failed but payment_success is true
+      // This helps when the webhook hasn't processed the payment yet
+      try {
+        const { error: insertError } = await supabase
+          .from("payments")
+          .insert({
+            user_id: userId,
+            payment_status: "succeeded",
+            amount: 47.00, // Default product price
+            created_at: new Date().toISOString(),
+          });
+          
+        if (insertError) {
+          console.error("Error creating payment record:", insertError);
+        } else {
+          console.log("Created payment record for successful payment");
+          return true;
+        }
+      } catch (insertErr) {
+        console.error("Error inserting payment record:", insertErr);
+      }
     }
   }
   
@@ -76,6 +98,27 @@ export const checkPaymentFromUrl = async (searchParams: URLSearchParams, userId?
   
   // If redirect_status is "succeeded", that's a good sign
   if (redirectStatus === "succeeded") {
+    // Create a payment record if we don't have one yet
+    if (userId) {
+      try {
+        const { error: insertError } = await supabase
+          .from("payments")
+          .insert({
+            user_id: userId,
+            payment_status: "succeeded",
+            amount: 47.00, // Default product price
+            created_at: new Date().toISOString(),
+          });
+          
+        if (insertError) {
+          console.error("Error creating payment record:", insertError);
+        } else {
+          console.log("Created payment record for successful payment");
+        }
+      } catch (insertErr) {
+        console.error("Error inserting payment record:", insertErr);
+      }
+    }
     return true;
   }
   
