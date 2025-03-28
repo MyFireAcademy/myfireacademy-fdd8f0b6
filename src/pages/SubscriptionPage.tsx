@@ -5,9 +5,10 @@ import { ArrowRight, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { createCheckoutSession } from '@/utils/stripe';
-import { checkPaymentFromUrl, checkUserSubscription, clearSubscriptionCache } from '@/utils/paymentVerification';
+import { checkPaymentFromUrl, checkUserSubscription } from '@/utils/paymentVerification';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { supabase } from '@/integrations/supabase/client';
 
 const SubscriptionPage = () => {
   const { user, loading } = useAuth();
@@ -29,18 +30,17 @@ const SubscriptionPage = () => {
           searchParams.has('payment_intent')) {
         
         setIsLoading(true);
-        clearSubscriptionCache(user.id);
         const isPaymentVerified = await checkPaymentFromUrl(searchParams, user.id);
         
         if (isPaymentVerified) {
           toast({
             title: "Payment Successful",
-            description: "Thank you for your purchase! Redirecting to dashboard...",
+            description: "Thank you for your purchase! Redirecting to quizzes...",
             duration: 3000,
           });
           
-          // Redirect to dashboard after successful payment
-          navigate('/dashboard', { replace: true });
+          // Redirect to quiz landing page instead of the quiz
+          navigate('/quizzes', { replace: true });
         } else {
           toast({
             title: "Payment Verification",
@@ -63,8 +63,7 @@ const SubscriptionPage = () => {
         setPageLoading(true);
         console.log("Checking subscription for user:", user.id);
         
-        clearSubscriptionCache(user.id);
-        const hasValidSubscription = await checkUserSubscription(user.id, true);
+        const hasValidSubscription = await checkUserSubscription(user.id);
         
         if (hasValidSubscription) {
           console.log("User has an active subscription");

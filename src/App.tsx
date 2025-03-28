@@ -4,10 +4,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Quiz from "./pages/Quiz";
+import QuizLanding from "./pages/QuizLanding";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Checkout from "./pages/Checkout";
@@ -22,50 +23,9 @@ import TermsOfService from "./pages/TermsOfService";
 import RefundPolicy from "./pages/RefundPolicy";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import StripeProvider from "./providers/StripeProvider";
-import { checkUserSubscription, clearSubscriptionCache } from "@/utils/paymentVerification";
-import { useAuth } from "@/contexts/AuthContext";
 
 // Create a new QueryClient instance outside of the component
 const queryClient = new QueryClient();
-
-// Protected route component that checks for subscription
-const ProtectedQuizRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
-  const [hasAccess, setHasAccess] = React.useState<boolean | null>(null);
-  
-  React.useEffect(() => {
-    const checkAccess = async () => {
-      if (!user) {
-        setHasAccess(false);
-        return;
-      }
-      
-      // Always clear cache for fresh check
-      clearSubscriptionCache(user.id);
-      const hasSubscription = await checkUserSubscription(user.id, true);
-      setHasAccess(hasSubscription);
-      console.log("Protected route - subscription status:", hasSubscription);
-    };
-    
-    if (!loading) {
-      checkAccess();
-    }
-  }, [user, loading]);
-  
-  if (loading || hasAccess === null) {
-    // Show loading state
-    return <div className="flex items-center justify-center min-h-screen">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-fire-600"></div>
-    </div>;
-  }
-  
-  if (!hasAccess) {
-    // Redirect to subscription page
-    return <Navigate to="/subscription" replace />;
-  }
-  
-  return <>{children}</>;
-};
 
 const App = () => {
   return (
@@ -79,12 +39,8 @@ const App = () => {
               <StripeProvider>
                 <Routes>
                   <Route path="/" element={<Index />} />
-                  {/* Protected Quiz route */}
-                  <Route path="/quiz" element={
-                    <ProtectedQuizRoute>
-                      <Quiz />
-                    </ProtectedQuizRoute>
-                  } />
+                  <Route path="/quiz" element={<Quiz />} />
+                  <Route path="/quizzes" element={<QuizLanding />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/checkout" element={<Checkout />} />

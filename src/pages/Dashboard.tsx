@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { checkPaymentFromUrl, checkUserSubscription, clearSubscriptionCache } from '@/utils/paymentVerification';
+import { checkPaymentFromUrl, checkUserSubscription } from '@/utils/paymentVerification';
 
 interface QuizMetadata {
   id: string;
@@ -49,7 +49,6 @@ const Dashboard = () => {
           searchParams.has('session_id') || 
           searchParams.has('payment_intent')) {
         
-        clearSubscriptionCache(user.id);
         const isPaymentVerified = await checkPaymentFromUrl(searchParams, user.id);
         
         if (isPaymentVerified) {
@@ -72,8 +71,7 @@ const Dashboard = () => {
       try {
         setIsLoading(true);
         
-        clearSubscriptionCache(user.id);
-        const hasValidSubscription = await checkUserSubscription(user.id, true);
+        const hasValidSubscription = await checkUserSubscription(user.id);
         
         if (!hasValidSubscription) {
           setHasSubscription(false);
@@ -163,7 +161,7 @@ const Dashboard = () => {
   };
 
   const handleViewAllQuizzes = () => {
-    navigate('/quiz');
+    navigate('/quizzes');
   };
 
   const handleSignOut = async () => {
@@ -239,7 +237,7 @@ const Dashboard = () => {
                 className="btn-secondary flex items-center"
               >
                 <BookOpen size={16} className="mr-2" />
-                View Quiz Options
+                View All Quizzes
               </button>
             </div>
             

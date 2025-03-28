@@ -1,19 +1,14 @@
+
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, User, BookOpen } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { checkUserSubscription, clearSubscriptionCache } from '@/utils/paymentVerification';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [hasSubscription, setHasSubscription] = useState(false);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const location = useLocation();
-  
-  const isQuizPage = location.pathname === '/quiz';
-  const extraSpacingClass = isQuizPage ? 'mb-28' : '';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,29 +18,6 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // More aggressive check for subscription status
-  useEffect(() => {
-    const checkSubscription = async () => {
-      if (user) {
-        // Always clear the subscription cache to force a fresh check
-        clearSubscriptionCache(user.id);
-        const userHasSubscription = await checkUserSubscription(user.id, true);
-        setHasSubscription(userHasSubscription);
-        console.log('Navbar - User subscription status:', userHasSubscription);
-      } else {
-        setHasSubscription(false);
-      }
-    };
-    
-    checkSubscription();
-    
-    // Set up an interval to check subscription status every 5 seconds
-    // This ensures the UI updates even if the payment webhook is delayed
-    const intervalId = setInterval(checkSubscription, 5000);
-    
-    return () => clearInterval(intervalId);
-  }, [user, location.pathname]); 
 
   const handleBuyNowClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -63,7 +35,7 @@ const Navbar = () => {
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-apple ${
         isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'
-      } ${extraSpacingClass}`}
+      }`}
     >
       <div className="container mx-auto px-6">
         <nav className="flex items-center justify-between">
@@ -83,15 +55,10 @@ const Navbar = () => {
             <Link to="/new-to-firefighting" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               New To Firefighting
             </Link>
-            
-            {/* Only show Practice Tests link if user has subscription */}
-            {hasSubscription && (
-              <Link to="/quiz" className="text-navy-800 hover:text-fire-600 transition-colors font-medium flex items-center">
-                <BookOpen size={18} className="mr-1" />
-                Practice Tests
-              </Link>
-            )}
-            
+            <Link to="/quizzes" className="text-navy-800 hover:text-fire-600 transition-colors font-medium flex items-center">
+              <BookOpen size={18} className="mr-1" />
+              Practice Tests
+            </Link>
             <Link to="/blog" className="text-navy-800 hover:text-fire-600 transition-colors font-medium">
               Blog
             </Link>
@@ -154,19 +121,14 @@ const Navbar = () => {
               >
                 New To Firefighting
               </Link>
-              
-              {/* Only show Practice Tests link if user has subscription */}
-              {hasSubscription && (
-                <Link 
-                  to="/quiz" 
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium flex items-center"
-                >
-                  <BookOpen size={18} className="mr-2" />
-                  Practice Tests
-                </Link>
-              )}
-              
+              <Link 
+                to="/quizzes" 
+                onClick={() => setIsMenuOpen(false)}
+                className="text-navy-800 hover:text-fire-600 transition-colors py-2 font-medium flex items-center"
+              >
+                <BookOpen size={18} className="mr-2" />
+                Practice Tests
+              </Link>
               <Link 
                 to="/blog" 
                 onClick={() => setIsMenuOpen(false)}
